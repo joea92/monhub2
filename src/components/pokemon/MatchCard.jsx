@@ -11,7 +11,9 @@ export default function MatchCard({ pokemon, target, compatibility }) {
   return (
     <Link to={`/Pokemon?id=${pokemon.id}`}>
       <div className="flex items-start gap-3 p-3 rounded-xl border border-border/50 bg-card hover:shadow-md hover:border-primary/20 transition-all cursor-pointer">
-        <img src={pokemon.imageUrl} alt={pokemon.name} className="w-12 h-12 object-contain flex-shrink-0" loading="lazy" />
+        <div className="w-12 h-12 flex-shrink-0">
+          <PokemonImage src={pokemon.imageUrl} alt={pokemon.name} className="w-12 h-12" />
+        </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between gap-2 mb-1">
             <h4 className="font-semibold text-sm truncate">{pokemon.name}</h4>
