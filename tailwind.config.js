@@ -88,5 +88,27 @@ module.exports = {
   		}
   	}
   },
+  safelist: [
+    'bg-amber-100', 'text-amber-800', 'bg-cyan-100', 'text-cyan-800',
+    'bg-stone-100', 'text-stone-800', 'bg-violet-100', 'text-violet-800',
+    'bg-rose-100', 'text-rose-800', 'bg-emerald-100', 'text-emerald-800',
+    'bg-blue-100', 'text-blue-800', 'bg-red-100', 'text-red-800',
+    'bg-amber-50', 'text-amber-700', 'bg-emerald-50', 'text-emerald-700',
+    'bg-green-100', 'text-green-800', 'border-green-200',
+    'bg-orange-100', 'text-orange-800', 'border-orange-200',
+    'bg-blue-100', 'text-blue-800', 'border-blue-200',
+    'bg-gray-100', 'text-gray-700', 'border-gray-200',
+    'bg-lime-100', 'text-lime-800', 'border-lime-200',
+    'bg-purple-100', 'text-purple-800', 'border-purple-200',
+    'bg-yellow-100', 'text-yellow-800', 'border-yellow-200',
+    'bg-pink-100', 'text-pink-800', 'text-pink-700', 'border-pink-200',
+    'bg-stone-100', 'text-stone-700', 'border-stone-200',
+    'bg-violet-100', 'text-violet-800', 'border-violet-200',
+    'bg-zinc-200', 'text-zinc-800', 'border-zinc-300',
+    'bg-slate-100', 'text-slate-700', 'border-slate-200',
+    'bg-sky-100', 'text-sky-800', 'border-sky-200',
+    'bg-cyan-100', 'text-cyan-800', 'border-cyan-200',
+    'bg-indigo-100', 'text-indigo-800', 'border-indigo-200',
+  ],
   plugins: [require("tailwindcss-animate")],
 }
