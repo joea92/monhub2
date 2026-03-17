@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { getCompatLabelColor, generateExplanation } from '@/lib/compatibility';
 import TypeBadge from './TypeBadge';
+import PokemonImage from './PokemonImage';
 
 export default function MatchCard({ pokemon, target, compatibility }) {
   if (!compatibility) return null;
