@@ -49,8 +49,8 @@ export default function PokemonDetail() {
       {/* Profile header */}
       <div className="bg-card rounded-2xl border border-border/50 p-6 mb-6">
         <div className="flex flex-col sm:flex-row items-start gap-6">
-          <div className="w-24 h-24 sm:w-32 sm:h-32 bg-muted/30 rounded-2xl flex items-center justify-center flex-shrink-0">
-            <img src={pokemon.imageUrl} alt={pokemon.name} className="w-20 h-20 sm:w-28 sm:h-28 object-contain" />
+          <div className="w-24 h-24 sm:w-32 sm:h-32 flex-shrink-0 rounded-2xl overflow-hidden">
+            <PokemonImage src={pokemon.imageUrl} alt={pokemon.name} className="w-24 h-24 sm:w-32 sm:h-32" />
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2">
