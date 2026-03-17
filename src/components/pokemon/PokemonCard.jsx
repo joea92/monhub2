@@ -4,6 +4,7 @@ import { Heart } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { isFavourite, toggleFavourite } from '@/lib/storage';
 import TypeBadge from './TypeBadge';
+import PokemonImage from './PokemonImage';
 
 export default function PokemonCard({ pokemon, onFavToggle, compact = false }) {
   const [fav, setFav] = React.useState(isFavourite(pokemon.id));
