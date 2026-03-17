@@ -43,7 +43,7 @@ export default function PokemonCard({ pokemon, onFavToggle, compact = false }) {
         
         <div className="flex flex-col items-center text-center">
           <div className="w-16 h-16 mb-3 relative">
-            <img src={pokemon.imageUrl} alt={pokemon.name} className="w-full h-full object-contain" loading="lazy" />
+            <PokemonImage src={pokemon.imageUrl} alt={pokemon.name} className="w-16 h-16" />
           </div>
           <p className="text-xs text-muted-foreground mb-0.5">#{pokemon.number}</p>
           <h3 className="font-semibold text-sm mb-2">{pokemon.name}</h3>
