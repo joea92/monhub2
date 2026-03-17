@@ -10,6 +10,7 @@ import { isFavourite, toggleFavourite } from '@/lib/storage';
 import TypeBadge from '@/components/pokemon/TypeBadge';
 import MatchCard from '@/components/pokemon/MatchCard';
 import CompatibilityBadge from '@/components/pokemon/CompatibilityBadge';
+import PokemonImage from '@/components/pokemon/PokemonImage';
 
 export default function PokemonDetail() {
   const params = new URLSearchParams(window.location.search);
