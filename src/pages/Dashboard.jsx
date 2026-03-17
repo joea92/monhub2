@@ -4,6 +4,7 @@ import { Search, Wrench, MapPin, GitCompare, Settings, Sparkles, ArrowRight, Sta
 import { Button } from '@/components/ui/button';
 import { POKEMON_DATA, TOWNS } from '@/lib/pokemonData';
 import PokemonCard from '@/components/pokemon/PokemonCard';
+import PokemonImage from '@/components/pokemon/PokemonImage';
 
 const QUICK_LINKS = [
   { path: '/Pokedex', icon: Search, label: 'Pokédex', desc: 'Browse all Pokémon', color: 'bg-violet-500' },
