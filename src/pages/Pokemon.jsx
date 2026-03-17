@@ -105,11 +105,13 @@ export default function PokemonDetail() {
               {idx > 0 && <p className="text-xs text-muted-foreground mb-2">Runner-up #{idx + 1}</p>}
               <div className="flex flex-wrap gap-3 mb-3">
                 {house.pokemon.map(p => (
-                  <Link key={p.id} to={`/Pokemon?id=${p.id}`} className="flex items-center gap-2 bg-card rounded-lg border border-border/50 px-3 py-2 hover:border-primary/20 transition-colors">
-                    <img src={p.imageUrl} alt={p.name} className="w-8 h-8 object-contain" />
-                    <span className="text-sm font-medium">{p.name}</span>
-                  </Link>
-                ))}
+                   <Link key={p.id} to={`/Pokemon?id=${p.id}`} className="flex items-center gap-2 bg-card rounded-lg border border-border/50 px-3 py-2 hover:border-primary/20 transition-colors">
+                     <div className="w-8 h-8">
+                       <PokemonImage src={p.imageUrl} alt={p.name} className="w-8 h-8" />
+                     </div>
+                     <span className="text-sm font-medium">{p.name}</span>
+                   </Link>
+                 ))}
               </div>
               <div className="flex flex-wrap gap-3 text-xs">
                 <Badge className="bg-emerald-50 text-emerald-700 border border-emerald-200">
