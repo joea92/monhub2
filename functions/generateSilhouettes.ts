@@ -18,78 +18,75 @@ Deno.serve(async (req) => {
 
     const results = { processed: 0, succeeded: 0, failed: 0 };
 
-    for (const id of ids) {
-      results.processed++;
-      try {
-        // Fetch the record
-        const records = await base44.asServiceRole.entities.PokemonImage.filter({ id });
-        const record = records[0];
-        if (!record) {
-          results.failed++;
-          continue;
-        }
+    // Mark all as generating first
+    await Promise.all(ids.map(id => 
+      base44.asServiceRole.entities.PokemonImage.update(id, {
+        silhouette_status: 'generating',
+      }).catch(() => {})
+    ));
 
-        // Mark as generating
-        await base44.asServiceRole.entities.PokemonImage.update(id, {
-          silhouette_status: 'generating',
-        });
+    // Fetch all records
+    const records = await base44.asServiceRole.entities.PokemonImage.filter({ id: { $in: ids } });
+    const recordMap = Object.fromEntries(records.map(r => [r.id, r]));
 
-        // Use hosted image as reference, fall back to source
-        const referenceUrl = record.hosted_image_url || record.source_image_url;
+    // Process in parallel batches of 2 to avoid overwhelming the API
+    const BATCH_SIZE = 2;
+    for (let i = 0; i < ids.length; i += BATCH_SIZE) {
+      const batch = ids.slice(i, i + BATCH_SIZE);
+      await Promise.all(batch.map(async (id) => {
+        results.processed++;
+        try {
+          const record = recordMap[id];
+          if (!record) {
+            results.failed++;
+            return;
+          }
 
-        if (!referenceUrl) {
+          const referenceUrl = record.hosted_image_url || record.source_image_url;
+          if (!referenceUrl) {
+            await base44.asServiceRole.entities.PokemonImage.update(id, {
+              silhouette_status: 'failed',
+            }).catch(() => {});
+            results.failed++;
+            return;
+          }
+
+          const prompt = `Create a stylised icon-style silhouette of a creature inspired by ${record.name}. Solid flat silhouette shape, soft rounded edges, medium slate-grey color (#6B7280), transparent background, minimal and recognisable.`;
+
+          const generated = await base44.asServiceRole.integrations.Core.GenerateImage({
+            prompt,
+            existing_image_urls: [referenceUrl],
+          });
+
+          if (!generated?.url) {
+            await base44.asServiceRole.entities.PokemonImage.update(id, {
+              silhouette_status: 'failed',
+            }).catch(() => {});
+            results.failed++;
+            return;
+          }
+
+          const imgRes = await fetch(generated.url);
+          const arrayBuffer = await imgRes.arrayBuffer();
+          const file = new File([arrayBuffer], `${record.slug}-silhouette.png`, { type: 'image/png' });
+
+          const uploadRes = await base44.asServiceRole.integrations.Core.UploadPrivateFile({ file });
+          const file_uri = uploadRes.file_uri || uploadRes.data?.file_uri;
+
+          await base44.asServiceRole.entities.PokemonImage.update(id, {
+            silhouette_image_url: file_uri,
+            silhouette_status: 'ready',
+          });
+
+          results.succeeded++;
+        } catch (err) {
+          console.error(`Silhouette generation failed for ${id}: ${err.message}`);
           await base44.asServiceRole.entities.PokemonImage.update(id, {
             silhouette_status: 'failed',
-          });
+          }).catch(() => {});
           results.failed++;
-          continue;
         }
-
-        // Generate silhouette using AI
-        const prompt = `Create a stylised icon-style silhouette of a creature inspired by ${record.name}. 
-Style rules:
-- Solid flat silhouette shape, no internal details, no texture, no outlines
-- Soft rounded edges, icon-like and clean
-- Simplified shape inspired by the creature's overall body form
-- Single unified shape fill in a medium slate-grey color (#6B7280)
-- Transparent background
-- Centered composition with generous padding
-- Consistent icon-system aesthetic — looks like it belongs in a set of app icons
-- No text, no labels, no extra elements
-- The result should be a minimal, recognisable blob/form that hints at the creature without being a detailed drawing`;
-
-        const generated = await base44.asServiceRole.integrations.Core.GenerateImage({
-          prompt,
-          existing_image_urls: [referenceUrl],
-        });
-
-        if (!generated?.url) {
-          await base44.asServiceRole.entities.PokemonImage.update(id, {
-            silhouette_status: 'failed',
-          });
-          results.failed++;
-          continue;
-        }
-
-        // Download the generated image and upload to private storage
-        const imgRes = await fetch(generated.url);
-        const arrayBuffer = await imgRes.arrayBuffer();
-        const file = new File([arrayBuffer], `${record.slug}-silhouette.png`, { type: 'image/png' });
-
-        const { file_uri } = await base44.asServiceRole.integrations.Core.UploadPrivateFile({ file });
-
-        await base44.asServiceRole.entities.PokemonImage.update(id, {
-          silhouette_image_url: file_uri,
-          silhouette_status: 'ready',
-        });
-
-        results.succeeded++;
-      } catch (err) {
-        await base44.asServiceRole.entities.PokemonImage.update(id, {
-          silhouette_status: 'failed',
-        }).catch(() => {});
-        results.failed++;
-      }
+      }));
     }
 
     return Response.json({ success: true, results });
