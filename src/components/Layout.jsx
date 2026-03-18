@@ -25,6 +25,7 @@ const slideVariants = {
 export default function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [showDonationModal, setShowDonationModal] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
