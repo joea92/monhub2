@@ -57,40 +57,52 @@ export default function PokemonSilhouette({ src, alt, primaryType, className = '
     const img = new Image();
     img.crossOrigin = 'anonymous';
     img.onload = () => {
-      const canvas = canvasRef.current;
-      canvas.width = img.width;
-      canvas.height = img.height;
-      const ctx = canvas.getContext('2d');
+      try {
+        const canvas = canvasRef.current;
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
 
-      // Draw original image
-      ctx.drawImage(img, 0, 0);
+        // Draw original image
+        ctx.drawImage(img, 0, 0);
 
-      // Get image data
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const data = imageData.data;
+        // Get image data
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
 
-      // Parse type color
-      const typeColor = getTypeColor();
-      const rgbMatch = typeColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
-      const [, r, g, b] = rgbMatch || [null, 168, 168, 168];
-      const colorR = parseInt(r);
-      const colorG = parseInt(g);
-      const colorB = parseInt(b);
-
-      // Replace all non-transparent pixels with solid color while preserving alpha
-      for (let i = 0; i < data.length; i += 4) {
-        const alpha = data[i + 3];
-        // If pixel has any opacity, make it solid color
-        if (alpha > 0) {
-          data[i] = colorR;       // R
-          data[i + 1] = colorG;   // G
-          data[i + 2] = colorB;   // B
-          // Keep original alpha (data[i + 3])
+        // Parse type color
+        const typeColor = getTypeColor();
+        const rgbMatch = typeColor.match(/\d+/g);
+        
+        if (!rgbMatch || rgbMatch.length < 3) {
+          // Fallback to normal grey
+          const fallback = [168, 168, 168];
+          setSilhouetteSrc(img.src);
+          return;
         }
-      }
 
-      ctx.putImageData(imageData, 0, 0);
-      setSilhouetteSrc(canvas.toDataURL());
+        const colorR = parseInt(rgbMatch[0], 10);
+        const colorG = parseInt(rgbMatch[1], 10);
+        const colorB = parseInt(rgbMatch[2], 10);
+
+        // Replace all non-transparent pixels with solid color while preserving alpha
+        for (let i = 0; i < data.length; i += 4) {
+          const alpha = data[i + 3];
+          // If pixel has any opacity, make it solid color
+          if (alpha > 0) {
+            data[i] = colorR;       // R
+            data[i + 1] = colorG;   // G
+            data[i + 2] = colorB;   // B
+            // Keep original alpha (data[i + 3])
+          }
+        }
+
+        ctx.putImageData(imageData, 0, 0);
+        setSilhouetteSrc(canvas.toDataURL());
+      } catch (e) {
+        // If canvas processing fails, fall back to original image
+        setSilhouetteSrc(img.src);
+      }
     };
     img.onerror = () => setHasError(true);
     img.src = resolvedSrc;
