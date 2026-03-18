@@ -202,9 +202,9 @@ function normalizeFav(f) {
   return f.trim().toLowerCase();
 }
 
-// Get image URL from Serebii based on number
+// Get image URL from pokopia.dev based on number
 function getImageUrl(number) {
-  return `https://www.serebii.net/pokemonpokopia/pokemon/small/${number}.png`;
+  return `https://pokopia.dev/images/pokemon/${number}.png`;
 }
 
 // Build the full dataset
