@@ -54,8 +54,7 @@ export default function Compare() {
       <p className="text-sm text-muted-foreground mb-6">Select up to 4 Pokémon to compare</p>
 
       {/* Search */}
-      {focusedSlot !== null && (
-        <div className="mb-6 max-w-sm relative z-10">
+      <div className="mb-6 max-w-sm relative z-10">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
