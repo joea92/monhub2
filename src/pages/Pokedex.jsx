@@ -27,7 +27,7 @@ export default function Pokedex() {
     if (sortBy === 'name') result = [...result].sort((a, b) => a.name.localeCompare(b.name));
     else if (sortBy === 'habitat') result = [...result].sort((a, b) => a.idealHabitat.localeCompare(b.idealHabitat));
     else if (sortBy === 'type') result = [...result].sort((a, b) => a.type.localeCompare(b.type));
-    else result = [...result].sort((a, b) => a.id - b.id);
+    else result = [...result].sort((a, b) => parseFloat(a.number) - parseFloat(b.number));
 
     return result;
   }, [search, typeFilter, specialtyFilter, habitatFilter, locationFilter, sortBy]);
