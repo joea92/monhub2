@@ -40,12 +40,23 @@ export default function Layout() {
   return (
     <div className="min-h-screen bg-background flex flex-col overflow-x-hidden" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
       {/* Top bar */}
-      <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/40">
+      <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/40" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
         <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
-          <Link to="/Dashboard" className="flex items-center gap-2" style={{ userSelect: 'none' }}>
-            <img src={DITTO_URL} alt="Ditto" className="w-8 h-8 object-contain" />
-            <span className="font-bold text-lg tracking-tight">Pokopia Matcher (Unofficial)</span>
-          </Link>
+          {showBackButton ? (
+            <button
+              onClick={() => navigate(-1)}
+              className="flex items-center gap-2 hover:opacity-70 transition-opacity md:hidden"
+              style={{ userSelect: 'none' }}
+            >
+              <ArrowLeft className="w-5 h-5" />
+              <span className="text-sm font-medium">Back</span>
+            </button>
+          ) : (
+            <Link to="/Dashboard" className="flex items-center gap-2" style={{ userSelect: 'none' }}>
+              <img src={DITTO_URL} alt="Ditto" className="w-8 h-8 object-contain" />
+              <span className="font-bold text-lg tracking-tight">Pokopia Matcher (Unofficial)</span>
+            </Link>
+          )}
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-1">
