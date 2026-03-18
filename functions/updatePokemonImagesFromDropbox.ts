@@ -35,6 +35,8 @@ Deno.serve(async (req) => {
     let updated = 0;
     let failed = 0;
     const debugInfo = [];
+    const appPokemonNames = allRecords.slice(0, 10).map(r => r.name);
+    debugInfo.push(`First 10 in app: ${appPokemonNames.join(', ')}`);
 
     // Process each file in Dropbox
     for (const entry of listData.entries) {
@@ -46,9 +48,6 @@ Deno.serve(async (req) => {
         
         // Find matching Pokemon record by name
         const record = allRecords.find(r => r.name.toLowerCase() === filename.toLowerCase());
-        if (!record) {
-          debugInfo.push(`"${filename}" not found (try: "${filename.toLowerCase()}")`);
-        }
 
         if (!record) continue;
 
