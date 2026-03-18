@@ -55,7 +55,7 @@ export default function Dashboard() {
       </div>
 
       {/* Quick links */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5 md:mb-10">
         {QUICK_LINKS.map(link => {
           const Icon = link.icon;
           return (
