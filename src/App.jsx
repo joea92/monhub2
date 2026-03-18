@@ -11,6 +11,8 @@ import Dashboard from '@/pages/Dashboard';
 import Pokedex from '@/pages/Pokedex';
 import Pokemon from '@/pages/Pokemon';
 import PokemonByType from '@/pages/PokemonByType';
+import PokemonBySpecialty from '@/pages/PokemonBySpecialty';
+import PokemonByHabitat from '@/pages/PokemonByHabitat';
 import HousePlanner from '@/pages/HousePlanner';
 import TownPlanner from '@/pages/TownPlanner';
 import Compare from '@/pages/Compare';
@@ -44,6 +46,8 @@ const AuthenticatedApp = () => {
         <Route path="/Pokedex" element={<Pokedex />} />
         <Route path="/Pokemon" element={<Pokemon />} />
         <Route path="/PokemonByType" element={<PokemonByType />} />
+        <Route path="/PokemonBySpecialty" element={<PokemonBySpecialty />} />
+        <Route path="/PokemonByHabitat" element={<PokemonByHabitat />} />
         <Route path="/HousePlanner" element={<HousePlanner />} />
         <Route path="/TownPlanner" element={<TownPlanner />} />
         <Route path="/Compare" element={<Compare />} />
