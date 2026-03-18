@@ -145,7 +145,7 @@ export default function Layout() {
         </button>
         </nav>
 
-
+      <DonationModal open={showDonationModal} onClose={() => setShowDonationModal(false)} />
     </div>
   );
 }
