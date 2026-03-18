@@ -15,6 +15,7 @@ import TownPlanner from '@/pages/TownPlanner';
 import Compare from '@/pages/Compare';
 import Admin from '@/pages/Admin';
 import ImageImport from '@/pages/ImageImport';
+import SilhouetteTest from '@/pages/SilhouetteTest';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
