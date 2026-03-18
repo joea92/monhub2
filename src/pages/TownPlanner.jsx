@@ -19,6 +19,7 @@ export default function TownPlanner() {
   const [activeTown, setActiveTown] = useState(selectedTownId || null);
   const [selectedHouseId, setSelectedHouseId] = useState(null);
   const [unassignedTab, setUnassignedTab] = useState('native');
+  const [unassignedSearch, setUnassignedSearch] = useState('');
 
   const activeTownData = TOWNS.find(t => t.id === activeTown);
   const townPlan = activeTown ? (plans[activeTown] || { houses: [] }) : null;
@@ -46,6 +47,9 @@ export default function TownPlanner() {
 
   const unassigned = townPokemon.filter(p => !assignedIds.has(p.id));
   const allUnassigned = POKEMON_DATA.filter(p => !assignedIds.has(p.id));
+
+  const filteredNative = unassigned.filter(p => p.name.toLowerCase().includes(unassignedSearch.toLowerCase()));
+  const filteredAll = allUnassigned.filter(p => p.name.toLowerCase().includes(unassignedSearch.toLowerCase()));
 
   const searchResults = useMemo(() => {
     if (!search) return [];
@@ -258,9 +262,19 @@ export default function TownPlanner() {
                 <TabsTrigger value="all" className="text-xs">All ({allUnassigned.length})</TabsTrigger>
               </TabsList>
 
+              <div className="mb-3 relative">
+                <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3 h-3 text-muted-foreground" />
+                <Input
+                  placeholder="Search..."
+                  value={unassignedSearch}
+                  onChange={e => setUnassignedSearch(e.target.value)}
+                  className="h-8 text-xs pl-7"
+                />
+              </div>
+
               <TabsContent value="native">
                 <div className="space-y-1 max-h-96 overflow-y-auto">
-                  {unassigned.slice(0, 30).map(p => (
+                  {filteredNative.slice(0, 30).map(p => (
                     <button
                       key={p.id}
                       onClick={() => {
@@ -278,20 +292,20 @@ export default function TownPlanner() {
                       <Badge variant="secondary" className="text-[10px]">{p.idealHabitat}</Badge>
                     </button>
                   ))}
-                  {unassigned.length > 30 && (
+                  {filteredNative.length > 30 && (
                     <p className="text-xs text-muted-foreground text-center pt-2">
-                      +{unassigned.length - 30} more
+                      +{filteredNative.length - 30} more
                     </p>
                   )}
-                  {unassigned.length === 0 && (
-                    <p className="text-xs text-muted-foreground text-center py-4">All Pokémon assigned!</p>
+                  {filteredNative.length === 0 && (
+                    <p className="text-xs text-muted-foreground text-center py-4">{unassignedSearch ? 'No matches' : 'All Pokémon assigned!'}</p>
                   )}
                 </div>
               </TabsContent>
 
               <TabsContent value="all">
                 <div className="space-y-1 max-h-96 overflow-y-auto">
-                  {allUnassigned.slice(0, 30).map(p => (
+                  {filteredAll.slice(0, 30).map(p => (
                     <button
                       key={p.id}
                       onClick={() => {
@@ -311,13 +325,13 @@ export default function TownPlanner() {
                       </div>
                     </button>
                   ))}
-                  {allUnassigned.length > 30 && (
+                  {filteredAll.length > 30 && (
                     <p className="text-xs text-muted-foreground text-center pt-2">
-                      +{allUnassigned.length - 30} more
+                      +{filteredAll.length - 30} more
                     </p>
                   )}
-                  {allUnassigned.length === 0 && (
-                    <p className="text-xs text-muted-foreground text-center py-4">All Pokémon assigned!</p>
+                  {filteredAll.length === 0 && (
+                    <p className="text-xs text-muted-foreground text-center py-4">{unassignedSearch ? 'No matches' : 'All Pokémon assigned!'}</p>
                   )}
                 </div>
               </TabsContent>
