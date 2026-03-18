@@ -44,7 +44,7 @@ export default function Dashboard() {
           </div>
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-3">House Matcher</h1>
           <p className="text-muted-foreground max-w-lg mb-6">
-            Find the best housemates for your Pokémon in Pokopia. Optimize houses, plan towns, and maximize compatibility across all 300 Pokémon.
+            Find the best housemates for your Pokémon in Pokopia using their ideal habitats and favourite items. Optimize houses, plan towns, and maximize compatibility across all 300 Pokémon.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/Pokedex">
