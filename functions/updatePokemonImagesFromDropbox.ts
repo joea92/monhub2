@@ -33,8 +33,7 @@ Deno.serve(async (req) => {
     const allRecords = await base44.asServiceRole.entities.PokemonImage.list();
 
     let updated = 0;
-    let notInApp = 0;
-    let errors = 0;
+    let failed = 0;
 
     // Process each file in Dropbox
     for (const entry of listData.entries) {
@@ -47,13 +46,10 @@ Deno.serve(async (req) => {
         // Find matching Pokemon record by name
         const record = allRecords.find(r => r.name.toLowerCase() === filename.toLowerCase());
 
-        if (!record) {
-          notInApp++;
-          continue;
-        }
+        if (!record) continue;
 
-        // Get temporary download link from Dropbox
-        const tempLinkRes = await fetch('https://api.dropboxapi.com/2/files/get_temporary_link', {
+        // Create shareable link for this file
+        const linkRes = await fetch('https://api.dropboxapi.com/2/sharing/create_shared_link_with_settings', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${accessToken}`,
@@ -61,34 +57,58 @@ Deno.serve(async (req) => {
           },
           body: JSON.stringify({
             path: entry.path_lower,
+            settings: {
+              requested_visibility: 'public',
+              allow_download: true,
+            },
           }),
         }).catch(() => null);
 
-        if (tempLinkRes && tempLinkRes.ok) {
-          const tempLinkData = await tempLinkRes.json();
-          const shareUrl = tempLinkData.link;
-          
+        let shareUrl = null;
+        if (linkRes && linkRes.ok) {
+          const linkData = await linkRes.json();
+          // Convert to direct download URL
+          shareUrl = linkData.url.replace('?dl=0', '?dl=1');
+        } else {
+          // Fallback: try to get existing shared link
+          const existingRes = await fetch('https://api.dropboxapi.com/2/sharing/list_shared_links', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ path: entry.path_lower }),
+          }).catch(() => null);
+
+          if (existingRes && existingRes.ok) {
+            const existingData = await existingRes.json();
+            if (existingData.links && existingData.links.length > 0) {
+              shareUrl = existingData.links[0].url.replace('?dl=0', '?dl=1');
+            }
+          }
+        }
+
+        if (shareUrl) {
           await base44.asServiceRole.entities.PokemonImage.update(record.id, {
             hosted_image_url: shareUrl,
             source_image_url: shareUrl,
           });
           updated++;
         } else {
-          errors++;
+          failed++;
         }
       } catch (err) {
         console.error(`Failed to process ${entry.name}: ${err.message}`);
-        errors++;
+        failed++;
       }
     }
 
     return Response.json({
       success: true,
       updated,
-      notInApp,
-      errors,
+      failed,
       total: listData.entries.filter(e => e['.tag'] === 'file').length,
-      message: `Updated ${updated} Pokémon images from Dropbox (${notInApp} not in app, ${errors} errors)`,
+      message: `Updated ${updated} Pokémon images from Dropbox`,
     });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
