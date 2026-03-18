@@ -29,8 +29,8 @@ Deno.serve(async (req) => {
     const records = await base44.asServiceRole.entities.PokemonImage.filter({ id: { $in: ids } });
     const recordMap = Object.fromEntries(records.map(r => [r.id, r]));
 
-    // Process in parallel batches of 2 to avoid overwhelming the API
-    const BATCH_SIZE = 2;
+    // Process sequentially with delay to avoid timeouts
+    const BATCH_SIZE = 1;
     for (let i = 0; i < ids.length; i += BATCH_SIZE) {
       const batch = ids.slice(i, i + BATCH_SIZE);
       await Promise.all(batch.map(async (id) => {
