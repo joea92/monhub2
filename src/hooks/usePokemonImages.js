@@ -22,23 +22,9 @@ async function loadImageMap() {
   if (_cache) return _cache;
   if (_promise) return _promise;
 
-  _promise = base44.entities.PokemonImage
-    .filter({ import_status: 'success' }, '-updated_date', 500)
-    .then(records => {
-      const map = {};
-      for (const r of records) {
-        if (!r.slug) continue;
-        // If silhouette is enabled and ready, prefer it
-        if (r.use_silhouette && r.silhouette_image_url) {
-          map[r.slug] = r.silhouette_image_url;
-        } else if (r.hosted_image_url) {
-          map[r.slug] = r.hosted_image_url;
-        }
-      }
-      _cache = map;
-      return map;
-    });
-
+  _promise = Promise.resolve({});
+  _cache = {};
+  
   return _promise;
 }
 
@@ -53,20 +39,8 @@ export function usePokemonImages() {
       loadImageMap().then(map => setImageMap({ ...map }));
     }
 
-    // Subscribe to PokemonImage updates to refresh cache when silhouettes are ready
-    const unsubscribe = base44.entities.PokemonImage.subscribe((event) => {
-      if (event.data?.silhouette_status === 'ready' && event.data?.silhouette_image_url) {
-        // Invalidate cache and reload
-        _cache = null;
-        _promise = null;
-        loadImageMap().then(map => {
-          _cache = map;
-          setImageMap({ ...map });
-        });
-      }
-    });
-
-    return unsubscribe;
+    // No subscription needed when entity doesn't exist
+    return () => {};
   }, []);
 
   function getImageUrl(name, fallback) {
