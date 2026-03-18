@@ -59,38 +59,35 @@ Deno.serve(async (req) => {
     let updated = 0;
     let failed = 0;
 
-    // Process each file in Dropbox with rate limiting
+    // Process each file in Dropbox (batch updates)
+    const updates = [];
     for (const entry of allEntries) {
       if (entry['.tag'] !== 'file') continue;
 
-      try {
-        // Extract filename without extension
-        const filename = entry.name.split('.').slice(0, -1).join('.');
-        
-        // Normalize for matching
-        const normalized = filename.toLowerCase().trim();
-        
-        // Find matching Pokemon record
-        const record = allRecords.find(r => r.name.toLowerCase().trim() === normalized);
+      // Extract filename without extension
+      const filename = entry.name.split('.').slice(0, -1).join('.');
+      
+      // Normalize for matching
+      const normalized = filename.toLowerCase().trim();
+      
+      // Find matching Pokemon record
+      const record = allRecords.find(r => r.name.toLowerCase().trim() === normalized);
 
-        if (!record) continue;
+      if (!record) continue;
 
-        // Use direct Dropbox content URL
-        const shareUrl = `https://dl.dropboxusercontent.com/scl/fi/${entry.id.split('id:')[1] || entry.id}/${encodeURIComponent(entry.name)}?dl=1`;
+      // Use direct Dropbox content URL
+      const shareUrl = `https://dl.dropboxusercontent.com/scl/fi/${entry.id.split('id:')[1] || entry.id}/${encodeURIComponent(entry.name)}?dl=1`;
 
-        await base44.asServiceRole.entities.PokemonImage.update(record.id, {
+      updates.push(
+        base44.asServiceRole.entities.PokemonImage.update(record.id, {
           hosted_image_url: shareUrl,
           source_image_url: shareUrl,
-        });
-        updated++;
-        
-        // Rate limit: delay between updates to avoid hitting API limits
-        await new Promise(r => setTimeout(r, 200));
-      } catch (err) {
-        console.error(`Failed to process ${entry.name}: ${err.message}`);
-        failed++;
-      }
+        }).then(() => { updated++; }).catch(() => { failed++; })
+      );
     }
+
+    // Execute all updates concurrently
+    await Promise.all(updates);
 
     return Response.json({
       success: true,
