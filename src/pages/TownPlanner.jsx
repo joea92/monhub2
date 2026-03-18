@@ -303,10 +303,7 @@ export default function TownPlanner() {
                         <div className="w-7 h-7 flex-shrink-0 bg-muted/30 rounded">
                           <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-7 h-7" />
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <span className="text-xs font-medium block truncate">{p.name}</span>
-                          {compat && <span className="text-[10px] text-muted-foreground">{compat.label}</span>}
-                        </div>
+                        <span className="text-xs font-medium flex-1 truncate">{p.name} {compat && <span className="text-muted-foreground">· {compat.percentage}%</span>}</span>
                         <Badge variant="secondary" className="text-[10px]">{p.idealHabitat}</Badge>
                       </button>
                     );
@@ -335,10 +332,7 @@ export default function TownPlanner() {
                         <div className="w-7 h-7 flex-shrink-0 bg-muted/30 rounded">
                           <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-7 h-7" />
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <span className="text-xs font-medium block truncate">{p.name}</span>
-                          <span className="text-[10px] text-muted-foreground">{compat ? compat.label : p.location}</span>
-                        </div>
+                        <span className="text-xs font-medium flex-1 truncate">{p.name} {compat && <span className="text-muted-foreground">· {compat.percentage}%</span>}</span>
                       </button>
                     );
                   })}

@@ -47,8 +47,32 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
+import Admin from './pages/Admin';
+import Compare from './pages/Compare';
+import Dashboard from './pages/Dashboard';
+import HousePlanner from './pages/HousePlanner';
+import Pokedex from './pages/Pokedex';
+import Pokemon from './pages/Pokemon';
+import PokemonByHabitat from './pages/PokemonByHabitat';
+import PokemonBySpecialty from './pages/PokemonBySpecialty';
+import PokemonByType from './pages/PokemonByType';
+import TownPlanner from './pages/TownPlanner';
 
-export const pagesConfig = {
-	Pages: {}
+
+export const PAGES = {
+    "Admin": Admin,
+    "Compare": Compare,
+    "Dashboard": Dashboard,
+    "HousePlanner": HousePlanner,
+    "Pokedex": Pokedex,
+    "Pokemon": Pokemon,
+    "PokemonByHabitat": PokemonByHabitat,
+    "PokemonBySpecialty": PokemonBySpecialty,
+    "PokemonByType": PokemonByType,
+    "TownPlanner": TownPlanner,
 }
 
+export const pagesConfig = {
+    mainPage: "Dashboard",
+    Pages: PAGES,
+};
