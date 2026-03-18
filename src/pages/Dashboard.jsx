@@ -49,7 +49,7 @@ export default function Dashboard() {
             </Link>
           </div>
         </div>
-        <div className="absolute -right-10 -bottom-10 opacity-10">
+        <div className="absolute -right-10 -bottom-10 opacity-30">
           <img src={DITTO_URL} alt="" className="w-64 h-64 object-contain" />
         </div>
       </div>
