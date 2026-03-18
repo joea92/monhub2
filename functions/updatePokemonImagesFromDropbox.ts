@@ -113,6 +113,7 @@ Deno.serve(async (req) => {
       failed,
       total: listData.entries.filter(e => e['.tag'] === 'file').length,
       message: `Updated ${updated} Pokémon images from Dropbox`,
+      debug: debugInfo.slice(0, 10),
     });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
