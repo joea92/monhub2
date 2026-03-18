@@ -133,12 +133,12 @@ export default function HousePlanner() {
                 </div>
 
                 {houseScore.strongestPair && (
-                  <p className="text-xs text-emerald-600 mt-3">
+                  <p className="text-xs text-green-700 mt-3">
                     ✦ Strongest: {houseScore.strongestPair.pokemon1.name} & {houseScore.strongestPair.pokemon2.name}
                   </p>
                 )}
                 {houseScore.weakestPair && (
-                  <p className="text-xs text-amber-600">
+                  <p className="text-xs text-orange-600">
                     ✦ Weakest: {houseScore.weakestPair.pokemon1.name} & {houseScore.weakestPair.pokemon2.name}
                   </p>
                 )}
@@ -166,9 +166,9 @@ export default function HousePlanner() {
 
           {/* Auto optimize results */}
           {showAutoOptimize && autoResults.length > 0 && (
-            <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl border border-primary/10 p-5">
+            <div className="bg-card rounded-2xl border border-border/40 shadow-sm p-5">
               <h3 className="font-bold text-sm mb-3 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-primary" /> Best Houses Including Your Selection
+                <Sparkles className="w-4 h-4 text-pokopia-green" /> Best Houses Including Your Selection
               </h3>
               {autoResults.map((house, idx) => (
                 <div key={idx} className={`${idx > 0 ? 'mt-3 pt-3 border-t border-border/50' : ''}`}>

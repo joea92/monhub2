@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Home, Search, Wrench, MapPin, GitCompare, Settings, Menu, X, Sparkles, House } from 'lucide-react';
+import { Home, Search, Wrench, MapPin, GitCompare, Settings, Menu, X, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const NAV_ITEMS = [

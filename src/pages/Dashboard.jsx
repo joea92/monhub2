@@ -4,13 +4,12 @@ import { Search, Wrench, MapPin, GitCompare, Settings, Sparkles, ArrowRight, Sta
 import { Button } from '@/components/ui/button';
 import { POKEMON_DATA, TOWNS } from '@/lib/pokemonData';
 import PokemonCard from '@/components/pokemon/PokemonCard';
-import PokemonImage from '@/components/pokemon/PokemonImage';
 
 const QUICK_LINKS = [
-  { path: '/Pokedex', icon: Search, label: 'Pokédex', desc: 'Browse all Pokémon', color: 'bg-violet-500' },
-  { path: '/HousePlanner', icon: Wrench, label: 'House Planner', desc: 'Build houses of 4', color: 'bg-emerald-500' },
-  { path: '/TownPlanner', icon: MapPin, label: 'Town Planner', desc: 'Organize by town', color: 'bg-blue-500' },
-  { path: '/Compare', icon: GitCompare, label: 'Compare', desc: 'Side-by-side view', color: 'bg-amber-500' },
+  { path: '/Pokedex', icon: Search, label: 'Pokédex', desc: 'Browse all Pokémon', color: 'bg-pokopia-cyan' },
+  { path: '/HousePlanner', icon: Wrench, label: 'House Planner', desc: 'Build houses of 4', color: 'bg-pokopia-green' },
+  { path: '/TownPlanner', icon: MapPin, label: 'Town Planner', desc: 'Organize by town', color: 'bg-pokopia-olive' },
+  { path: '/Compare', icon: GitCompare, label: 'Compare', desc: 'Side-by-side view', color: 'bg-pokopia-purple' },
 ];
 
 export default function Dashboard() {
@@ -23,7 +22,7 @@ export default function Dashboard() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       {/* Hero */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 via-accent/5 to-transparent border border-border/50 p-8 md:p-12 mb-8">
+      <div className="relative overflow-hidden rounded-2xl bg-card border border-border/40 shadow-sm p-8 md:p-12 mb-8">
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-3">
             <Sparkles className="w-5 h-5 text-primary" />
