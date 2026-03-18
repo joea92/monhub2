@@ -370,7 +370,7 @@ export const POKEMON_DATA = RAW.map((p, i) => {
     favourites: favouritesList,
     favouritesNorm: favouritesList.map(normalizeFav),
     flavor: p.flavor.trim(),
-    imageUrl: getImageUrl(normalizeName(p.name)),
+    imageUrl: getImageUrl(p.name),
     dataSource: "sheet",
   };
 });
