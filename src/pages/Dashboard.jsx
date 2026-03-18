@@ -1,6 +1,9 @@
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Wrench, MapPin, GitCompare, ArrowRight, Star } from 'lucide-react';
+import { usePullToRefresh } from '@/hooks/usePullToRefresh';
+import PullToRefreshIndicator from '@/components/PullToRefreshIndicator';
+import SafeAreaView from '@/components/SafeAreaView';
 
 const DITTO_URL = 'https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/1dbd42f41_newdittologo.png';
 import { Button } from '@/components/ui/button';
