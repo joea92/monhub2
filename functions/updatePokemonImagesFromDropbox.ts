@@ -35,8 +35,11 @@ Deno.serve(async (req) => {
     let updated = 0;
     let failed = 0;
     const debugInfo = [];
-    const appPokemonNames = allRecords.slice(0, 10).map(r => r.name);
-    debugInfo.push(`First 10 in app: ${appPokemonNames.join(', ')}`);
+    const fileNames = listData.entries
+      .filter(e => e['.tag'] === 'file')
+      .slice(0, 10)
+      .map(e => e.name);
+    debugInfo.push(`First 10 files in Dropbox: ${fileNames.join(', ')}`);
 
     // Process each file in Dropbox
     for (const entry of listData.entries) {
