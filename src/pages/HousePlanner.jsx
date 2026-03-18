@@ -56,6 +56,10 @@ export default function HousePlanner() {
       memberIds: houseMembers,
       createdAt: new Date().toISOString(),
     };
+    // Optimistic update
+    const newHouse = { ...house, id: Date.now().toString() };
+    setSavedHouses([...savedHouses, newHouse]);
+    // Persist
     const updated = saveHouse(house);
     setSavedHouses(updated);
   };
