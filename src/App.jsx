@@ -10,6 +10,7 @@ import Layout from '@/components/Layout';
 import Dashboard from '@/pages/Dashboard';
 import Pokedex from '@/pages/Pokedex';
 import Pokemon from '@/pages/Pokemon';
+import PokemonByType from '@/pages/PokemonByType';
 import HousePlanner from '@/pages/HousePlanner';
 import TownPlanner from '@/pages/TownPlanner';
 import Compare from '@/pages/Compare';
