@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { POKEMON_DATA, getPokemonById } from '@/lib/pokemonData';
 import { calculateHouseScore, getHouseLabelColor, generateExplanation } from '@/lib/compatibility';
@@ -144,63 +143,6 @@ export default function Compare() {
       {/* Compatibility matrix - only show if 2+ selected */}
       {selected.length >= 2 && (
         <div className="mt-8 space-y-4">
-                <button
-                  onClick={() => removePokemon(p.id)}
-                  className="absolute top-2 right-2 p-1 rounded-full hover:bg-muted transition-colors"
-                >
-                  <X className="w-4 h-4 text-muted-foreground" />
-                </button>
-                <div className="text-center mb-4">
-                   <div className="w-20 h-20 mx-auto bg-muted/30 rounded-lg flex items-center justify-center">
-                     <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-20 h-20" />
-                   </div>
-                  <h3 className="font-bold text-sm mt-2">{p.name}</h3>
-                  <p className="text-xs text-muted-foreground">#{p.number}</p>
-                </div>
-
-                <div className="space-y-3 text-xs">
-                  <div className="grid grid-cols-3 gap-2">
-                    <div>
-                      <p className="text-muted-foreground mb-1 font-medium">Type</p>
-                      <TypeBadge type={p.type} />
-                    </div>
-                    <div>
-                      <p className="text-muted-foreground mb-1 font-medium">Specialty</p>
-                      <div className="flex flex-wrap gap-1">
-                        {p.specialty.map(s => <Badge key={s} variant="outline" className="text-[10px]">{s}</Badge>)}
-                      </div>
-                    </div>
-                    <div>
-                      <p className="text-muted-foreground mb-1 font-medium">Habitat</p>
-                      <Badge variant="secondary" className="text-[10px]">{p.idealHabitat}</Badge>
-                    </div>
-                  </div>
-                  <div className="hidden sm:block">
-                    <p className="text-muted-foreground mb-1 font-medium">Location</p>
-                    <span>{p.location}</span>
-                  </div>
-                  <div className="hidden sm:block">
-                    <p className="text-muted-foreground mb-1 font-medium">Favourites</p>
-                    <div className="flex flex-wrap gap-1">
-                      {p.favourites.map(f => (
-                        <Badge key={f} className="bg-primary/10 text-primary border-primary/20 border text-[10px]">{f}</Badge>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground mb-1 font-medium">Flavor</p>
-                    <span>{p.flavor}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Compatibility matrix */}
-      {selected.length >= 2 && (
-        <div className="mt-8 space-y-4">
           <h2 className="font-bold text-lg">Compatibility</h2>
           
           <div className="flex flex-wrap gap-3 mb-4">
@@ -240,19 +182,13 @@ export default function Compare() {
             ))}
           </div>
 
-          {selected.length >= 2 && selected.length <= 4 && (
+          {selected.length === 4 && (
             <div className="bg-muted/30 rounded-xl p-4 text-sm">
-              {selected.length === 4 ? (
-                <p>
-                  <strong>House verdict:</strong> This group of 4 would make a{' '}
-                  <span className="font-semibold">{houseScore.label?.toLowerCase()}</span> house
-                  with an average compatibility of {houseScore.avgPercentage}%.
-                </p>
-              ) : (
-                <p>
-                  Add {4 - selected.length} more Pokémon to see full house compatibility.
-                </p>
-              )}
+              <p>
+                <strong>House verdict:</strong> This group of 4 would make a{' '}
+                <span className="font-semibold">{houseScore.label?.toLowerCase()}</span> house
+                with an average compatibility of {houseScore.avgPercentage}%.
+              </p>
             </div>
           )}
         </div>
