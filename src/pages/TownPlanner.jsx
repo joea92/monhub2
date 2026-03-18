@@ -173,7 +173,7 @@ export default function TownPlanner() {
       </button>
 
       <div className="flex items-center gap-3 mb-6">
-        <span className="text-3xl">{activeTownData?.icon}</span>
+        <img src={activeTownData?.icon} alt={activeTownData?.name} className="w-12 h-12 object-contain" />
         <div>
           <h1 className="text-2xl font-bold">{activeTownData?.name}</h1>
           <p className="text-sm text-muted-foreground">
