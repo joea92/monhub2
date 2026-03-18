@@ -42,7 +42,7 @@ export default function Compare() {
 
       {/* Search to add */}
       {selectedIds.length < 4 && (
-        <div className="mb-6 max-w-sm">
+        <div className="mb-6 max-w-sm relative z-10">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
@@ -53,7 +53,7 @@ export default function Compare() {
             />
           </div>
           {searchResults.length > 0 && (
-            <div className="mt-2 bg-card rounded-xl border border-border/50 p-2 space-y-1">
+            <div className="absolute top-full left-0 right-0 mt-2 bg-card rounded-xl border border-border/50 p-2 space-y-1 md:w-full">
               {searchResults.map(p => (
                 <button
                   key={p.id}
