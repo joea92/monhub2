@@ -103,7 +103,7 @@ Deno.serve(async (req) => {
         }
       } catch (err) {
         console.error(`Failed to process ${entry.name}: ${err.message}`);
-        failed++;
+        errors++;
       }
     }
 
