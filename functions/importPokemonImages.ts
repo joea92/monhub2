@@ -113,15 +113,10 @@ Deno.serve(async (req) => {
          });
 
          const arrayBuffer = await imgRes.arrayBuffer();
-         const bytes = new Uint8Array(arrayBuffer);
-         let binary = '';
-         for (let i = 0; i < bytes.length; i++) {
-           binary += String.fromCharCode(bytes[i]);
-         }
-         const base64 = btoa(binary);
+         const file = new File([arrayBuffer], `${item.slug}.jpg`, { type: 'image/jpeg' });
 
-         // Upload to private storage
-         const { file_uri } = await base44.asServiceRole.integrations.Core.UploadPrivateFile({ file: base64 });
+         // Upload to public storage
+         const uploadRes = await base44.asServiceRole.integrations.Core.UploadFile({ file });
 
         const data = {
           name: item.name,
