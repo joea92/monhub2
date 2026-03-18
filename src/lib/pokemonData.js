@@ -794,7 +794,7 @@ export const TOWNS = [
   { id: "bleak-beach", name: "Bleak Beach", color: "bg-cyan-100 text-cyan-800", icon: "🏖️" },
   { id: "rocky-ridges", name: "Rocky Ridges", color: "bg-stone-100 text-stone-800", icon: "⛰️" },
   { id: "sparkling-skylands", name: "Sparkling Skylands", color: "bg-violet-100 text-violet-800", icon: "✨" },
-  { id: "palette-town", name: "Palette Town", color: "bg-rose-100 text-rose-800", icon: "🎨" },
+  { id: "palette-town", name: "Palette Town", color: "bg-rose-100 text-rose-800", icon: "🏠" },
 ];
 
 export function getPokemonById(id) {
