@@ -170,5 +170,6 @@ export default function Pokedex() {
         </div>
       )}
     </div>
+    </SafeAreaView>
   );
 }
