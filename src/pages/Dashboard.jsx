@@ -40,7 +40,7 @@ export default function Dashboard() {
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-3">
             <img src={DITTO_URL} alt="Ditto" className="w-5 h-5 object-contain" />
-            <span className="text-xs font-semibold uppercase tracking-wider text-primary">Pokémon Pokopia</span>
+            <span className="text-xs font-semibold uppercase tracking-wider text-primary">Unofficial Pokémon Pokopia</span>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-3">House Matcher</h1>
           <p className="text-muted-foreground max-w-lg mb-6">
