@@ -790,11 +790,11 @@ export const ALL_LOCATIONS = [...new Set(POKEMON_DATA.map(p => p.location))].sor
 export const ALL_FLAVORS = [...new Set(POKEMON_DATA.map(p => p.flavor))].sort();
 
 export const TOWNS = [
-  { id: "withered-wasteland", name: "Withered Wasteland", color: "bg-amber-100 text-amber-800", icon: "🌱" },
-  { id: "bleak-beach", name: "Bleak Beach", color: "bg-cyan-100 text-cyan-800", icon: "🏖️" },
-  { id: "rocky-ridges", name: "Rocky Ridges", color: "bg-stone-100 text-stone-800", icon: "⛰️" },
-  { id: "sparkling-skylands", name: "Sparkling Skylands", color: "bg-violet-100 text-violet-800", icon: "✨" },
-  { id: "palette-town", name: "Palette Town", color: "bg-rose-100 text-rose-800", icon: "🏠" },
+  { id: "withered-wasteland", name: "Withered Wasteland", color: "bg-amber-100 text-amber-800", icon: "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/aed4dcf7b_WitheredWasteland.png" },
+  { id: "bleak-beach", name: "Bleak Beach", color: "bg-cyan-100 text-cyan-800", icon: "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/22f291f89_BleakBeach.png" },
+  { id: "rocky-ridges", name: "Rocky Ridges", color: "bg-stone-100 text-stone-800", icon: "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/e35d70acb_RockyRidges.png" },
+  { id: "sparkling-skylands", name: "Sparkling Skylands", color: "bg-violet-100 text-violet-800", icon: "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/352ae5864_SparklingSkylands.png" },
+  { id: "palette-town", name: "Palette Town", color: "bg-rose-100 text-rose-800", icon: "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/38414d048_PaletteTown.png" },
 ];
 
 export function getPokemonById(id) {
