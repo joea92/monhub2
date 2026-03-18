@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Wrench, MapPin, GitCompare, Settings, Sparkles, ArrowRight, Star } from 'lucide-react';
+import { Search, Wrench, MapPin, GitCompare, ArrowRight, Star, Sparkles } from 'lucide-react';
+
+const DITTO_URL = 'https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/53940ff47_ditto-logo.png';
 import { Button } from '@/components/ui/button';
 import { POKEMON_DATA, TOWNS } from '@/lib/pokemonData';
 import PokemonCard from '@/components/pokemon/PokemonCard';
