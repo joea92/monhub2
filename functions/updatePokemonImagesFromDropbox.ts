@@ -48,7 +48,7 @@ Deno.serve(async (req) => {
         const record = allRecords.find(r => r.name.toLowerCase() === filename.toLowerCase());
 
         if (!record) {
-          failed++;
+          notInApp++;
           continue;
         }
 
