@@ -8,6 +8,7 @@ import { POKEMON_DATA, TOWNS, getPokemonById } from '@/lib/pokemonData';
 import { calculateHouseScore, getHouseLabelColor, autoDistributeHouses } from '@/lib/compatibility';
 import { getTownPlans, saveTownPlans } from '@/lib/storage';
 import HouseOccupancy from '@/components/pokemon/HouseOccupancy';
+import PokemonSilhouette from '@/components/pokemon/PokemonSilhouette';
 
 export default function TownPlanner() {
   const params = new URLSearchParams(window.location.search);
@@ -182,7 +183,9 @@ export default function TownPlanner() {
                       if (!p) return null;
                       return (
                         <div key={mid} className="flex items-center gap-2 p-2 rounded-lg bg-muted/30">
-                          <img src={p.imageUrl} alt={p.name} className="w-8 h-8 object-contain" />
+                           <div className="w-8 h-8 flex-shrink-0 bg-muted/30 rounded">
+                             <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-8 h-8" />
+                           </div>
                           <span className="text-sm font-medium flex-1">{p.name}</span>
                           <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => removeFromHouse(house.id, mid)}>
                             <X className="w-3 h-3" />
@@ -241,7 +244,9 @@ export default function TownPlanner() {
             <div className="space-y-1 max-h-96 overflow-y-auto">
               {unassigned.slice(0, 30).map(p => (
                 <div key={p.id} className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-muted/50">
-                  <img src={p.imageUrl} alt={p.name} className="w-7 h-7 object-contain" />
+                  <div className="w-7 h-7 flex-shrink-0 bg-muted/30 rounded">
+                    <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-7 h-7" />
+                  </div>
                   <span className="text-xs font-medium flex-1 truncate">{p.name}</span>
                   <Badge variant="secondary" className="text-[10px]">{p.idealHabitat}</Badge>
                 </div>
