@@ -47,6 +47,7 @@ const AuthenticatedApp = () => {
         <Route path="/TownPlanner" element={<TownPlanner />} />
         <Route path="/Compare" element={<Compare />} />
         <Route path="/Admin" element={<Admin />} />
+        <Route path="/ImageImport" element={<ImageImport />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
