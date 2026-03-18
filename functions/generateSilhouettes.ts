@@ -72,11 +72,12 @@ Deno.serve(async (req) => {
             return;
           }
 
+          const typeColor = TYPE_COLORS[record.type?.toLowerCase()] || TYPE_COLORS.normal;
           const prompt = `Create a stylised icon-style silhouette of a creature inspired by ${record.name}. 
           CRITICAL: Use a FULLY TRANSPARENT background (alpha channel).
           - Solid flat silhouette shape with NO internal details
           - Soft rounded edges, clean and icon-like
-          - Medium slate-grey color (#6B7280) for the shape only
+          - Color: ${typeColor} (${record.type} type)
           - The background must be 100% transparent - NO white, NO color, NO gradient
           - Save as PNG with alpha transparency
           - Minimal and recognisable form
