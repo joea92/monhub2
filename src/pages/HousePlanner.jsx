@@ -19,6 +19,11 @@ export default function HousePlanner() {
   const houseScore = useMemo(() => calculateHouseScore(houseMembers), [houseMembers]);
   const suggestions = useMemo(() => {
     if (houseMembers.length >= 4) return [];
+    if (houseMembers.length === 0) {
+      // Show random 6 pokemon when house is empty
+      const shuffled = [...POKEMON_DATA].sort(() => Math.random() - 0.5);
+      return shuffled.slice(0, 6).map(p => ({ pokemon: p, addedValue: '—' }));
+    }
     return suggestNextMember(houseMembers);
   }, [houseMembers]);
 
