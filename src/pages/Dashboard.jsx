@@ -27,7 +27,7 @@ export default function Dashboard() {
       <div className="relative overflow-hidden rounded-2xl bg-card border border-border/40 shadow-sm p-8 md:p-12 mb-8">
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-3">
-            <Sparkles className="w-5 h-5 text-primary" />
+            <img src={DITTO_URL} alt="Ditto" className="w-5 h-5 object-contain" />
             <span className="text-xs font-semibold uppercase tracking-wider text-primary">Pokémon Pokopia</span>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-3">House Matcher</h1>
@@ -50,7 +50,7 @@ export default function Dashboard() {
           </div>
         </div>
         <div className="absolute -right-10 -bottom-10 opacity-10">
-          <Sparkles className="w-64 h-64 text-primary" />
+          <img src={DITTO_URL} alt="" className="w-64 h-64 object-contain" />
         </div>
       </div>
 
