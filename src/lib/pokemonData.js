@@ -202,9 +202,10 @@ function normalizeFav(f) {
   return f.trim().toLowerCase();
 }
 
-// Get image URL from pokopia.dev based on number
-function getImageUrl(number) {
-  return `https://pokopia.dev/images/pokemon/${number}.png`;
+// Get image URL from pokemondb.net based on name
+function getImageUrl(number, name) {
+  const slug = name.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+  return `https://img.pokemondb.net/sprites/home/normal/2x/${slug}.jpg`;
 }
 
 // Build the full dataset
