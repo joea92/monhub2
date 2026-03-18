@@ -18,6 +18,11 @@ export default function Pokedex() {
   const [locationFilter, setLocationFilter] = useState('all');
   const [sortBy, setSortBy] = useState('number');
   const [showFilters, setShowFilters] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
+  const { scrollRef, isRefreshing, pulledDistance } = usePullToRefresh(async () => {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setRefreshKey(prev => prev + 1);
+  });
 
   const filtered = useMemo(() => {
     let result = POKEMON_DATA;
