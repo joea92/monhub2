@@ -11,46 +11,22 @@ Deno.serve(async (req) => {
     // Get Dropbox connection
     const { accessToken } = await base44.asServiceRole.connectors.getConnection('dropbox');
 
-    // List all files from Pokopia Silhouettes folder (recursive with pagination)
-    let allEntries = [];
-    let cursor = null;
-    let hasMore = true;
+    // List files from Pokopia Silhouettes folder
+    const listRes = await fetch('https://api.dropboxapi.com/2/files/list_folder', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        path: '/Pokopia Silhouettes',
+        recursive: false,
+      }),
+    });
 
-    while (hasMore) {
-      let listRes;
-      if (!cursor) {
-        // First request
-        listRes = await fetch('https://api.dropboxapi.com/2/files/list_folder', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            path: '/Pokopia Silhouettes',
-            recursive: true,
-          }),
-        });
-      } else {
-        // Continuation request
-        listRes = await fetch('https://api.dropboxapi.com/2/files/list_folder/continue', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ cursor }),
-        });
-      }
-
-      const listData = await listRes.json();
-      if (!listData.entries) {
-        return Response.json({ error: 'Failed to list Dropbox folder' }, { status: 400 });
-      }
-
-      allEntries = allEntries.concat(listData.entries);
-      cursor = listData.cursor;
-      hasMore = listData.has_more || false;
+    const listData = await listRes.json();
+    if (!listData.entries) {
+      return Response.json({ error: 'Failed to list Dropbox folder' }, { status: 400 });
     }
 
     // Get all Pokemon records
@@ -59,41 +35,44 @@ Deno.serve(async (req) => {
     let updated = 0;
     let failed = 0;
 
-    // Process each file in Dropbox (batch updates)
-    const updates = [];
-    for (const entry of allEntries) {
+    // Process each file in Dropbox with rate limiting
+    for (const entry of listData.entries) {
       if (entry['.tag'] !== 'file') continue;
 
-      // Extract filename without extension
-      const filename = entry.name.split('.').slice(0, -1).join('.');
-      
-      // Normalize for matching
-      const normalized = filename.toLowerCase().trim();
-      
-      // Find matching Pokemon record
-      const record = allRecords.find(r => r.name.toLowerCase().trim() === normalized);
+      try {
+        // Extract filename without extension
+        const filename = entry.name.split('.').slice(0, -1).join('.');
+        
+        // Normalize for matching
+        const normalized = filename.toLowerCase().trim();
+        
+        // Find matching Pokemon record
+        const record = allRecords.find(r => r.name.toLowerCase().trim() === normalized);
 
-      if (!record) continue;
+        if (!record) continue;
 
-      // Use direct Dropbox content URL
-      const shareUrl = `https://dl.dropboxusercontent.com/scl/fi/${entry.id.split('id:')[1] || entry.id}/${encodeURIComponent(entry.name)}?dl=1`;
+        // Use direct Dropbox content URL
+        const shareUrl = `https://dl.dropboxusercontent.com/scl/fi/${entry.id.split('id:')[1] || entry.id}/${encodeURIComponent(entry.name)}?dl=1`;
 
-      updates.push(
-        base44.asServiceRole.entities.PokemonImage.update(record.id, {
+        await base44.asServiceRole.entities.PokemonImage.update(record.id, {
           hosted_image_url: shareUrl,
           source_image_url: shareUrl,
-        }).then(() => { updated++; }).catch(() => { failed++; })
-      );
+        });
+        updated++;
+        
+        // Rate limit: delay between updates to avoid hitting API limits
+        await new Promise(r => setTimeout(r, 200));
+      } catch (err) {
+        console.error(`Failed to process ${entry.name}: ${err.message}`);
+        failed++;
+      }
     }
-
-    // Execute all updates concurrently
-    await Promise.all(updates);
 
     return Response.json({
       success: true,
       updated,
       failed,
-      total: allEntries.filter(e => e['.tag'] === 'file').length,
+      total: listData.entries.filter(e => e['.tag'] === 'file').length,
       message: `Updated ${updated} Pokémon images from Dropbox`,
     });
   } catch (error) {
