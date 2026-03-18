@@ -54,10 +54,14 @@ export default function PokemonCard({ pokemon, onFavToggle, compact = false }) {
           <TypeBadge type={pokemon.type} clickable={true} />
           <div className="flex flex-wrap gap-1 mt-2 justify-center">
             {pokemon.specialty.map(s => (
-              <Badge key={s} className="bg-violet-100 text-violet-800 border border-violet-200 text-[10px] px-1.5 py-0">{s}</Badge>
+              <Link key={s} to={`/PokemonBySpecialty?specialty=${s}`} onClick={e => e.stopPropagation()}>
+                <Badge className="bg-violet-100 text-violet-800 border border-violet-200 text-[10px] px-1.5 py-0 cursor-pointer hover:bg-violet-200 transition-colors">{s}</Badge>
+              </Link>
             ))}
           </div>
-          <Badge className="bg-green-100 text-green-800 border border-green-200 mt-2 text-[10px]">{pokemon.idealHabitat}</Badge>
+          <Link to={`/PokemonByHabitat?habitat=${pokemon.idealHabitat}`} onClick={e => e.stopPropagation()}>
+            <Badge className="bg-green-100 text-green-800 border border-green-200 mt-2 text-[10px] cursor-pointer hover:bg-green-200 transition-colors">{pokemon.idealHabitat}</Badge>
+          </Link>
         </div>
       </div>
     </Link>
