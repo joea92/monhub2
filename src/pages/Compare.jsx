@@ -179,7 +179,11 @@ export default function Compare() {
                   {generateExplanation(pair.pokemon1, pair.pokemon2, pair)}
                 </p>
               </div>
-            ))}
+            )) : (
+              <div className="text-sm text-muted-foreground text-center py-4">
+                Select more Pokémon to see compatibility
+              </div>
+            )}
           </div>
 
           {selected.length === 4 && (
