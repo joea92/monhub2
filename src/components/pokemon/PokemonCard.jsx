@@ -9,6 +9,7 @@ import { usePokemonImages } from '@/hooks/usePokemonImages';
 
 export default function PokemonCard({ pokemon, onFavToggle, compact = false }) {
   const [fav, setFav] = React.useState(isFavourite(pokemon.id));
+  const { getImageUrl } = usePokemonImages();
 
   const handleFav = (e) => {
     e.preventDefault();
