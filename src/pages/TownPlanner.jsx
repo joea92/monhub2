@@ -286,24 +286,28 @@ export default function TownPlanner() {
 
               <TabsContent value="native">
                 <div className="space-y-1 max-h-96 overflow-y-auto">
-                  {filteredNative.map(p => (
-                    <button
-                      key={p.id}
-                      onClick={() => {
-                        if (selectedHouseId) {
-                          addToHouse(selectedHouseId, p.id);
-                        }
-                      }}
-                      disabled={!selectedHouseId}
-                      className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-muted/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full text-left"
-                    >
-                      <div className="w-7 h-7 flex-shrink-0 bg-muted/30 rounded">
-                        <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-7 h-7" />
-                      </div>
-                      <span className="text-xs font-medium flex-1 truncate">{p.name}</span>
-                      <Badge variant="secondary" className="text-[10px]">{p.idealHabitat}</Badge>
-                    </button>
-                  ))}
+                  {filteredNative.map(p => {
+                    const compat = getCompatibilityWithHouse(p.id);
+                    return (
+                      <button
+                        key={p.id}
+                        onClick={() => {
+                          if (selectedHouseId) {
+                            addToHouse(selectedHouseId, p.id);
+                          }
+                        }}
+                        disabled={!selectedHouseId}
+                        className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-muted/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full text-left"
+                      >
+                        <div className="w-7 h-7 flex-shrink-0 bg-muted/30 rounded">
+                          <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-7 h-7" />
+                        </div>
+                        <span className="text-xs font-medium flex-1 truncate">{p.name}</span>
+                        {compat && <CompatibilityBadge result={compat} showScore={false} />}
+                        <Badge variant="secondary" className="text-[10px]">{p.idealHabitat}</Badge>
+                      </button>
+                    );
+                  })}
                   {filteredNative.length === 0 && (
                     <p className="text-xs text-muted-foreground text-center py-4">{unassignedSearch ? 'No matches' : 'All Pokémon assigned!'}</p>
                   )}
@@ -312,26 +316,30 @@ export default function TownPlanner() {
 
               <TabsContent value="all">
                 <div className="space-y-1 max-h-96 overflow-y-auto">
-                  {filteredAll.map(p => (
-                    <button
-                      key={p.id}
-                      onClick={() => {
-                        if (selectedHouseId) {
-                          addToHouse(selectedHouseId, p.id);
-                        }
-                      }}
-                      disabled={!selectedHouseId}
-                      className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-muted/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full text-left"
-                    >
-                      <div className="w-7 h-7 flex-shrink-0 bg-muted/30 rounded">
-                        <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-7 h-7" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <span className="text-xs font-medium block truncate">{p.name}</span>
-                        <span className="text-[10px] text-muted-foreground">{p.location}</span>
-                      </div>
-                    </button>
-                  ))}
+                  {filteredAll.map(p => {
+                    const compat = getCompatibilityWithHouse(p.id);
+                    return (
+                      <button
+                        key={p.id}
+                        onClick={() => {
+                          if (selectedHouseId) {
+                            addToHouse(selectedHouseId, p.id);
+                          }
+                        }}
+                        disabled={!selectedHouseId}
+                        className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-muted/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full text-left"
+                      >
+                        <div className="w-7 h-7 flex-shrink-0 bg-muted/30 rounded">
+                          <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-7 h-7" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <span className="text-xs font-medium block truncate">{p.name}</span>
+                          <span className="text-[10px] text-muted-foreground">{p.location}</span>
+                        </div>
+                        {compat && <CompatibilityBadge result={compat} showScore={false} />}
+                      </button>
+                    );
+                  })}
                   {filteredAll.length === 0 && (
                     <p className="text-xs text-muted-foreground text-center py-4">{unassignedSearch ? 'No matches' : 'All Pokémon assigned!'}</p>
                   )}
