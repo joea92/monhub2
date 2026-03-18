@@ -43,9 +43,9 @@ export default function TownPlanner() {
 
   // Pokémon already assigned to houses in this town
   const assignedIds = useMemo(() => {
-    if (!townPlan) return new Set();
-    return new Set(townPlan.houses.flatMap(h => h.memberIds || []));
-  }, [townPlan]);
+    if (!plans[activeTown]) return new Set();
+    return new Set(plans[activeTown].houses.flatMap(h => h.memberIds || []));
+  }, [plans, activeTown]);
 
   const unassigned = townPokemon.filter(p => !assignedIds.has(p.id));
   const allUnassigned = POKEMON_DATA.filter(p => !assignedIds.has(p.id));
