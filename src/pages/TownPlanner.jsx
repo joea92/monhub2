@@ -318,18 +318,19 @@ export default function TownPlanner() {
 
               <TabsContent value="all">
                 <div className="space-y-1 max-h-96 overflow-y-auto">
-                  {filteredAll.map(p => {
+                  {POKEMON_DATA.filter(p => p.name.toLowerCase().includes(unassignedSearch.toLowerCase())).map(p => {
+                    const isAssigned = assignedIds.has(p.id);
                     const compat = getCompatibilityWithHouse(p.id);
                     return (
                       <button
                         key={p.id}
                         onClick={() => {
-                          if (selectedHouseId) {
+                          if (selectedHouseId && !isAssigned) {
                             addToHouse(selectedHouseId, p.id);
                           }
                         }}
-                        disabled={!selectedHouseId}
-                        className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-muted/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full text-left"
+                        disabled={!selectedHouseId || isAssigned}
+                        className={`flex items-center gap-2 p-1.5 rounded-lg transition-colors w-full text-left ${isAssigned ? 'opacity-40 cursor-not-allowed' : 'hover:bg-muted/50 disabled:opacity-50 disabled:cursor-not-allowed'}`}
                       >
                         <div className="w-7 h-7 flex-shrink-0 bg-muted/30 rounded">
                           <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-7 h-7" />
@@ -338,9 +339,6 @@ export default function TownPlanner() {
                       </button>
                     );
                   })}
-                  {filteredAll.length === 0 && (
-                    <p className="text-xs text-muted-foreground text-center py-4">{unassignedSearch ? 'No matches' : 'All Pokémon assigned!'}</p>
-                  )}
                 </div>
               </TabsContent>
             </Tabs>
