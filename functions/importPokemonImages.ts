@@ -119,12 +119,27 @@ Deno.serve(async (req) => {
          const uploadRes = await base44.asServiceRole.integrations.Core.UploadFile({ file });
 
         const fileUrl = uploadRes.data?.file_url || uploadRes.file_url;
+
+        // Generate silhouette
+        let silhouetteUrl = null;
+        try {
+          const silRes = await base44.asServiceRole.integrations.Core.GenerateImage({
+            prompt: `Create a clean, stylized black silhouette icon of a pokemon called ${item.name}. Simple, iconic style, solid black color on transparent background. Icon style.`,
+            existing_image_urls: [fileUrl]
+          });
+          silhouetteUrl = silRes.data?.url || silRes.url;
+        } catch (err) {
+          console.log(`Silhouette generation skipped for ${item.name}: ${err.message}`);
+        }
+
         const data = {
           name: item.name,
           slug: item.slug,
           pokedex_number: item.number || '',
           source_image_url: item.imageUrl,
           hosted_image_url: fileUrl,
+          silhouette_image_url: silhouetteUrl || '',
+          silhouette_status: silhouetteUrl ? 'ready' : 'failed',
           import_status: 'success',
           failed_reason: '',
         };
