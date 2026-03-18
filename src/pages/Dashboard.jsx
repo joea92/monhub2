@@ -80,7 +80,7 @@ export default function Dashboard() {
             View all <ArrowRight className="w-3 h-3" />
           </Link>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+        <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 gap-3">
           {TOWNS.map(town => {
             const count = POKEMON_DATA.filter(p => p.location === town.name).length;
             return (
