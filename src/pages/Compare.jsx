@@ -12,7 +12,15 @@ import PokemonSilhouette from '@/components/pokemon/PokemonSilhouette';
 export default function Compare() {
   const [selectedIds, setSelectedIds] = useState([null, null, null, null]);
   const [search, setSearch] = useState('');
-  const [focusedSlot, setFocusedSlot] = useState(null);
+  const [focusedSlot, setFocusedSlot] = useState(0);
+
+  React.useEffect(() => {
+    // Auto-select next empty slot when a Pokémon is added
+    const nextEmptySlot = selectedIds.findIndex(id => id === null);
+    if (nextEmptySlot !== -1) {
+      setFocusedSlot(nextEmptySlot);
+    }
+  }, [selectedIds]);
 
   const searchResults = useMemo(() => {
     if (!search || focusedSlot === null) return [];
