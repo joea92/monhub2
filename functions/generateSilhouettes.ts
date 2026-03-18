@@ -51,7 +51,15 @@ Deno.serve(async (req) => {
             return;
           }
 
-          const prompt = `Create a stylised icon-style silhouette of a creature inspired by ${record.name}. Solid flat silhouette shape, soft rounded edges, medium slate-grey color (#6B7280), transparent background, minimal and recognisable.`;
+          const prompt = `Create a stylised icon-style silhouette of a creature inspired by ${record.name}. 
+          CRITICAL: Use a FULLY TRANSPARENT background (alpha channel).
+          - Solid flat silhouette shape with NO internal details
+          - Soft rounded edges, clean and icon-like
+          - Medium slate-grey color (#6B7280) for the shape only
+          - The background must be 100% transparent - NO white, NO color, NO gradient
+          - Save as PNG with alpha transparency
+          - Minimal and recognisable form
+          - Centered with padding`;
 
           const generated = await base44.asServiceRole.integrations.Core.GenerateImage({
             prompt,
