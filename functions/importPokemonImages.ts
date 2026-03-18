@@ -123,7 +123,7 @@ Deno.serve(async (req) => {
           slug: item.slug,
           pokedex_number: item.number || '',
           source_image_url: item.imageUrl,
-          hosted_image_url: file_uri,
+          hosted_image_url: uploadRes.data.file_url,
           import_status: 'success',
           failed_reason: '',
         };
