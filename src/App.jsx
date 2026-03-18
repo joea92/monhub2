@@ -43,6 +43,7 @@ const AuthenticatedApp = () => {
         <Route path="/Dashboard" element={<Dashboard />} />
         <Route path="/Pokedex" element={<Pokedex />} />
         <Route path="/Pokemon" element={<Pokemon />} />
+        <Route path="/PokemonByType" element={<PokemonByType />} />
         <Route path="/HousePlanner" element={<HousePlanner />} />
         <Route path="/TownPlanner" element={<TownPlanner />} />
         <Route path="/Compare" element={<Compare />} />
