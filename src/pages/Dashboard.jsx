@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Wrench, MapPin, GitCompare, ArrowRight, Star, Sparkles } from 'lucide-react';
+import { Search, Wrench, MapPin, GitCompare, ArrowRight, Star } from 'lucide-react';
 
 const DITTO_URL = 'https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/53940ff47_ditto-logo.png';
 import { Button } from '@/components/ui/button';
