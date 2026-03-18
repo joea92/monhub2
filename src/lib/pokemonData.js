@@ -211,7 +211,7 @@ function getImageUrl(number, name) {
 // Build the full dataset
 export const POKEMON_DATA = RAW_POKEMON.map(p => ({
   ...p,
-  imageUrl: getImageUrl(p.number),
+  imageUrl: getImageUrl(p.number, p.name),
   favouritesNorm: p.favourites.map(normalizeFav),
   dataSource: "both",
 }));
