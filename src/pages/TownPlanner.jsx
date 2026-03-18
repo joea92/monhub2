@@ -10,6 +10,8 @@ import { calculateHouseScore, getHouseLabelColor, autoDistributeHouses } from '@
 import { getTownPlans, saveTownPlans } from '@/lib/storage';
 import HouseOccupancy from '@/components/pokemon/HouseOccupancy';
 import PokemonSilhouette from '@/components/pokemon/PokemonSilhouette';
+import CompatibilityBadge from '@/components/pokemon/CompatibilityBadge';
+import { calculatePairScore } from '@/lib/compatibility';
 
 export default function TownPlanner() {
   const params = new URLSearchParams(window.location.search);
@@ -113,6 +115,16 @@ export default function TownPlanner() {
       });
     });
     updatePlans(newPlans);
+  };
+
+  const getCompatibilityWithHouse = (pokemonId) => {
+    if (!selectedHouseId) return null;
+    const house = townPlan?.houses.find(h => h.id === selectedHouseId);
+    if (!house || !house.memberIds?.length) return null;
+    const scores = house.memberIds.map(memberId => calculatePairScore(pokemonId, memberId));
+    const avgPercentage = Math.round(scores.reduce((a, b) => a + b.percentage, 0) / scores.length);
+    const avgLabel = scores[0].label;
+    return { percentage: avgPercentage, label: avgLabel };
   };
 
   // Town overview
