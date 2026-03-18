@@ -118,12 +118,13 @@ Deno.serve(async (req) => {
          // Upload to public storage
          const uploadRes = await base44.asServiceRole.integrations.Core.UploadFile({ file });
 
+        const fileUrl = uploadRes.data?.file_url || uploadRes.file_url;
         const data = {
           name: item.name,
           slug: item.slug,
           pokedex_number: item.number || '',
           source_image_url: item.imageUrl,
-          hosted_image_url: uploadRes.data.file_url,
+          hosted_image_url: fileUrl,
           import_status: 'success',
           failed_reason: '',
         };
