@@ -33,7 +33,7 @@ export default function Dashboard() {
 
   return (
     <SafeAreaView>
-      <div ref={scrollRef} className="max-w-7xl mx-auto px-4 py-4 md:py-8 overflow-y-auto" style={{ height: 'calc(100vh - 60px - 80px)' }}>
+      <div ref={scrollRef} className="max-w-7xl mx-auto px-4 py-4 md:py-8 overflow-y-auto" style={{ height: 'calc(100vh - 60px)' }}>
         <PullToRefreshIndicator isRefreshing={isRefreshing} pulledDistance={pulledDistance} />
       {/* Hero */}
       <div className="relative overflow-hidden rounded-2xl bg-card border border-border/40 shadow-sm p-5 md:p-12 mb-5 md:mb-8">
