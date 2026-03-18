@@ -37,9 +37,9 @@ function SilhouetteRow({ record, onToggle, onRefresh }) {
   const [silUrl, setSilUrl] = useState(null);
 
   useEffect(() => {
-    resolveUrl(record.hosted_image_url || record.source_image_url).then(setOrigUrl);
+    resolveUrl(record.source_image_url).then(setOrigUrl);
     resolveUrl(record.silhouette_image_url).then(setSilUrl);
-  }, [record.hosted_image_url, record.source_image_url, record.silhouette_image_url]);
+  }, [record.source_image_url, record.silhouette_image_url]);
 
   const status = record.silhouette_status || 'none';
   const StatusIcon = STATUS_ICONS[status] || Clock;
