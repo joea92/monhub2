@@ -1,30 +1,8 @@
 // Pokémon Pokopia dataset — sourced from PokopiaPokemon.xlsx
 // Fields: id (sequential), number (spreadsheet #), name, type, specialty[], location, idealHabitat, favourites[], flavor, imageUrl
 
-// Custom image overrides for Pokémon that don't exist on pokemondb.net or have special slugs
-const IMAGE_OVERRIDES = {
-  "Snorlax (Mosslax)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/f1031a780_143-mosslax.png",
-  "Toxtricity (Low Key Form)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/19319fb9e_849-toxtricitylowkeyform.png",
-  "Toxtricity (Amped Form)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/297b18a59_849-toxtricityampedform.png",
-  "Pikachu (Peakychu)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/7e62f297b_025-peakychu.png",
-  // Form variants — map to base pokemondb slug
-  "Tatsugiri (Curly)": "tatsugiri",
-  "Tatsugiri (Droopy)": "tatsugiri",
-  "Tatsugiri (Stretchy)": "tatsugiri",
-  "Shellos (West)": "shellos",
-  "Shellos (East)": "shellos",
-  "Gastrodon (West)": "gastrodon",
-  "Gastrodon (East)": "gastrodon",
-  "P-Wooper": "wooper-paldean",
-  "Alakazam": "alakazam",
-};
-
 function getImageUrl(name) {
-  const override = IMAGE_OVERRIDES[name];
-  // If override is a full URL, use it directly
-  if (override && override.startsWith('http')) return override;
-  // If override is a slug string, use pokemondb
-  const slug = override || name
+  const slug = name
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, '')
     .trim()
