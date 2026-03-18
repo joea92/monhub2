@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { isFavourite, toggleFavourite } from '@/lib/storage';
 import TypeBadge from './TypeBadge';
 import PokemonImage from './PokemonImage';
+import PokemonSilhouette from './PokemonSilhouette';
 import { usePokemonImages } from '@/hooks/usePokemonImages';
 
 export default function PokemonCard({ pokemon, onFavToggle, compact = false }) {
@@ -22,8 +23,8 @@ export default function PokemonCard({ pokemon, onFavToggle, compact = false }) {
   if (compact) {
     return (
       <Link to={`/Pokemon?id=${pokemon.id}`} className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
-        <div className="w-10 h-10 flex-shrink-0">
-          <PokemonImage src={getImageUrl(pokemon.name, pokemon.imageUrl)} alt={pokemon.name} className="w-10 h-10" />
+        <div className="w-10 h-10 flex-shrink-0 bg-muted/30 rounded">
+          <PokemonSilhouette src={getImageUrl(pokemon.name, pokemon.imageUrl)} alt={pokemon.name} primaryType={pokemon.type?.split('/')[0]} className="w-10 h-10" />
         </div>
         <div className="min-w-0">
           <p className="font-medium text-sm truncate">{pokemon.name}</p>
@@ -44,8 +45,8 @@ export default function PokemonCard({ pokemon, onFavToggle, compact = false }) {
         </button>
         
         <div className="flex flex-col items-center text-center">
-          <div className="w-16 h-16 mb-3 relative">
-            <PokemonImage src={getImageUrl(pokemon.name, pokemon.imageUrl)} alt={pokemon.name} className="w-16 h-16" />
+          <div className="w-16 h-16 mb-3 relative bg-muted/30 rounded-lg">
+            <PokemonSilhouette src={getImageUrl(pokemon.name, pokemon.imageUrl)} alt={pokemon.name} primaryType={pokemon.type?.split('/')[0]} className="w-16 h-16" />
           </div>
           <p className="text-xs text-muted-foreground mb-0.5">#{pokemon.number}</p>
           <h3 className="font-semibold text-sm mb-2">{pokemon.name}</h3>
