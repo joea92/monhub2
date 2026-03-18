@@ -11,6 +11,7 @@ import TypeBadge from '@/components/pokemon/TypeBadge';
 import MatchCard from '@/components/pokemon/MatchCard';
 import CompatibilityBadge from '@/components/pokemon/CompatibilityBadge';
 import PokemonImage from '@/components/pokemon/PokemonImage';
+import PokemonSilhouette from '@/components/pokemon/PokemonSilhouette';
 
 export default function PokemonDetail() {
   const location = useLocation();
@@ -57,8 +58,8 @@ export default function PokemonDetail() {
       {/* Profile header */}
       <div className="bg-card rounded-2xl border border-border/50 p-6 mb-6">
         <div className="flex flex-col sm:flex-row items-start gap-6">
-          <div className="w-24 h-24 sm:w-32 sm:h-32 flex-shrink-0 rounded-2xl overflow-hidden">
-            <PokemonImage src={pokemon.imageUrl} alt={pokemon.name} className="w-24 h-24 sm:w-32 sm:h-32" />
+          <div className="w-24 h-24 sm:w-32 sm:h-32 flex-shrink-0 rounded-2xl overflow-hidden bg-muted/30">
+            <PokemonSilhouette src={pokemon.imageUrl} alt={pokemon.name} primaryType={pokemon.type?.split('/')[0]} className="w-24 h-24 sm:w-32 sm:h-32" />
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2">
@@ -114,8 +115,8 @@ export default function PokemonDetail() {
               <div className="flex flex-wrap gap-3 mb-3">
                 {house.pokemon.map(p => (
                    <Link key={p.id} to={`/Pokemon?id=${p.name}`} className="flex items-center gap-2 bg-card rounded-lg border border-border/50 px-3 py-2 hover:border-primary/20 transition-colors">
-                     <div className="w-8 h-8">
-                       <PokemonImage src={p.imageUrl} alt={p.name} className="w-8 h-8" />
+                     <div className="w-8 h-8 bg-muted/30 rounded">
+                       <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-8 h-8" />
                      </div>
                      <span className="text-sm font-medium">{p.name}</span>
                    </Link>
