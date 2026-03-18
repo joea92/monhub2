@@ -81,7 +81,7 @@ export default function Compare() {
       {/* Side by side comparison */}
       {selected.length > 0 && (
         <div className="overflow-x-auto">
-          <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${selected.length}, minmax(200px, 1fr))` }}>
+          <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${selected.length}, 80px)` }}>
             {selected.map(p => (
               <div key={p.id} className="bg-card rounded-2xl border border-border/50 p-4 relative">
                 <button
