@@ -15,20 +15,6 @@ async function resolveImageUrl(url) {
   return signed || null;
 }
 
-function rgbToString(rgb) {
-  if (typeof rgb === 'string') return rgb;
-  return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
-}
-
-function hexToRgb(hex) {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result ? {
-    r: parseInt(result[1], 16),
-    g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16)
-  } : null;
-}
-
 export default function PokemonSilhouette({ src, alt, primaryType, className = '' }) {
   const [resolvedSrc, setResolvedSrc] = useState(null);
   const [hasError, setHasError] = useState(false);
@@ -54,11 +40,12 @@ export default function PokemonSilhouette({ src, alt, primaryType, className = '
   useEffect(() => {
     if (!resolvedSrc || !canvasRef.current) return;
 
+    const canvas = canvasRef.current;
     const img = new Image();
     img.crossOrigin = 'anonymous';
+    
     img.onload = () => {
       try {
-        const canvas = canvasRef.current;
         canvas.width = img.width;
         canvas.height = img.height;
         const ctx = canvas.getContext('2d');
@@ -75,9 +62,8 @@ export default function PokemonSilhouette({ src, alt, primaryType, className = '
         const rgbMatch = typeColor.match(/\d+/g);
         
         if (!rgbMatch || rgbMatch.length < 3) {
-          // Fallback to normal grey
-          const fallback = [168, 168, 168];
-          setSilhouetteSrc(img.src);
+          // Fallback to original image
+          setSilhouetteSrc(resolvedSrc);
           return;
         }
 
@@ -101,26 +87,28 @@ export default function PokemonSilhouette({ src, alt, primaryType, className = '
         setSilhouetteSrc(canvas.toDataURL());
       } catch (e) {
         // If canvas processing fails, fall back to original image
-        setSilhouetteSrc(img.src);
+        setSilhouetteSrc(resolvedSrc);
       }
     };
-    img.onerror = () => setHasError(true);
+    
+    img.onerror = () => {
+      // If image fails to load, show original
+      setSilhouetteSrc(resolvedSrc);
+      setHasError(true);
+    };
+    
     img.src = resolvedSrc;
   }, [resolvedSrc, primaryType]);
 
-  if (hasError || (!silhouetteSrc && src)) {
-    if (!silhouetteSrc && resolvedSrc) {
-      // Still processing
-      return <div className={`flex items-center justify-center bg-muted/30 ${className}`} />;
-    }
-    return (
-      <div className={`flex items-center justify-center bg-muted/30 text-xs text-muted-foreground ${className}`}>
-        ?
-      </div>
-    );
+  // Show loading placeholder while processing
+  if (!silhouetteSrc && resolvedSrc) {
+    return <div className={`flex items-center justify-center bg-muted/30 ${className}`} />;
   }
 
-  if (!silhouetteSrc) return null;
+  // Show fallback if nothing to display
+  if (!silhouetteSrc) {
+    return <div className={`flex items-center justify-center bg-muted/30 ${className}`} />;
+  }
 
   return (
     <>
