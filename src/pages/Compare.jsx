@@ -84,7 +84,7 @@ export default function Compare() {
       </div>
 
       {/* 4 Fixed Slots */}
-      <div className="grid grid-cols-4 gap-3 mb-8">
+      <div className="hidden md:grid grid-cols-4 gap-3 mb-8">
         {selectedIds.map((pokemonId, index) => {
           const pokemon = pokemonId ? getPokemonById(pokemonId) : null;
           return (
