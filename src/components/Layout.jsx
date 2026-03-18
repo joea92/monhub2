@@ -77,7 +77,16 @@ export default function Layout() {
               );
             })}
 
-
+            <a href="https://www.paypal.com/donate/?business=FG6TW53GQFW9L&no_recurring=0&item_name=Buy+me+a+coffee+and+keep+me+updating+and+adding+more+features+to+this+app%21&currency_code=USD" target="_blank" rel="noopener noreferrer" style={{ userSelect: 'none' }}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="gap-1.5 text-xs font-medium min-h-[44px] text-foreground hover:bg-white/60"
+              >
+                <Coffee className="w-3.5 h-3.5" />
+                Buy Me A Coffee
+              </Button>
+            </a>
           </nav>
         </div>
       </header>
