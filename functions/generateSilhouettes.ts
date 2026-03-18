@@ -1,5 +1,26 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
+const TYPE_COLORS = {
+  "normal": "#A8A8A8",
+  "grass": "#78C850",
+  "fire": "#F08030",
+  "water": "#6890F0",
+  "fighting": "#C03028",
+  "flying": "#A890F0",
+  "poison": "#A040A0",
+  "ground": "#E0C068",
+  "rock": "#B8A038",
+  "bug": "#A8B820",
+  "ghost": "#705898",
+  "electric": "#F8D030",
+  "psychic": "#F85888",
+  "ice": "#98D8D8",
+  "dragon": "#7038F8",
+  "dark": "#705848",
+  "steel": "#B8B8D0",
+  "fairy": "#EE99AC"
+};
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
