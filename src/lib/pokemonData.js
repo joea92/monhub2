@@ -284,6 +284,7 @@ const SILHOUETTE_IMAGES = {
   "seel": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/99ece3f76_Seel.png",
   "sentret": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/4c7ee0911_Sentret.png",
   "shellder": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/03190831b_Shellder.png",
+  "shellos (west)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/365140e95_Shellos-West.png",
   "shellos (east)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/90a53cd61_Shellos-East.png",
   "shieldon": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/d6835cbca_Shieldon.png",
   "shuckle": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/c2a2503b0_Shuckle.png",
