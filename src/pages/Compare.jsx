@@ -162,7 +162,7 @@ export default function Compare() {
                     ? 'bg-white/20 border-white/40'
                     : 'bg-white/10 border-white/20'
                 }`}
-                style={{ aspectRatio: '1 / 1.3' }}
+                style={{ aspectRatio: '1 / 1.8' }}
               >
                 {pokemon ? (
                   <div className="p-3 h-full flex flex-col">
