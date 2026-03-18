@@ -3,7 +3,7 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Home, Search, Wrench, MapPin, GitCompare, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AnimatePresence, motion } from 'framer-motion';
-import SettingsModal from '@/components/SettingsModal';
+import SettingsModal from '@/components/SettingsModal.jsx';
 
 const DITTO_URL = 'https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/53940ff47_ditto-logo.png';
 
