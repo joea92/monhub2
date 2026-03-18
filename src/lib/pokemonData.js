@@ -81,6 +81,7 @@ const SILHOUETTE_IMAGES = {
   "dreepy": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/1c0ac5d8b_Dreepy.png",
   "drifloon": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/45dd07eed_Drifloon.png",
   "drifblim": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/865949af6_Drifblim.png",
+  "drilbur": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/0b62c673e_Drilbur.png",
   "drowzee": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/934b3fc1e_Drowzee.png",
   "duskull": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/5aa2e15c5_Duskull.png",
   "dusclops": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/b25ee35f0_Dusclops.png",
