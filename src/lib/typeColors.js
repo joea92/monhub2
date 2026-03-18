@@ -1,4 +1,4 @@
-const TYPE_COLORS = {
+export const TYPE_COLORS = {
   "normal": "rgb(168,168,168)",
   "fire": "rgb(240,128,48)",
   "water": "rgb(104,144,240)",
