@@ -98,7 +98,7 @@ export default function Dashboard() {
             return (
               <Link key={town.id} to={`/TownPlanner?town=${town.id}`}>
                 <div className="p-4 rounded-xl border border-border/50 bg-card hover:shadow-md transition-all text-center">
-                  <span className="text-2xl mb-2 block">{town.icon}</span>
+                  <img src={town.icon} alt={town.name} className="w-12 h-12 mx-auto mb-2 object-contain" />
                   <h3 className="font-semibold text-xs mb-1">{town.name}</h3>
                   <p className="text-xs text-muted-foreground">{count} Pokémon</p>
                 </div>
