@@ -60,8 +60,8 @@ Deno.serve(async (req) => {
         });
         updated++;
         
-        // Rate limit: small delay between updates
-        await new Promise(r => setTimeout(r, 50));
+        // Rate limit: delay between updates to avoid hitting API limits
+        await new Promise(r => setTimeout(r, 200));
       } catch (err) {
         console.error(`Failed to process ${entry.name}: ${err.message}`);
         failed++;
