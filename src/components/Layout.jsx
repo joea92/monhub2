@@ -16,6 +16,10 @@ const NAV_ITEMS = [
 export default function Layout() {
   const location = useLocation();
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   const isActive = (item) =>
     location.pathname === item.path ||
     (item.path !== '/Dashboard' && location.pathname.startsWith(item.path));
