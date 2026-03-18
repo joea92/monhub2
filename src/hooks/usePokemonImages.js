@@ -27,7 +27,11 @@ async function loadImageMap() {
     .then(records => {
       const map = {};
       for (const r of records) {
-        if (r.slug && r.hosted_image_url) {
+        if (!r.slug) continue;
+        // If silhouette is enabled and ready, prefer it
+        if (r.use_silhouette && r.silhouette_image_url) {
+          map[r.slug] = r.silhouette_image_url;
+        } else if (r.hosted_image_url) {
           map[r.slug] = r.hosted_image_url;
         }
       }
