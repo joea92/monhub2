@@ -23,7 +23,7 @@ export default function PokemonCard({ pokemon, onFavToggle, compact = false }) {
     return (
       <Link to={`/Pokemon?id=${pokemon.id}`} className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
         <div className="w-10 h-10 flex-shrink-0">
-          <PokemonImage src={pokemon.imageUrl} alt={pokemon.name} className="w-10 h-10" />
+          <PokemonImage src={getImageUrl(pokemon.name, pokemon.imageUrl)} alt={pokemon.name} className="w-10 h-10" />
         </div>
         <div className="min-w-0">
           <p className="font-medium text-sm truncate">{pokemon.name}</p>
