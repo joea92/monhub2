@@ -82,7 +82,7 @@ export default function Compare() {
             </div>
           )}
         </div>
-      )}
+      </div>
 
       {/* 4 Fixed Slots */}
       <div className="grid grid-cols-4 gap-3 mb-8">
