@@ -151,6 +151,7 @@ const SILHOUETTE_IMAGES = {
   "houndour": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/0e32bcb56_Houndour.png",
   "hypno": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/2fdaee170_Hypno.png",
   "igglybuff": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/12c5f987a_Igglybuff.png",
+  "illumise": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/8168ec8ad_Illumise.png",
   "ivysaur": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/0631e550b_Ivysaur.png",
   "jigglypuff": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/d281c4440_Jigglypuff.png",
   "jolteon": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/77827a11b_Jolteon.png",
