@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Home, Search, Wrench, MapPin, GitCompare, Settings, Menu, X, ImageIcon } from 'lucide-react';
+import { Home, Search, Wrench, MapPin, GitCompare, Menu, X } from 'lucide-react';
 
 const DITTO_URL = 'https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/53940ff47_ditto-logo.png';
 import { Button } from '@/components/ui/button';
