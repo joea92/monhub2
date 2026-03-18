@@ -34,6 +34,7 @@ Deno.serve(async (req) => {
 
     let updated = 0;
     let failed = 0;
+    const debugInfo = [];
 
     // Process each file in Dropbox
     for (const entry of listData.entries) {
@@ -45,6 +46,9 @@ Deno.serve(async (req) => {
         
         // Find matching Pokemon record by name
         const record = allRecords.find(r => r.name.toLowerCase() === filename.toLowerCase());
+        if (!record) {
+          debugInfo.push(`"${filename}" not found (try: "${filename.toLowerCase()}")`);
+        }
 
         if (!record) continue;
 
