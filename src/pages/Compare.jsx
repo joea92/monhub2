@@ -155,31 +155,33 @@ export default function Compare() {
           </div>
 
           <div className="space-y-3">
-            {houseScore.pairs && houseScore.pairs.length > 0 ? houseScore.pairs.map((pair, i) => (
-              <div key={i} className="bg-card rounded-xl border border-border/50 p-4">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="flex items-center gap-2">
-                     <div className="w-8 h-8 flex-shrink-0 bg-muted/30 rounded">
-                       <PokemonSilhouette src={pair.pokemon1.imageUrl} alt="" primaryType={pair.pokemon1.type?.split('/')[0]} className="w-8 h-8" />
-                     </div>
-                    <span className="text-sm font-medium">{pair.pokemon1.name}</span>
+            {houseScore.pairs && houseScore.pairs.length > 0 ? (
+              houseScore.pairs.map((pair, i) => (
+                <div key={i} className="bg-card rounded-xl border border-border/50 p-4">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="flex items-center gap-2">
+                       <div className="w-8 h-8 flex-shrink-0 bg-muted/30 rounded">
+                         <PokemonSilhouette src={pair.pokemon1.imageUrl} alt="" primaryType={pair.pokemon1.type?.split('/')[0]} className="w-8 h-8" />
+                       </div>
+                      <span className="text-sm font-medium">{pair.pokemon1.name}</span>
+                    </div>
+                    <span className="text-muted-foreground text-xs">↔</span>
+                    <div className="flex items-center gap-2">
+                       <div className="w-8 h-8 flex-shrink-0 bg-muted/30 rounded">
+                         <PokemonSilhouette src={pair.pokemon2.imageUrl} alt="" primaryType={pair.pokemon2.type?.split('/')[0]} className="w-8 h-8" />
+                       </div>
+                      <span className="text-sm font-medium">{pair.pokemon2.name}</span>
+                    </div>
+                    <div className="ml-auto">
+                      <CompatibilityBadge result={pair} />
+                    </div>
                   </div>
-                  <span className="text-muted-foreground text-xs">↔</span>
-                  <div className="flex items-center gap-2">
-                     <div className="w-8 h-8 flex-shrink-0 bg-muted/30 rounded">
-                       <PokemonSilhouette src={pair.pokemon2.imageUrl} alt="" primaryType={pair.pokemon2.type?.split('/')[0]} className="w-8 h-8" />
-                     </div>
-                    <span className="text-sm font-medium">{pair.pokemon2.name}</span>
-                  </div>
-                  <div className="ml-auto">
-                    <CompatibilityBadge result={pair} />
-                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    {generateExplanation(pair.pokemon1, pair.pokemon2, pair)}
+                  </p>
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  {generateExplanation(pair.pokemon1, pair.pokemon2, pair)}
-                </p>
-              </div>
-            )) : (
+              ))
+            ) : (
               <div className="text-sm text-muted-foreground text-center py-4">
                 Select more Pokémon to see compatibility
               </div>
