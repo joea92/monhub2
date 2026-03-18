@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePokemonImages } from '@/hooks/usePokemonImages';
 
 export default function PokemonImage({ src, alt, className = '' }) {
@@ -9,7 +9,7 @@ export default function PokemonImage({ src, alt, className = '' }) {
   const [hasError, setHasError] = useState(false);
 
   // Reset loading state when src changes
-  React.useEffect(() => {
+  useEffect(() => {
     setIsLoading(true);
     setHasError(false);
   }, [resolvedSrc]);
