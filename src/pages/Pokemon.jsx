@@ -4,7 +4,7 @@ import { ArrowLeft, Heart, Sparkles, TrendingUp, TrendingDown, Zap } from 'lucid
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { getPokemonById } from '@/lib/pokemonData';
+import { getPokemonById, POKEMON_DATA } from '@/lib/pokemonData';
 import { rankAllMatches, optimizeBestHouse, calculatePairScore, generateExplanation } from '@/lib/compatibility';
 import { isFavourite, toggleFavourite } from '@/lib/storage';
 import TypeBadge from '@/components/pokemon/TypeBadge';
@@ -106,7 +106,7 @@ export default function PokemonDetail() {
               {idx > 0 && <p className="text-xs text-muted-foreground mb-2">Runner-up #{idx + 1}</p>}
               <div className="flex flex-wrap gap-3 mb-3">
                 {house.pokemon.map(p => (
-                   <Link key={p.id} to={`/Pokemon?id=${p.id}`} className="flex items-center gap-2 bg-card rounded-lg border border-border/50 px-3 py-2 hover:border-primary/20 transition-colors">
+                   <Link key={p.id} to={`/Pokemon?id=${p.name}`} className="flex items-center gap-2 bg-card rounded-lg border border-border/50 px-3 py-2 hover:border-primary/20 transition-colors">
                      <div className="w-8 h-8">
                        <PokemonImage src={p.imageUrl} alt={p.name} className="w-8 h-8" />
                      </div>

@@ -34,7 +34,7 @@ export default function PokemonCard({ pokemon, onFavToggle, compact = false }) {
   }
 
   return (
-    <Link to={`/Pokemon?id=${pokemon.id}`}>
+    <Link to={`/Pokemon?id=${pokemon.name}`}>
       <div className="group relative bg-card rounded-xl border border-border/50 p-4 hover:shadow-lg hover:shadow-primary/5 hover:border-primary/20 transition-all duration-300 cursor-pointer">
         <button
           onClick={handleFav}

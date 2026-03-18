@@ -9,7 +9,7 @@ export default function MatchCard({ pokemon, target, compatibility }) {
   if (!compatibility) return null;
   
   return (
-    <Link to={`/Pokemon?id=${pokemon.id}`}>
+    <Link to={`/Pokemon?id=${pokemon.name}`}>
       <div className="flex items-start gap-3 p-3 rounded-xl border border-border/50 bg-card hover:shadow-md hover:border-primary/20 transition-all cursor-pointer">
         <div className="w-12 h-12 flex-shrink-0">
           <PokemonImage src={pokemon.imageUrl} alt={pokemon.name} className="w-12 h-12" />

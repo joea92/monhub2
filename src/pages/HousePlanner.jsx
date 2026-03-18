@@ -243,6 +243,7 @@ export default function HousePlanner() {
                   <button
                     key={s.pokemon.id}
                     onClick={() => addMember(s.pokemon.id)}
+                    style={{ userSelect: 'none' }}
                     className="flex items-center gap-2 w-full p-2 rounded-lg hover:bg-muted/50 transition-colors text-left"
                   >
                     <img src={s.pokemon.imageUrl} alt={s.pokemon.name} className="w-8 h-8 object-contain" />
