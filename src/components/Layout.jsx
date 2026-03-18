@@ -11,8 +11,7 @@ const NAV_ITEMS = [
   { path: '/HousePlanner', label: 'House Planner', icon: Wrench, color: 'text-green-600' },
   { path: '/TownPlanner', label: 'Towns', icon: MapPin, color: 'text-amber-700' },
   { path: '/Compare', label: 'Compare', icon: GitCompare, color: 'text-violet-600' },
-  { path: '/Admin', label: 'Admin', icon: Settings, color: '' },
-  { path: '/ImageImport', label: 'Image Import', icon: ImageIcon, color: 'text-purple-600' },
+
 ];
 
 export default function Layout() {
