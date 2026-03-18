@@ -32,34 +32,35 @@ async function fetchWithRetry(url, options = {}, retries = 3) {
 }
 
 async function scrapePokopiaPokedex() {
+  // Try to fetch from pokopia API or fallback to scraping
+  try {
+    const res = await fetchWithRetry('https://pokopia.dev/api/pokedex', {
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; PokopiaImporter/1.0)' }
+    });
+    const data = await res.json();
+    if (Array.isArray(data)) {
+      return data.slice(0, 20).map(p => ({
+        name: p.name || p.title || '',
+        number: p.id?.toString() || p.number?.toString() || null,
+        imageUrl: p.image_url || p.imageUrl || p.image || ''
+      })).filter(p => p.name && p.imageUrl);
+    }
+  } catch (err) {
+    // API failed, continue to HTML scraping
+  }
+
+  // Fallback: scrape the pokedex HTML page
   const res = await fetchWithRetry('https://pokopia.dev/pokedex/', {
     headers: { 'User-Agent': 'Mozilla/5.0 (compatible; PokopiaImporter/1.0)' }
   });
   const html = await res.text();
-
   const entries = [];
 
-  // Match patterns like: <img src="..."> with nearby name/number text
-  // Try to extract structured pokemon entries from the HTML
-  // Common pattern: a card/list item with number, name, image
+  // Look for image tags with pokemon-like src paths
+  const imgRegex = /<img[^>]+src=["']([^"']*(?:pokemon|sprites|images|pokemon-)[^"']*)["'][^>]*/gi;
+  let imgMatch;
   
-  // Pattern 1: Look for image tags with pokemon-like src paths
-  const imgRegex = /<img[^>]+src=["']([^"']*(?:pokemon|sprites|images)[^"']*)["'][^>]*>/gi;
-  const altRegex = /alt=["']([^"']*)["']/i;
-  const titleRegex = /title=["']([^"']*)["']/i;
-  
-  // Pattern 2: Look for anchor/div blocks with number + name + image
-  // Try a broad block extraction approach
-  const blockRegex = /<(?:a|div|li)[^>]*class=["'][^"']*(?:pokemon|entry|card|mon)[^"']*["'][^>]*>([\s\S]*?)<\/(?:a|div|li)>/gi;
-  
-  let blockMatch;
-  while ((blockMatch = blockRegex.exec(html)) !== null) {
-    const block = blockMatch[1];
-    
-    // Extract image
-    const imgMatch = block.match(/<img[^>]+src=["']([^"']+)["']/i);
-    if (!imgMatch) continue;
-    
+  while ((imgMatch = imgRegex.exec(html)) !== null) {
     let imgSrc = imgMatch[1];
     if (imgSrc.startsWith('/')) {
       imgSrc = 'https://pokopia.dev' + imgSrc;
@@ -71,43 +72,15 @@ async function scrapePokopiaPokedex() {
     if (!imgSrc.match(/\.(png|jpg|jpeg|webp|gif)(\?.*)?$/i)) continue;
     if (imgSrc.includes('logo') || imgSrc.includes('icon') || imgSrc.includes('favicon')) continue;
     
-    // Extract name from alt, title, or text content
-    const altMatch = block.match(/alt=["']([^"']+)["']/i);
-    const titleMatch = block.match(/title=["']([^"']+)["']/i);
-    const textMatch = block.replace(/<[^>]+>/g, ' ').match(/\b[A-Z][a-z]+(?:\s[A-Z][a-z]+)*\b/);
-    
-    const name = (altMatch?.[1] || titleMatch?.[1] || textMatch?.[0] || '').trim();
-    if (!name || name.length < 2) continue;
-    
-    // Extract number if present
-    const numMatch = block.replace(/<[^>]+>/g, ' ').match(/#?(\d{1,4})/);
+    // Try to extract name from URL path
+    const urlPath = imgSrc.split('/').pop().replace(/\.\w+$/, '').replace(/[-_]/g, ' ');
+    const numMatch = urlPath.match(/^(\d+)/);
     const number = numMatch?.[1] || null;
+    const name = urlPath.replace(/^\d+\s*/, '').trim();
+    
+    if (name.length < 2) continue;
     
     entries.push({ name, number, imageUrl: imgSrc });
-  }
-  
-  // Fallback: if no block matches, try direct img tag extraction
-  if (entries.length === 0) {
-    const directImgRegex = /<img[^>]+src=["']([^"']*(?:pokemon|sprites)[^"']*)["'][^>]*/gi;
-    let imgMatch;
-    while ((imgMatch = directImgRegex.exec(html)) !== null) {
-      let imgSrc = imgMatch[1];
-      if (imgSrc.startsWith('/')) imgSrc = 'https://pokopia.dev' + imgSrc;
-      else if (!imgSrc.startsWith('http')) imgSrc = 'https://pokopia.dev/' + imgSrc;
-      
-      if (!imgSrc.match(/\.(png|jpg|jpeg|webp|gif)(\?.*)?$/i)) continue;
-      if (imgSrc.includes('logo') || imgSrc.includes('icon') || imgSrc.includes('favicon')) continue;
-      
-      // Try to extract name from URL path
-      const urlParts = imgSrc.split('/').pop().replace(/\.\w+$/, '').replace(/[-_]/g, ' ');
-      const numMatch = urlParts.match(/^(\d+)/);
-      const number = numMatch?.[1] || null;
-      const name = urlParts.replace(/^\d+\s*/, '').trim();
-      
-      if (name.length < 2) continue;
-      
-      entries.push({ name, number, imageUrl: imgSrc });
-    }
   }
 
   return entries;
