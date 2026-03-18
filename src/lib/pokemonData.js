@@ -270,7 +270,7 @@ const SILHOUETTE_IMAGES = {
   "riolu": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/dd06ee95f_Riolu.png",
   "rolycoly": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/0f94746e1_Rolycoly.png",
   "rookidee": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/1108b9b4b_Rookidee.png",
-  "rotom": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/4a462cc69_Rotom.png",
+  "rotom": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/3b5d34a8a_rotom.png",
   "rowlet": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/874f9bf12_Rowlet.png",
   "rhyhorn": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/e90d2d13f_Rhyhorn.png",
   "rhydon": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/b087223a5_Rhydon.png",
@@ -386,8 +386,8 @@ const SILHOUETTE_IMAGES = {
 
 const CUSTOM_IMAGES = {
   "pikachu (peakychu)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/8799afdb8_peakychu.png",
-  "toxtricity (amped form)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/92ed96b4d_toxtricityampedform.png",
-  "toxtricity (low key form)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/9a954560e_toxtricitylowkeyform.png",
+  "toxtricity (amped form)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/76c23c039_Toxtricity-Amped.png",
+  "toxtricity (low key form)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/154e3ee61_Toxtricity-Low-Key.png",
   "snorlax (mosslax)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/0beca5076_snorlaxmosslax.png",
   "paldean wooper": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/dc5ff8431_P-Wooper.png",
 };
