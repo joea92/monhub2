@@ -14,6 +14,7 @@ import HousePlanner from '@/pages/HousePlanner';
 import TownPlanner from '@/pages/TownPlanner';
 import Compare from '@/pages/Compare';
 import Admin from '@/pages/Admin';
+import ImageImport from '@/pages/ImageImport';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
