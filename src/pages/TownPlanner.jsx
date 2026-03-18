@@ -121,9 +121,9 @@ export default function TownPlanner() {
     if (!selectedHouseId) return null;
     const house = townPlan?.houses.find(h => h.id === selectedHouseId);
     if (!house || !house.memberIds?.length) return null;
-    const scores = house.memberIds.map(memberId => calculatePairScore(pokemonId, memberId)).filter(Boolean);
+    const scores = house.memberIds.map(memberId => calculatePairScore(pokemonId, memberId)).filter(s => s?.percentage !== undefined);
     if (!scores.length) return null;
-    const avgPercentage = Math.round(scores.reduce((a, b) => a + b.percentage, 0) / scores.length);
+    const avgPercentage = Math.round(scores.reduce((sum, s) => sum + s.percentage, 0) / scores.length);
     const avgLabel = scores[0].label;
     return { percentage: avgPercentage, label: avgLabel };
   };
