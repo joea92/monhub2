@@ -58,6 +58,8 @@ const SILHOUETTE_IMAGES = {
   "cleffa": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/84fa1963f_Cleffa.png",
   "cloyster": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/96044f87e_Cloyster.png",
   "corsola": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/d3b32486c_Corsola.png",
+  "cramorant": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/c0a0ca322_Cramorant.png",
+  "crobat": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/568fb2c7e_Crobat.png",
   "croconaw": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/67e84838c_Croconaw.png",
   "cubone": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/d329b46e1_Cubone.png",
   "cyndaquil": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/a611468d8_Cyndaquil.png",
