@@ -67,7 +67,7 @@ export default function Layout() {
                   <Button
                     variant={active ? "secondary" : "ghost"}
                     size="sm"
-                    className={`gap-1.5 text-xs font-medium min-h-[44px] text-foreground ${active ? 'bg-white/60 shadow-sm' : 'hover:bg-white/60'}`}
+                    className={`gap-1.5 text-xs font-medium min-h-[44px] ${active ? 'bg-white/60 shadow-sm' : 'hover:bg-white/60'}`}
                     style={{ userSelect: 'none' }}
                   >
                     <Icon className={`w-3.5 h-3.5 ${active ? item.color : ''}`} />
