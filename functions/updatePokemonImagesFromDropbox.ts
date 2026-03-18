@@ -11,22 +11,46 @@ Deno.serve(async (req) => {
     // Get Dropbox connection
     const { accessToken } = await base44.asServiceRole.connectors.getConnection('dropbox');
 
-    // List files from Pokopia Silhouettes folder
-    const listRes = await fetch('https://api.dropboxapi.com/2/files/list_folder', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        path: '/Pokopia Silhouettes',
-        recursive: false,
-      }),
-    });
+    // List all files from Pokopia Silhouettes folder (recursive with pagination)
+    let allEntries = [];
+    let cursor = null;
+    let hasMore = true;
 
-    const listData = await listRes.json();
-    if (!listData.entries) {
-      return Response.json({ error: 'Failed to list Dropbox folder' }, { status: 400 });
+    while (hasMore) {
+      let listRes;
+      if (!cursor) {
+        // First request
+        listRes = await fetch('https://api.dropboxapi.com/2/files/list_folder', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            path: '/Pokopia Silhouettes',
+            recursive: true,
+          }),
+        });
+      } else {
+        // Continuation request
+        listRes = await fetch('https://api.dropboxapi.com/2/files/list_folder/continue', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ cursor }),
+        });
+      }
+
+      const listData = await listRes.json();
+      if (!listData.entries) {
+        return Response.json({ error: 'Failed to list Dropbox folder' }, { status: 400 });
+      }
+
+      allEntries = allEntries.concat(listData.entries);
+      cursor = listData.cursor;
+      hasMore = listData.has_more || false;
     }
 
     // Get all Pokemon records
