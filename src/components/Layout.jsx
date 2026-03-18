@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { AnimatePresence, motion } from 'framer-motion';
 import SettingsModal from '@/components/SettingsModal.jsx';
 
-const DITTO_URL = 'https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/53940ff47_ditto-logo.png';
+const DITTO_URL = 'https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/eb84e81fe_newdittologo.png';
 
 const NAV_ITEMS = [
   { path: '/Dashboard', label: 'Home', icon: Home, color: 'text-primary' },
