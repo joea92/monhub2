@@ -21,7 +21,7 @@ export default function Layout() {
     (item.path !== '/Dashboard' && location.pathname.startsWith(item.path));
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col overflow-x-hidden">
       {/* Top bar */}
       <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/40">
         <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
