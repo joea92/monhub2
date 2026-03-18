@@ -24,6 +24,7 @@ export default function PokemonDetail() {
     if (found) setFav(isFavourite(found.id));
   }, [window.location.search]);
 
+  const id = pokemon?.id;
   const rankings = useMemo(() => rankAllMatches(id), [id]);
   const bestHouse = useMemo(() => optimizeBestHouse([id], 3), [id]);
 
