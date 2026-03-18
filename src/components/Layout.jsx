@@ -115,25 +115,35 @@ export default function Layout() {
         }}
       >
         {NAV_ITEMS.map(item => {
-          const Icon = item.icon;
-          const active = isActive(item);
-          return (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors min-h-[44px] ${
-                active ? 'text-white' : 'text-white/70'
-              }`}
-              style={{ userSelect: 'none' }}
-            >
-              <Icon className="w-5 h-5 text-white" />
-              <span className="text-[10px] font-medium leading-none">{item.label}</span>
-              {active && <span className="w-1 h-1 rounded-full bg-white mt-0.5" />}
-            </Link>
-          );
-        })}
+           const Icon = item.icon;
+           const active = isActive(item);
+           return (
+             <Link
+               key={item.path}
+               to={item.path}
+               className={`flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors min-h-[44px] ${
+                 active ? 'text-white' : 'text-white/70'
+               }`}
+               style={{ userSelect: 'none' }}
+             >
+               <Icon className="w-5 h-5 text-white" />
+               <span className="text-[10px] font-medium leading-none">{item.label}</span>
+               {active && <span className="w-1 h-1 rounded-full bg-white mt-0.5" />}
+             </Link>
+           );
+         })}
 
-      </nav>
+        <a
+          href="https://www.paypal.com/donate/?business=FG6TW53GQFW9L&no_recurring=0&item_name=Buy+me+a+coffee+and+keep+me+updating+and+adding+more+features+to+this+app%21&currency_code=USD"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors min-h-[44px] text-white/70 hover:text-white"
+          style={{ userSelect: 'none' }}
+        >
+          <Heart className="w-5 h-5 text-white" />
+          <span className="text-[10px] font-medium leading-none">Donate</span>
+        </a>
+        </nav>
 
 
     </div>
