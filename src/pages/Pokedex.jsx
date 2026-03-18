@@ -50,7 +50,9 @@ export default function Pokedex() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6">
+    <SafeAreaView>
+    <div ref={scrollRef} className="max-w-7xl mx-auto px-4 py-6 overflow-y-auto" style={{ height: 'calc(100vh - 60px - 80px)' }}>
+      <PullToRefreshIndicator isRefreshing={isRefreshing} pulledDistance={pulledDistance} />
       <div className="mb-6">
         <h1 className="text-2xl font-bold mb-1">Pokédex</h1>
         <p className="text-sm text-muted-foreground">{POKEMON_DATA.length} Pokémon available</p>
