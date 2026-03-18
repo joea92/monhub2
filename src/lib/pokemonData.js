@@ -396,7 +396,7 @@ const CUSTOM_IMAGES = {
   "pikachu (peakychu)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/8799afdb8_peakychu.png",
   "toxtricity (amped form)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/76c23c039_Toxtricity-Amped.png",
   "toxtricity (low key form)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/154e3ee61_Toxtricity-Low-Key.png",
-  "snorlax (mosslax)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/0beca5076_snorlaxmosslax.png",
+  "snorlax (mosslax)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/d6fa75c88_mosslax.png",
   "paldean wooper": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/dc5ff8431_P-Wooper.png",
 };
 
