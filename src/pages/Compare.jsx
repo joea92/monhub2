@@ -1,39 +1,45 @@
 import React, { useState, useMemo } from 'react';
-import { Search, X, Plus } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { POKEMON_DATA, getPokemonById } from '@/lib/pokemonData';
-import { calculatePairScore, calculateHouseScore, getCompatLabelColor, getHouseLabelColor, generateExplanation } from '@/lib/compatibility';
+import { calculateHouseScore, getHouseLabelColor, generateExplanation } from '@/lib/compatibility';
 import TypeBadge from '@/components/pokemon/TypeBadge';
 import CompatibilityBadge from '@/components/pokemon/CompatibilityBadge';
 import HouseOccupancy from '@/components/pokemon/HouseOccupancy';
 import PokemonSilhouette from '@/components/pokemon/PokemonSilhouette';
 
 export default function Compare() {
-  const [selectedIds, setSelectedIds] = useState([]);
+  const [selectedIds, setSelectedIds] = useState([null, null, null, null]);
   const [search, setSearch] = useState('');
+  const [focusedSlot, setFocusedSlot] = useState(null);
 
   const searchResults = useMemo(() => {
-    if (!search) return [];
+    if (!search || focusedSlot === null) return [];
+    const usedIds = new Set(selectedIds.filter(id => id !== null));
     return POKEMON_DATA
-      .filter(p => p.name.toLowerCase().includes(search.toLowerCase()) && !selectedIds.includes(p.id))
+      .filter(p => p.name.toLowerCase().includes(search.toLowerCase()) && !usedIds.has(p.id))
       .slice(0, 8);
-  }, [search, selectedIds]);
-
-  const houseScore = useMemo(() => calculateHouseScore(selectedIds), [selectedIds]);
+  }, [search, selectedIds, focusedSlot]);
 
   const addPokemon = (id) => {
-    if (selectedIds.length >= 4 || selectedIds.includes(id)) return;
-    setSelectedIds([...selectedIds, id]);
+    if (focusedSlot === null) return;
+    const newIds = [...selectedIds];
+    newIds[focusedSlot] = id;
+    setSelectedIds(newIds);
     setSearch('');
+    setFocusedSlot(null);
   };
 
-  const removePokemon = (id) => {
-    setSelectedIds(selectedIds.filter(i => i !== id));
+  const removePokemon = (index) => {
+    const newIds = [...selectedIds];
+    newIds[index] = null;
+    setSelectedIds(newIds);
   };
 
   const selected = selectedIds.map(getPokemonById).filter(Boolean);
+  const houseScore = useMemo(() => calculateHouseScore(selected.map(p => p.id)), [selected]);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-6">
