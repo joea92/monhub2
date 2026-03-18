@@ -14,8 +14,6 @@ import HousePlanner from '@/pages/HousePlanner';
 import TownPlanner from '@/pages/TownPlanner';
 import Compare from '@/pages/Compare';
 import Admin from '@/pages/Admin';
-import ImageImport from '@/pages/ImageImport';
-import SilhouetteTest from '@/pages/SilhouetteTest';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -48,8 +46,6 @@ const AuthenticatedApp = () => {
         <Route path="/TownPlanner" element={<TownPlanner />} />
         <Route path="/Compare" element={<Compare />} />
         <Route path="/Admin" element={<Admin />} />
-        <Route path="/ImageImport" element={<ImageImport />} />
-        <Route path="/SilhouetteTest" element={<SilhouetteTest />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>

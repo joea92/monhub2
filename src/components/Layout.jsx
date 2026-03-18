@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Home, Search, Wrench, MapPin, GitCompare, Settings, FlaskConical, Download } from 'lucide-react';
+import { Home, Search, Wrench, MapPin, GitCompare, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AnimatePresence, motion } from 'framer-motion';
 import SettingsModal from '@/components/SettingsModal.jsx';
@@ -62,18 +62,7 @@ export default function Layout() {
                 </Link>
               );
             })}
-            <Link to="/ImageImport" style={{ userSelect: 'none' }}>
-              <Button variant="ghost" size="sm" className="gap-1.5 text-xs font-medium min-h-[44px]" style={{ userSelect: 'none' }}>
-                <Download className="w-3.5 h-3.5" />
-                Import
-              </Button>
-            </Link>
-            <Link to="/SilhouetteTest" style={{ userSelect: 'none' }}>
-              <Button variant="ghost" size="sm" className="gap-1.5 text-xs font-medium min-h-[44px]" style={{ userSelect: 'none' }}>
-                <FlaskConical className="w-3.5 h-3.5" />
-                Silhouettes
-              </Button>
-            </Link>
+
             <Button
               variant="ghost"
               size="sm"
