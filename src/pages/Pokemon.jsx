@@ -13,11 +13,16 @@ import CompatibilityBadge from '@/components/pokemon/CompatibilityBadge';
 import PokemonImage from '@/components/pokemon/PokemonImage';
 
 export default function PokemonDetail() {
-  const params = new URLSearchParams(window.location.search);
-  const idParam = params.get('id');
-  const pokemon = isNaN(idParam) ? POKEMON_DATA.find(p => p.name.toLowerCase() === idParam.toLowerCase()) : getPokemonById(parseInt(idParam));
-  const id = pokemon?.id;
-  const [fav, setFav] = React.useState(isFavourite(id));
+  const [pokemon, setPokemon] = React.useState(null);
+  const [fav, setFav] = React.useState(false);
+
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const idParam = params.get('id');
+    const found = isNaN(idParam) ? POKEMON_DATA.find(p => p.name.toLowerCase() === idParam.toLowerCase()) : getPokemonById(parseInt(idParam));
+    setPokemon(found);
+    if (found) setFav(isFavourite(found.id));
+  }, [window.location.search]);
 
   const rankings = useMemo(() => rankAllMatches(id), [id]);
   const bestHouse = useMemo(() => optimizeBestHouse([id], 3), [id]);
