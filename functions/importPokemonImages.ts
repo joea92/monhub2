@@ -182,15 +182,15 @@ Deno.serve(async (req) => {
         const arrayBuffer = await imgRes.arrayBuffer();
         const blob = new Blob([arrayBuffer], { type: contentType });
 
-        // Upload to app storage
-        const { file_url } = await base44.asServiceRole.integrations.Core.UploadFile({ file: blob });
+        // Upload to private storage
+        const { file_uri } = await base44.asServiceRole.integrations.Core.UploadPrivateFile({ file: blob });
 
         const data = {
           name: item.name,
           slug: item.slug,
           pokedex_number: item.number || '',
           source_image_url: item.imageUrl,
-          hosted_image_url: file_url,
+          hosted_image_url: file_uri,
           import_status: 'success',
           failed_reason: '',
         };
