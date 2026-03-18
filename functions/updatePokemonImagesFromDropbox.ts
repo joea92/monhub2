@@ -33,11 +33,8 @@ Deno.serve(async (req) => {
     const allRecords = await base44.asServiceRole.entities.PokemonImage.list();
 
     let updated = 0;
-    let failed = 0;
-    const debugInfo = [];
-    const allAppNames = allRecords.map(r => r.name).sort();
-    debugInfo.push(`Total Pokemon in app: ${allAppNames.length}`);
-    debugInfo.push(`App Pokemon sample: ${allAppNames.slice(0, 15).join(', ')}`);
+    let notInApp = 0;
+    let errors = 0;
 
     // Process each file in Dropbox
     for (const entry of listData.entries) {
