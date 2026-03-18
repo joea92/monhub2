@@ -146,65 +146,71 @@ export default function Compare() {
         })}
       </div>
 
-      {/* Compatibility matrix - only show if 2+ selected */}
-      {selected.length >= 2 && (
-        <div className="mt-8 space-y-4">
-          <h2 className="font-bold text-lg">Compatibility</h2>
-          
-          <div className="flex flex-wrap gap-3 mb-4">
-            <HouseOccupancy count={selected.length} />
-            {houseScore.label && (
-              <Badge className={`${getHouseLabelColor(houseScore.label)} border text-xs`}>
-                {houseScore.avgPercentage}% — {houseScore.label}
-              </Badge>
-            )}
-          </div>
+      {/* Compatibility section */}
+      <div className="mt-8 space-y-4">
+        <h2 className="font-bold text-lg">Compatibility</h2>
 
-          <div className="space-y-3">
-            {houseScore.pairs && houseScore.pairs.length > 0 ? (
-              houseScore.pairs.map((pair, i) => (
-                <div key={i} className="bg-card rounded-xl border border-border/50 p-4">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="flex items-center gap-2">
-                       <div className="w-8 h-8 flex-shrink-0 bg-muted/30 rounded">
-                         <PokemonSilhouette src={pair.pokemon1.imageUrl} alt="" primaryType={pair.pokemon1.type?.split('/')[0]} className="w-8 h-8" />
-                       </div>
-                      <span className="text-sm font-medium">{pair.pokemon1.name}</span>
+        {selected.length >= 2 ? (
+          <>
+            <div className="flex flex-wrap gap-3 mb-4">
+              <HouseOccupancy count={selected.length} />
+              {houseScore.label && (
+                <Badge className={`${getHouseLabelColor(houseScore.label)} border text-xs`}>
+                  {houseScore.avgPercentage}% — {houseScore.label}
+                </Badge>
+              )}
+            </div>
+
+            <div className="space-y-3">
+              {houseScore.pairs && houseScore.pairs.length > 0 ? (
+                houseScore.pairs.map((pair, i) => (
+                  <div key={i} className="bg-card rounded-xl border border-border/50 p-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="flex items-center gap-2">
+                         <div className="w-8 h-8 flex-shrink-0 bg-muted/30 rounded">
+                            <PokemonSilhouette src={pair.pokemon1.imageUrl} alt="" primaryType={pair.pokemon1.type?.split('/')[0]} className="w-8 h-8" />
+                          </div>
+                        <span className="text-sm font-medium">{pair.pokemon1.name}</span>
+                      </div>
+                      <span className="text-muted-foreground text-xs">↔</span>
+                      <div className="flex items-center gap-2">
+                         <div className="w-8 h-8 flex-shrink-0 bg-muted/30 rounded">
+                            <PokemonSilhouette src={pair.pokemon2.imageUrl} alt="" primaryType={pair.pokemon2.type?.split('/')[0]} className="w-8 h-8" />
+                          </div>
+                        <span className="text-sm font-medium">{pair.pokemon2.name}</span>
+                      </div>
+                      <div className="ml-auto">
+                        <CompatibilityBadge result={pair} />
+                      </div>
                     </div>
-                    <span className="text-muted-foreground text-xs">↔</span>
-                    <div className="flex items-center gap-2">
-                       <div className="w-8 h-8 flex-shrink-0 bg-muted/30 rounded">
-                         <PokemonSilhouette src={pair.pokemon2.imageUrl} alt="" primaryType={pair.pokemon2.type?.split('/')[0]} className="w-8 h-8" />
-                       </div>
-                      <span className="text-sm font-medium">{pair.pokemon2.name}</span>
-                    </div>
-                    <div className="ml-auto">
-                      <CompatibilityBadge result={pair} />
-                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      {generateExplanation(pair.pokemon1, pair.pokemon2, pair)}
+                    </p>
                   </div>
-                  <p className="text-xs text-muted-foreground">
-                    {generateExplanation(pair.pokemon1, pair.pokemon2, pair)}
-                  </p>
+                ))
+              ) : (
+                <div className="text-sm text-muted-foreground text-center py-4">
+                  Select more Pokémon to see compatibility
                 </div>
-              ))
-            ) : (
-              <div className="text-sm text-muted-foreground text-center py-4">
-                Select more Pokémon to see compatibility
+              )}
+            </div>
+
+            {selected.length === 4 && (
+              <div className="bg-muted/30 rounded-xl p-4 text-sm">
+                <p>
+                  <strong>House verdict:</strong> This group of 4 would make a{' '}
+                  <span className="font-semibold">{houseScore.label?.toLowerCase()}</span> house
+                  with an average compatibility of {houseScore.avgPercentage}%.
+                </p>
               </div>
             )}
+          </>
+        ) : (
+          <div className="text-sm text-muted-foreground text-center py-8">
+            Add more Pokémon to get a compatibility rating
           </div>
-
-          {selected.length === 4 && (
-            <div className="bg-muted/30 rounded-xl p-4 text-sm">
-              <p>
-                <strong>House verdict:</strong> This group of 4 would make a{' '}
-                <span className="font-semibold">{houseScore.label?.toLowerCase()}</span> house
-                with an average compatibility of {houseScore.avgPercentage}%.
-              </p>
-            </div>
-          )}
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
