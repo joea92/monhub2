@@ -9,6 +9,7 @@ import { saveHouse, getSavedHouses, deleteHouse } from '@/lib/storage';
 import HouseOccupancy from '@/components/pokemon/HouseOccupancy';
 import TypeBadge from '@/components/pokemon/TypeBadge';
 import CompatibilityBadge from '@/components/pokemon/CompatibilityBadge';
+import PokemonSilhouette from '@/components/pokemon/PokemonSilhouette';
 
 export default function HousePlanner() {
   const [houseMembers, setHouseMembers] = useState([]);
@@ -99,7 +100,9 @@ export default function HousePlanner() {
                   if (!p) return null;
                   return (
                     <div key={id} className="flex items-center gap-3 p-3 rounded-xl bg-muted/30 border border-border/30">
-                      <img src={p.imageUrl} alt={p.name} className="w-12 h-12 object-contain" />
+                      <div className="w-12 h-12 flex-shrink-0 bg-muted/30 rounded">
+                        <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-12 h-12" />
+                      </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-semibold text-sm">{p.name}</p>
                         <TypeBadge type={p.type} />
@@ -194,7 +197,9 @@ export default function HousePlanner() {
                         onClick={() => setHouseMembers(house.ids)}
                         className="flex items-center gap-2 bg-card rounded-lg border border-border/50 px-3 py-1.5 hover:border-primary/20 transition-colors text-left"
                       >
-                        <img src={p.imageUrl} alt={p.name} className="w-7 h-7 object-contain" />
+                        <div className="w-7 h-7 flex-shrink-0 bg-muted/30 rounded">
+                          <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-7 h-7" />
+                        </div>
                         <span className="text-xs font-medium">{p.name}</span>
                       </button>
                     ))}
@@ -230,7 +235,9 @@ export default function HousePlanner() {
                       onClick={() => addMember(p.id)}
                       className="flex items-center gap-2 w-full p-2 rounded-lg hover:bg-muted/50 transition-colors text-left"
                     >
-                      <img src={p.imageUrl} alt={p.name} className="w-8 h-8 object-contain" />
+                      <div className="w-8 h-8 flex-shrink-0 bg-muted/30 rounded">
+                        <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-8 h-8" />
+                      </div>
                       <div>
                         <p className="text-sm font-medium">{p.name}</p>
                         <p className="text-[10px] text-muted-foreground">{p.type}</p>
@@ -255,7 +262,9 @@ export default function HousePlanner() {
                     style={{ userSelect: 'none' }}
                     className="flex items-center gap-2 w-full p-2 rounded-lg hover:bg-muted/50 transition-colors text-left"
                   >
-                    <img src={s.pokemon.imageUrl} alt={s.pokemon.name} className="w-8 h-8 object-contain" />
+                    <div className="w-8 h-8 flex-shrink-0 bg-muted/30 rounded">
+                      <PokemonSilhouette src={s.pokemon.imageUrl} alt={s.pokemon.name} primaryType={s.pokemon.type?.split('/')[0]} className="w-8 h-8" />
+                    </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">{s.pokemon.name}</p>
                       <p className="text-[10px] text-muted-foreground">House avg: {s.addedValue}%</p>
@@ -277,7 +286,11 @@ export default function HousePlanner() {
                     <div className="flex -space-x-2">
                       {(h.memberIds || []).slice(0, 4).map(mid => {
                         const mp = getPokemonById(mid);
-                        return mp ? <img key={mid} src={mp.imageUrl} alt="" className="w-7 h-7 rounded-full border-2 border-card object-contain bg-muted" /> : null;
+                        return mp ? (
+                          <div key={mid} className="w-7 h-7 rounded-full border-2 border-card bg-muted overflow-hidden flex-shrink-0">
+                            <PokemonSilhouette src={mp.imageUrl} alt="" primaryType={mp.type?.split('/')[0]} className="w-7 h-7" />
+                          </div>
+                        ) : null;
                       })}
                     </div>
                     <div className="flex-1 min-w-0">
