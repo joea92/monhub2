@@ -146,6 +146,71 @@ export default function Compare() {
         })}
       </div>
 
+      {/* Mobile horizontal scroll */}
+      <div className="md:hidden mb-8 -mx-4 px-4">
+        <div className="flex gap-3 overflow-x-auto pb-2">
+          {selectedIds.map((pokemonId, index) => {
+            const pokemon = pokemonId ? getPokemonById(pokemonId) : null;
+            return (
+              <div
+                key={index}
+                onClick={() => !pokemon && setFocusedSlot(index)}
+                className={`relative rounded-2xl border-2 transition-all cursor-pointer flex-shrink-0 w-40 ${
+                  pokemon
+                    ? 'bg-card border-border/50'
+                    : focusedSlot === index
+                    ? 'bg-white/20 border-white/40'
+                    : 'bg-white/10 border-white/20'
+                }`}
+                style={{ aspectRatio: '1 / 1.3' }}
+              >
+                {pokemon ? (
+                  <div className="p-3 h-full flex flex-col">
+                    <button
+                      onClick={e => {
+                        e.stopPropagation();
+                        removePokemon(index);
+                      }}
+                      className="absolute top-2 right-2 p-1 rounded-full hover:bg-muted transition-colors"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                    <div className="text-center mb-2 flex-1 flex flex-col items-center justify-center">
+                      <div className="w-16 h-16 bg-muted/30 rounded-lg flex items-center justify-center mb-1">
+                        <PokemonSilhouette src={pokemon.imageUrl} alt={pokemon.name} primaryType={pokemon.type?.split('/')[0]} className="w-16 h-16" />
+                      </div>
+                      <h3 className="font-bold text-xs mt-1">{pokemon.name}</h3>
+                      <p className="text-[10px] text-muted-foreground">#{pokemon.number}</p>
+                    </div>
+
+                    <div className="space-y-2 text-[10px]">
+                      <div>
+                        <p className="text-muted-foreground mb-0.5 font-medium">Type</p>
+                        <TypeBadge type={pokemon.type} />
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground mb-0.5 font-medium">Specialty</p>
+                        <div className="flex flex-wrap gap-1">
+                          {pokemon.specialty.map(s => <Badge key={s} variant="outline" className="text-[9px]">{s}</Badge>)}
+                        </div>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground mb-0.5 font-medium">Habitat</p>
+                        <Badge variant="secondary" className="text-[9px]">{pokemon.idealHabitat}</Badge>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="h-full flex items-center justify-center">
+                    <p className="text-white/40 text-xs text-center px-2">Click to add</p>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Compatibility section */}
       <div className="mt-8 space-y-4">
         <h2 className="font-bold text-lg">Compatibility</h2>
