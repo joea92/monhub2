@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Home, Search, Wrench, MapPin, GitCompare, Settings, Menu, X } from 'lucide-react';
+import { Home, Search, Wrench, MapPin, GitCompare, Settings, Menu, X, ImageIcon } from 'lucide-react';
 
 const DITTO_URL = 'https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/53940ff47_ditto-logo.png';
 import { Button } from '@/components/ui/button';
@@ -12,6 +12,7 @@ const NAV_ITEMS = [
   { path: '/TownPlanner', label: 'Towns', icon: MapPin, color: 'text-amber-700' },
   { path: '/Compare', label: 'Compare', icon: GitCompare, color: 'text-violet-600' },
   { path: '/Admin', label: 'Admin', icon: Settings, color: '' },
+  { path: '/ImageImport', label: 'Image Import', icon: ImageIcon, color: 'text-purple-600' },
 ];
 
 export default function Layout() {
