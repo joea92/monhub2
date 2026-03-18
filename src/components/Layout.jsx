@@ -67,7 +67,7 @@ export default function Layout() {
               key={item.path}
               to={item.path}
               className={`flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors ${
-                active ? 'text-primary' : 'text-muted-foreground'
+                active ? 'text-white' : 'text-white/70'
               }`}
             >
               <Icon className={`w-5 h-5 ${active ? item.color : ''}`} />
