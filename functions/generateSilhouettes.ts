@@ -74,9 +74,9 @@ Style rules:
         // Download the generated image and upload to private storage
         const imgRes = await fetch(generated.url);
         const arrayBuffer = await imgRes.arrayBuffer();
-        const blob = new Blob([arrayBuffer], { type: 'image/png' });
+        const file = new File([arrayBuffer], `${record.slug}-silhouette.png`, { type: 'image/png' });
 
-        const { file_uri } = await base44.asServiceRole.integrations.Core.UploadPrivateFile({ file: blob });
+        const { file_uri } = await base44.asServiceRole.integrations.Core.UploadPrivateFile({ file });
 
         await base44.asServiceRole.entities.PokemonImage.update(id, {
           silhouette_image_url: file_uri,
