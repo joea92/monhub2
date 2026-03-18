@@ -18,14 +18,23 @@ const QUICK_LINKS = [
 ];
 
 export default function Dashboard() {
+  const [refreshKey, setRefreshKey] = React.useState(0);
+  const { scrollRef, isRefreshing, pulledDistance } = usePullToRefresh(async () => {
+    // Simulate refresh
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setRefreshKey(prev => prev + 1);
+  });
+
   // Show a few random featured Pokémon
   const featured = React.useMemo(() => {
     const shuffled = [...POKEMON_DATA].sort(() => Math.random() - 0.5);
     return shuffled.slice(0, 8);
-  }, []);
+  }, [refreshKey]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-4 md:py-8">
+    <SafeAreaView>
+      <div ref={scrollRef} className="max-w-7xl mx-auto px-4 py-4 md:py-8 overflow-y-auto" style={{ height: 'calc(100vh - 60px - 80px)' }}>
+        <PullToRefreshIndicator isRefreshing={isRefreshing} pulledDistance={pulledDistance} />
       {/* Hero */}
       <div className="relative overflow-hidden rounded-2xl bg-card border border-border/40 shadow-sm p-5 md:p-12 mb-5 md:mb-8">
         <div className="relative z-10">
