@@ -242,7 +242,7 @@ export default function HousePlanner() {
           {/* Suggestions */}
           {suggestions.length > 0 && (
             <div className="bg-card rounded-2xl border border-border/50 p-4">
-              <h3 className="font-semibold text-sm mb-3">Best Next Additions</h3>
+              <h3 className="font-semibold text-sm mb-3">{houseMembers.length === 0 ? 'Random Suggestions' : 'Best Next Additions'}</h3>
               <div className="space-y-1">
                 {suggestions.slice(0, 6).map(s => (
                   <button
