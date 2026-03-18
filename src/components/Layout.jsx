@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { Home, Search, Wrench, MapPin, GitCompare, Settings, ArrowLeft } from 'lucide-react';
+import { Home, Search, Wrench, MapPin, GitCompare, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AnimatePresence, motion } from 'framer-motion';
-import SettingsModal from '@/components/SettingsModal.jsx';
+
 
 const DITTO_URL = 'https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/1dbd42f41_newdittologo.png';
 
@@ -24,7 +24,6 @@ const slideVariants = {
 export default function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [showSettings, setShowSettings] = React.useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -78,16 +77,7 @@ export default function Layout() {
               );
             })}
 
-            <Button
-              variant="ghost"
-              size="sm"
-              className="gap-1.5 text-xs font-medium min-h-[44px]"
-              style={{ userSelect: 'none' }}
-              onClick={() => setShowSettings(true)}
-            >
-              <Settings className="w-3.5 h-3.5" />
-              Settings
-            </Button>
+
           </nav>
         </div>
       </header>
@@ -134,18 +124,10 @@ export default function Layout() {
             </Link>
           );
         })}
-        {/* Settings button in mobile nav */}
-        <button
-          className="flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors min-h-[44px] text-white/70"
-          style={{ userSelect: 'none' }}
-          onClick={() => setShowSettings(true)}
-        >
-          <Settings className="w-5 h-5 text-white" />
-          <span className="text-[10px] font-medium leading-none">Settings</span>
-        </button>
+
       </nav>
 
-      <SettingsModal open={showSettings} onClose={() => setShowSettings(false)} />
+
     </div>
   );
 }
