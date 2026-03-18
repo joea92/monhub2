@@ -44,22 +44,86 @@ export default function Compare() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-6">
       <h1 className="text-2xl font-bold mb-1">Compare Pokémon</h1>
-      <p className="text-sm text-muted-foreground mb-6">Compare 2–4 Pokémon side by side</p>
+      <p className="text-sm text-muted-foreground mb-6">Select up to 4 Pokémon to compare</p>
 
-      {/* Search to add */}
-      {selectedIds.length < 4 && (
+      {/* 4 Fixed Slots */}
+      <div className="grid grid-cols-4 gap-3 mb-8">
+        {selectedIds.map((pokemonId, index) => {
+          const pokemon = pokemonId ? getPokemonById(pokemonId) : null;
+          return (
+            <div
+              key={index}
+              onClick={() => !pokemon && setFocusedSlot(index)}
+              className={`relative rounded-2xl border-2 transition-all cursor-pointer ${
+                pokemon
+                  ? 'bg-card border-border/50'
+                  : focusedSlot === index
+                  ? 'bg-white/20 border-white/40'
+                  : 'bg-white/10 border-white/20'
+              }`}
+              style={{ aspectRatio: '1 / 1.3' }}
+            >
+              {pokemon ? (
+                <div className="p-3 h-full flex flex-col">
+                  <button
+                    onClick={e => {
+                      e.stopPropagation();
+                      removePokemon(index);
+                    }}
+                    className="absolute top-2 right-2 p-1 rounded-full hover:bg-muted transition-colors"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                  <div className="text-center mb-2 flex-1 flex flex-col items-center justify-center">
+                    <div className="w-16 h-16 bg-muted/30 rounded-lg flex items-center justify-center mb-1">
+                      <PokemonSilhouette src={pokemon.imageUrl} alt={pokemon.name} primaryType={pokemon.type?.split('/')[0]} className="w-16 h-16" />
+                    </div>
+                    <h3 className="font-bold text-xs mt-1">{pokemon.name}</h3>
+                    <p className="text-[10px] text-muted-foreground">#{pokemon.number}</p>
+                  </div>
+
+                  <div className="space-y-2 text-[10px]">
+                    <div>
+                      <p className="text-muted-foreground mb-0.5 font-medium">Type</p>
+                      <TypeBadge type={pokemon.type} />
+                    </div>
+                    <div>
+                      <p className="text-muted-foreground mb-0.5 font-medium">Specialty</p>
+                      <div className="flex flex-wrap gap-1">
+                        {pokemon.specialty.map(s => <Badge key={s} variant="outline" className="text-[9px]">{s}</Badge>)}
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-muted-foreground mb-0.5 font-medium">Habitat</p>
+                      <Badge variant="secondary" className="text-[9px]">{pokemon.idealHabitat}</Badge>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="h-full flex items-center justify-center">
+                  <p className="text-white/40 text-xs text-center px-2">Click to add</p>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Search */}
+      {focusedSlot !== null && (
         <div className="mb-6 max-w-sm relative z-10">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
-              placeholder="Search to add Pokémon..."
+              placeholder="Search Pokémon..."
               value={search}
               onChange={e => setSearch(e.target.value)}
               className="pl-9"
+              autoFocus
             />
           </div>
           {searchResults.length > 0 && (
-            <div className="absolute top-full left-0 right-0 mt-2 bg-card rounded-xl border border-border/50 p-2 space-y-1 md:w-full">
+            <div className="absolute top-full left-0 right-0 mt-2 bg-card rounded-xl border border-border/50 p-2 space-y-1 w-full">
               {searchResults.map(p => (
                 <button
                   key={p.id}
@@ -70,7 +134,6 @@ export default function Compare() {
                     <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-8 h-8" />
                   </div>
                   <span className="text-sm font-medium">{p.name}</span>
-                  <Plus className="w-4 h-4 text-muted-foreground ml-auto" />
                 </button>
               ))}
             </div>
@@ -78,18 +141,9 @@ export default function Compare() {
         </div>
       )}
 
-      {selected.length === 0 && (
-        <div className="text-center py-20 text-muted-foreground">
-          <p>Add 2–4 Pokémon to compare them side by side.</p>
-        </div>
-      )}
-
-      {/* Side by side comparison */}
-      {selected.length > 0 && (
-        <div className="overflow-x-auto">
-          <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${selected.length}, 280px)` }}>
-            {selected.map(p => (
-              <div key={p.id} className="bg-card rounded-2xl border border-border/50 p-4 relative">
+      {/* Compatibility matrix - only show if 2+ selected */}
+      {selected.length >= 2 && (
+        <div className="mt-8 space-y-4">
                 <button
                   onClick={() => removePokemon(p.id)}
                   className="absolute top-2 right-2 p-1 rounded-full hover:bg-muted transition-colors"
