@@ -60,8 +60,8 @@ Deno.serve(async (req) => {
 
     const results = { processed: 0, succeeded: 0, failed: 0 };
 
-    // Process each pokemon
-    for (const pokemon of POKEMON_LIST) {
+    // Process all pokemon in parallel
+    await Promise.all(POKEMON_LIST.map(async (pokemon) => {
       results.processed++;
       try {
         const slug = toSlug(pokemon.name);
@@ -84,7 +84,7 @@ Deno.serve(async (req) => {
 
         if (!generated?.url) {
           results.failed++;
-          continue;
+          return;
         }
 
         const imgRes = await fetch(generated.url);
@@ -112,7 +112,7 @@ Deno.serve(async (req) => {
         console.error(`Silhouette generation failed for ${pokemon.name}: ${err.message}`);
         results.failed++;
       }
-    }
+    }))
 
     return Response.json({ success: true, results });
   } catch (error) {
