@@ -108,16 +108,20 @@ Deno.serve(async (req) => {
       results.processed++;
       try {
         // Download image with retry
-        const imgRes = await fetchWithRetry(item.imageUrl, {
-          headers: { 'User-Agent': 'Mozilla/5.0 (compatible; PokopiaImporter/1.0)' }
-        });
-        
-        const contentType = imgRes.headers.get('content-type') || 'image/png';
-        const arrayBuffer = await imgRes.arrayBuffer();
-        const blob = new Blob([arrayBuffer], { type: contentType });
+         const imgRes = await fetchWithRetry(item.imageUrl, {
+           headers: { 'User-Agent': 'Mozilla/5.0 (compatible; PokopiaImporter/1.0)' }
+         });
 
-        // Upload to private storage
-        const { file_uri } = await base44.asServiceRole.integrations.Core.UploadPrivateFile({ file: blob });
+         const arrayBuffer = await imgRes.arrayBuffer();
+         const bytes = new Uint8Array(arrayBuffer);
+         let binary = '';
+         for (let i = 0; i < bytes.length; i++) {
+           binary += String.fromCharCode(bytes[i]);
+         }
+         const base64 = btoa(binary);
+
+         // Upload to private storage
+         const { file_uri } = await base44.asServiceRole.integrations.Core.UploadPrivateFile({ file: base64 });
 
         const data = {
           name: item.name,
