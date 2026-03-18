@@ -3,6 +3,7 @@ import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { Home, Search, Wrench, MapPin, GitCompare, ArrowLeft, Coffee, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AnimatePresence, motion } from 'framer-motion';
+import DonationModal from '@/components/DonationModal';
 
 
 const DITTO_URL = 'https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/1dbd42f41_newdittologo.png';
