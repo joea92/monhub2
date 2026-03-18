@@ -166,7 +166,7 @@ export default function TownPlanner() {
           {(townPlan?.houses || []).map(house => {
             const score = calculateHouseScore(house.memberIds || []);
             return (
-              <div key={house.id} className={`bg-card rounded-2xl border p-4 transition-colors cursor-pointer ${selectedHouseId === house.id ? 'border-primary/50 bg-primary/5' : 'border-border/50'}`} onClick={() => setSelectedHouseId(house.id)}>
+              <div key={house.id} className={`bg-card rounded-2xl border p-4 transition-colors cursor-pointer ${selectedHouseId === house.id ? 'border-4 border-primary' : 'border border-border/50'}`} onClick={() => setSelectedHouseId(house.id)}>
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="font-semibold text-sm">{house.name}</h3>
                   <div className="flex items-center gap-2">
