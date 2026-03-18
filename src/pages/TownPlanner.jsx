@@ -322,7 +322,6 @@ export default function TownPlanner() {
                 <div className="space-y-1 max-h-96 overflow-y-auto">
                   {filteredAll.map(p => {
                     const compat = getCompatibilityWithHouse(p.id);
-                    const isAssigned = assignedIds.has(p.id);
                     return (
                       <button
                         key={p.id}
@@ -331,8 +330,8 @@ export default function TownPlanner() {
                             addToHouse(selectedHouseId, p.id);
                           }
                         }}
-                        disabled={!selectedHouseId || isAssigned}
-                        className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-muted/50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed w-full text-left"
+                        disabled={!selectedHouseId}
+                        className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-muted/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full text-left"
                       >
                         <div className="w-7 h-7 flex-shrink-0 bg-muted/30 rounded">
                           <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-7 h-7" />
