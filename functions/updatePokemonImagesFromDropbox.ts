@@ -34,9 +34,8 @@ Deno.serve(async (req) => {
 
     let updated = 0;
     let failed = 0;
-    const sampleFiles = [];
 
-    // Process each file in Dropbox
+    // Process each file in Dropbox with rate limiting
     for (const entry of listData.entries) {
       if (entry['.tag'] !== 'file') continue;
 
@@ -49,10 +48,6 @@ Deno.serve(async (req) => {
         
         // Find matching Pokemon record
         const record = allRecords.find(r => r.name.toLowerCase().trim() === normalized);
-        
-        if (sampleFiles.length < 3) {
-          sampleFiles.push({ file: entry.name, normalized, matched: !!record });
-        }
 
         if (!record) continue;
 
@@ -64,13 +59,14 @@ Deno.serve(async (req) => {
           source_image_url: shareUrl,
         });
         updated++;
+        
+        // Rate limit: small delay between updates
+        await new Promise(r => setTimeout(r, 50));
       } catch (err) {
         console.error(`Failed to process ${entry.name}: ${err.message}`);
         failed++;
       }
     }
-    
-    console.log('Sample files:', JSON.stringify(sampleFiles));
 
     return Response.json({
       success: true,
