@@ -16,6 +16,7 @@ export default function TownPlanner() {
   const [plans, setPlans] = useState(getTownPlans());
   const [search, setSearch] = useState('');
   const [activeTown, setActiveTown] = useState(selectedTownId || null);
+  const [selectedHouseId, setSelectedHouseId] = useState(null);
 
   const activeTownData = TOWNS.find(t => t.id === activeTown);
   const townPlan = activeTown ? (plans[activeTown] || { houses: [] }) : null;
@@ -165,7 +166,7 @@ export default function TownPlanner() {
           {(townPlan?.houses || []).map(house => {
             const score = calculateHouseScore(house.memberIds || []);
             return (
-              <div key={house.id} className="bg-card rounded-2xl border border-border/50 p-4">
+              <div key={house.id} className={`bg-card rounded-2xl border p-4 transition-colors cursor-pointer ${selectedHouseId === house.id ? 'border-primary/50 bg-primary/5' : 'border-border/50'}`} onClick={() => setSelectedHouseId(house.id)}>
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="font-semibold text-sm">{house.name}</h3>
                   <div className="flex items-center gap-2">
@@ -243,13 +244,23 @@ export default function TownPlanner() {
             </h3>
             <div className="space-y-1 max-h-96 overflow-y-auto">
               {unassigned.slice(0, 30).map(p => (
-                <div key={p.id} className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-muted/50">
+                <button
+                  key={p.id}
+                  onClick={() => {
+                    if (selectedHouseId) {
+                      addToHouse(selectedHouseId, p.id);
+                      setSelectedHouseId(null);
+                    }
+                  }}
+                  disabled={!selectedHouseId}
+                  className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-muted/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full text-left"
+                >
                   <div className="w-7 h-7 flex-shrink-0 bg-muted/30 rounded">
                     <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-7 h-7" />
                   </div>
                   <span className="text-xs font-medium flex-1 truncate">{p.name}</span>
                   <Badge variant="secondary" className="text-[10px]">{p.idealHabitat}</Badge>
-                </div>
+                </button>
               ))}
               {unassigned.length > 30 && (
                 <p className="text-xs text-muted-foreground text-center pt-2">
