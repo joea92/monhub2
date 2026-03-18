@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { Home, Search, Wrench, MapPin, GitCompare, ArrowLeft, Coffee } from 'lucide-react';
+import { Home, Search, Wrench, MapPin, GitCompare, ArrowLeft, Coffee, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AnimatePresence, motion } from 'framer-motion';
 
