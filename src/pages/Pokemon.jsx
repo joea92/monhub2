@@ -74,12 +74,18 @@ export default function PokemonDetail() {
               <div>
                 <p className="text-xs text-muted-foreground mb-1">Specialty</p>
                 <div className="flex flex-wrap gap-1">
-                  {pokemon.specialty.map(s => <Badge key={s} className="bg-violet-100 text-violet-800 border border-violet-200 text-xs">{s}</Badge>)}
+                  {pokemon.specialty.map(s => (
+                    <Link key={s} to={`/PokemonBySpecialty?specialty=${s}`}>
+                      <Badge className="bg-violet-100 text-violet-800 border border-violet-200 text-xs cursor-pointer hover:bg-violet-200 transition-colors">{s}</Badge>
+                    </Link>
+                  ))}
                 </div>
               </div>
               <div>
                 <p className="text-xs text-muted-foreground mb-1">Ideal Habitat</p>
-                <Badge className="bg-green-100 text-green-800 border border-green-200 text-xs">{pokemon.idealHabitat}</Badge>
+                <Link to={`/PokemonByHabitat?habitat=${pokemon.idealHabitat}`}>
+                  <Badge className="bg-green-100 text-green-800 border border-green-200 text-xs cursor-pointer hover:bg-green-200 transition-colors">{pokemon.idealHabitat}</Badge>
+                </Link>
               </div>
               <div>
                 <p className="text-xs text-muted-foreground mb-1">Location</p>
