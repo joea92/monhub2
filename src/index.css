@@ -115,7 +115,10 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
     font-family: var(--font-inter);
+    background-image: url('https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/8bf403d7c_grasstile.jpeg');
+    background-repeat: repeat;
+    background-size: 300px 300px;
   }
 }
