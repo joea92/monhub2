@@ -111,11 +111,11 @@ export default function SilhouetteTest() {
 
   const fetchRecords = async () => {
     setLoading(true);
-    // Only load the batch we care about (success imports, limited to BATCH_SIZE for initial test)
-    const data = await base44.entities.PokemonImage.filter({ import_status: 'success' }, '-updated_date', 200);
-    // Sort by pokedex number and take first BATCH_SIZE
+    // Load all successful records directly from pokemondb.net source
+    const data = await base44.entities.PokemonImage.filter({ import_status: 'success' }, '-updated_date', 500);
+    // Sort by pokedex number
     data.sort((a, b) => parseFloat(a.pokedex_number || 999) - parseFloat(b.pokedex_number || 999));
-    setRecords(data.slice(0, BATCH_SIZE));
+    setRecords(data);
     setLoading(false);
   };
 
