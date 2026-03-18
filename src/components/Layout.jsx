@@ -62,6 +62,12 @@ export default function Layout() {
                 </Link>
               );
             })}
+            <Link to="/ImageImport" style={{ userSelect: 'none' }}>
+              <Button variant="ghost" size="sm" className="gap-1.5 text-xs font-medium min-h-[44px]" style={{ userSelect: 'none' }}>
+                <Download className="w-3.5 h-3.5" />
+                Import
+              </Button>
+            </Link>
             <Link to="/SilhouetteTest" style={{ userSelect: 'none' }}>
               <Button variant="ghost" size="sm" className="gap-1.5 text-xs font-medium min-h-[44px]" style={{ userSelect: 'none' }}>
                 <FlaskConical className="w-3.5 h-3.5" />
