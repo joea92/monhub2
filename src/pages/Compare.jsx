@@ -99,19 +99,21 @@ export default function Compare() {
                 </div>
 
                 <div className="space-y-3 text-xs">
-                  <div>
-                    <p className="text-muted-foreground mb-1 font-medium">Type</p>
-                    <TypeBadge type={p.type} />
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground mb-1 font-medium">Specialty</p>
-                    <div className="flex flex-wrap gap-1">
-                      {p.specialty.map(s => <Badge key={s} variant="outline" className="text-[10px]">{s}</Badge>)}
+                  <div className="grid grid-cols-3 gap-2">
+                    <div>
+                      <p className="text-muted-foreground mb-1 font-medium">Type</p>
+                      <TypeBadge type={p.type} />
                     </div>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground mb-1 font-medium">Habitat</p>
-                    <Badge variant="secondary" className="text-[10px]">{p.idealHabitat}</Badge>
+                    <div>
+                      <p className="text-muted-foreground mb-1 font-medium">Specialty</p>
+                      <div className="flex flex-wrap gap-1">
+                        {p.specialty.map(s => <Badge key={s} variant="outline" className="text-[10px]">{s}</Badge>)}
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-muted-foreground mb-1 font-medium">Habitat</p>
+                      <Badge variant="secondary" className="text-[10px]">{p.idealHabitat}</Badge>
+                    </div>
                   </div>
                   <div className="hidden sm:block">
                     <p className="text-muted-foreground mb-1 font-medium">Location</p>
