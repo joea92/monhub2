@@ -18,17 +18,17 @@ export default function TownPlanner() {
   const [activeTown, setActiveTown] = useState(selectedTownId || null);
   const [selectedHouseId, setSelectedHouseId] = useState(null);
 
+  const activeTownData = TOWNS.find(t => t.id === activeTown);
+  const townPlan = activeTown ? (plans[activeTown] || { houses: [] }) : null;
+
   // Auto-select house if only one exists
-  React.useEffect(() => {
+  useEffect(() => {
     if (townPlan?.houses?.length === 1) {
       setSelectedHouseId(townPlan.houses[0].id);
     } else if (townPlan?.houses?.length === 0) {
       setSelectedHouseId(null);
     }
   }, [townPlan?.houses?.length]);
-
-  const activeTownData = TOWNS.find(t => t.id === activeTown);
-  const townPlan = activeTown ? (plans[activeTown] || { houses: [] }) : null;
 
   // Pokémon in this town by location
   const townPokemon = useMemo(() => {
