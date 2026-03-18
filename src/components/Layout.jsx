@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Home, Search, Wrench, MapPin, GitCompare, Settings } from 'lucide-react';
+import { Home, Search, Wrench, MapPin, GitCompare, Settings, FlaskConical } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AnimatePresence, motion } from 'framer-motion';
 import SettingsModal from '@/components/SettingsModal.jsx';
