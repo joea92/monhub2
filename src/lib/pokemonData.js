@@ -112,7 +112,7 @@ const SILHOUETTE_IMAGES = {
   "exeggcute": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/9cc46e969_Exeggcute.png",
   "exeggutor": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/518ea4ea1_Exeggutor.png",
   "feraligatr": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/f6fcdfd0b_Faraligatr.png",
-  "farfetchd": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/f13e26698_Farfetchd.png",
+  "farfetchd": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/b1465165c_Farfetchd.png",
   "flaaffy": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/52caeb69a_Flaaffy.png",
   "flareon": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/49b53d13e_Flareon.png",
   "forretress": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/fe2ea7a2e_Forretress.png",
