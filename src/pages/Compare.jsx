@@ -140,38 +140,6 @@ export default function Compare() {
         })}
       </div>
 
-      {/* Search */}
-      {focusedSlot !== null && (
-        <div className="mb-6 max-w-sm relative z-10">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <Input
-              placeholder="Search Pokémon..."
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              className="pl-9"
-              autoFocus
-            />
-          </div>
-          {searchResults.length > 0 && (
-            <div className="absolute top-full left-0 right-0 mt-2 bg-card rounded-xl border border-border/50 p-2 space-y-1 w-full">
-              {searchResults.map(p => (
-                <button
-                  key={p.id}
-                  onClick={() => addPokemon(p.id)}
-                  className="flex items-center gap-2 w-full p-2 rounded-lg hover:bg-muted/50 transition-colors text-left"
-                >
-                  <div className="w-8 h-8 flex-shrink-0 bg-muted/30 rounded">
-                    <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-8 h-8" />
-                  </div>
-                  <span className="text-sm font-medium">{p.name}</span>
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-
       {/* Compatibility matrix - only show if 2+ selected */}
       {selected.length >= 2 && (
         <div className="mt-8 space-y-4">
