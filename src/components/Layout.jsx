@@ -110,7 +110,7 @@ export default function Layout() {
 
       {/* Mobile bottom tab bar */}
       <nav
-        className="md:hidden fixed bottom-0 left-0 right-0 z-50 backdrop-blur-xl border-t border-border/40 flex"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 backdrop-blur-xl border-t border-border/40 flex"
         style={{
           backgroundColor: 'hsl(20, 96%, 62%)',
           paddingBottom: 'env(safe-area-inset-bottom)',
