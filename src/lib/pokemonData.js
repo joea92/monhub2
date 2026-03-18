@@ -6,6 +6,7 @@ const CUSTOM_IMAGES = {
   "toxtricity (amped form)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/92ed96b4d_toxtricityampedform.png",
   "toxtricity (low key form)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/9a954560e_toxtricitylowkeyform.png",
   "snorlax (mosslax)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/0beca5076_snorlaxmosslax.png",
+  "paldean wooper": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/dc5ff8431_P-Wooper.png",
 };
 
 function getImageUrl(name) {
@@ -92,7 +93,7 @@ const RAW = [
   { number: "114", name: "Azurill", type: "Normal/Fairy", specialty: "Water, Hype", location: "Bleak Beach", idealHabitat: "Humid", f1: "Water", f2: "Cute stuff", f3: "Cleanliness", f4: "Healing", f5: "Rides", flavor: "Sour" },
   { number: "115", name: "Marill", type: "Water/Fairy", specialty: "Water, Hype", location: "Bleak Beach", idealHabitat: "Humid", f1: "Water", f2: "Cute stuff", f3: "Cleanliness", f4: "Round stuff", f5: "Symbols", flavor: "Sour" },
   { number: "116", name: "Azumarill", type: "Water/Fairy", specialty: "Water, Build", location: "Bleak Beach", idealHabitat: "Humid", f1: "Water", f2: "Cute stuff", f3: "Construction", f4: "Wobbly stuff", f5: "Symbols", flavor: "Sour" },
-  { number: "117", name: "P-Wooper", type: "Poison/Ground", specialty: "Litter", location: "Bleak Beach", idealHabitat: "Humid", f1: "Garbage", f2: "Dirt", f3: "Stone stuff", f4: "Cleanliness", f5: "Group activities", flavor: "Sour" },
+  { number: "117", name: "Paldean Wooper", type: "Poison/Ground", specialty: "Litter", location: "Bleak Beach", idealHabitat: "Humid", f1: "Garbage", f2: "Dirt", f3: "Stone stuff", f4: "Cleanliness", f5: "Group activities", flavor: "Sour" },
   { number: "118", name: "Clodsire", type: "Poison/Ground", specialty: "Litter, Bull", location: "Bleak Beach", idealHabitat: "Humid", f1: "Garbage", f2: "Dirt", f3: "Water", f4: "Cleanliness", f5: "Round stuff", flavor: "Bitter" },
   { number: "119", name: "Smeargle", type: "Normal", specialty: "Paint", location: "Bleak Beach", idealHabitat: "Bright", f1: "Soft stuff", f2: "Fabric", f3: "Strange stuff", f4: "Colourful stuff", f5: "Shiny stuff", flavor: "Dry" },
   { number: "120", name: "Torchic", type: "Fire", specialty: "Burn", location: "Bleak Beach", idealHabitat: "Warm", f1: "Fire", f2: "Stone stuff", f3: "Cute stuff", f4: "Containers", f5: "Pretty flowers", flavor: "Sweet" },
