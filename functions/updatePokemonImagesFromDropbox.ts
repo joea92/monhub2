@@ -52,7 +52,10 @@ Deno.serve(async (req) => {
         // Find matching Pokemon record by name
         const record = allRecords.find(r => r.name.toLowerCase() === filename.toLowerCase());
 
-        if (!record) continue;
+        if (!record) {
+          failed++;
+          continue;
+        }
 
         // Create shareable link for this file
         const linkRes = await fetch('https://api.dropboxapi.com/2/sharing/create_shared_link_with_settings', {
