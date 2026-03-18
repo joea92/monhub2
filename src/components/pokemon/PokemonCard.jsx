@@ -15,8 +15,9 @@ export default function PokemonCard({ pokemon, onFavToggle, compact = false }) {
   const handleFav = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    toggleFavourite(pokemon.id);
+    // Optimistic update
     setFav(!fav);
+    toggleFavourite(pokemon.id);
     onFavToggle?.();
   };
 
