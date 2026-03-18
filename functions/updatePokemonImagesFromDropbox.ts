@@ -43,11 +43,8 @@ Deno.serve(async (req) => {
         // Extract filename without extension
         const filename = entry.name.split('.').slice(0, -1).join('.');
         
-        // Find matching Pokemon record
-        const record = allRecords.find(r => 
-          r.slug === filename || 
-          r.name.toLowerCase().replace(/\s+/g, '-') === filename.toLowerCase()
-        );
+        // Find matching Pokemon record by name
+        const record = allRecords.find(r => r.name.toLowerCase() === filename.toLowerCase());
 
         if (!record) continue;
 
