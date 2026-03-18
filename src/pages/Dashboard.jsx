@@ -22,9 +22,9 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 py-4 md:py-8">
       {/* Hero */}
-      <div className="relative overflow-hidden rounded-2xl bg-card border border-border/40 shadow-sm p-8 md:p-12 mb-8">
+      <div className="relative overflow-hidden rounded-2xl bg-card border border-border/40 shadow-sm p-5 md:p-12 mb-5 md:mb-8">
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-3">
             <img src={DITTO_URL} alt="Ditto" className="w-5 h-5 object-contain" />
