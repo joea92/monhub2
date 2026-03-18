@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Wrench, MapPin, GitCompare, ArrowRight, Star } from 'lucide-react';
 import { usePullToRefresh } from '@/hooks/usePullToRefresh';
