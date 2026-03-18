@@ -50,8 +50,8 @@ Deno.serve(async (req) => {
     const records = await base44.asServiceRole.entities.PokemonImage.filter({ id: { $in: ids } });
     const recordMap = Object.fromEntries(records.map(r => [r.id, r]));
 
-    // Process sequentially with delay to avoid timeouts
-    const BATCH_SIZE = 1;
+    // Process in parallel batches for speed
+    const BATCH_SIZE = 5;
     for (let i = 0; i < ids.length; i += BATCH_SIZE) {
       const batch = ids.slice(i, i + BATCH_SIZE);
       await Promise.all(batch.map(async (id) => {
@@ -63,7 +63,7 @@ Deno.serve(async (req) => {
             return;
           }
 
-          const referenceUrl = record.hosted_image_url || record.source_image_url;
+          const referenceUrl = record.source_image_url;
           if (!referenceUrl) {
             await base44.asServiceRole.entities.PokemonImage.update(id, {
               silhouette_status: 'failed',
@@ -73,15 +73,18 @@ Deno.serve(async (req) => {
           }
 
           const typeColor = TYPE_COLORS[record.type?.toLowerCase()] || TYPE_COLORS.normal;
-          const prompt = `Create a stylised icon-style silhouette of a creature inspired by ${record.name}. 
-          CRITICAL: Use a FULLY TRANSPARENT background (alpha channel).
-          - Solid flat silhouette shape with NO internal details
-          - Soft rounded edges, clean and icon-like
-          - Color: ${typeColor} (${record.type} type)
-          - The background must be 100% transparent - NO white, NO color, NO gradient
-          - Save as PNG with alpha transparency
-          - Minimal and recognisable form
-          - Centered with padding`;
+          const prompt = `Generate a flat, solid silhouette icon of a ${record.type}-type Pokémon called ${record.name}.
+          
+REQUIREMENTS:
+- Flat solid color silhouette: ${typeColor}
+- Completely transparent background (PNG with alpha channel, NO white, NO other colors)
+- Simple, iconic, recognizable shape
+- Centered with padding around edges
+- Soft rounded edges, clean design
+- No internal details or gradients
+- Icon style suitable for UI use
+
+Reference: The creature should resemble the provided image but rendered as a simple colored silhouette.`;
 
           const generated = await base44.asServiceRole.integrations.Core.GenerateImage({
             prompt,
