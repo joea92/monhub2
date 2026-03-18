@@ -136,6 +136,7 @@ Deno.serve(async (req) => {
           name: item.name,
           slug: item.slug,
           pokedex_number: item.number || '',
+          type: item.type || '',
           source_image_url: item.imageUrl,
           hosted_image_url: fileUrl,
           silhouette_image_url: silhouetteUrl || '',
