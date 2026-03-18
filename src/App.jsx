@@ -49,6 +49,7 @@ const AuthenticatedApp = () => {
         <Route path="/Compare" element={<Compare />} />
         <Route path="/Admin" element={<Admin />} />
         <Route path="/ImageImport" element={<ImageImport />} />
+        <Route path="/SilhouetteTest" element={<SilhouetteTest />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
