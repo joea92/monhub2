@@ -70,7 +70,7 @@ export default function Layout() {
                 active ? 'text-white' : 'text-white/70'
               }`}
             >
-              <Icon className={`w-5 h-5 ${active ? item.color : ''}`} />
+              <Icon className="w-5 h-5 text-white" />
               <span className="text-[10px] font-medium leading-none">{item.label}</span>
               {active && <span className="w-1 h-1 rounded-full bg-primary mt-0.5" />}
             </Link>
