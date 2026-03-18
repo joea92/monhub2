@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Wrench, MapPin, GitCompare, ArrowRight, Star } from 'lucide-react';
 
-const DITTO_URL = 'https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/eb84e81fe_newdittologo.png';
+const DITTO_URL = 'https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/1dbd42f41_newdittologo.png';
 import { Button } from '@/components/ui/button';
 import { POKEMON_DATA, TOWNS } from '@/lib/pokemonData';
 import PokemonCard from '@/components/pokemon/PokemonCard';
