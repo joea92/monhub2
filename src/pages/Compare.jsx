@@ -108,11 +108,11 @@ export default function Compare() {
                     <p className="text-muted-foreground mb-1 font-medium">Habitat</p>
                     <Badge variant="secondary" className="text-[10px]">{p.idealHabitat}</Badge>
                   </div>
-                  <div>
+                  <div className="hidden sm:block">
                     <p className="text-muted-foreground mb-1 font-medium">Location</p>
                     <span>{p.location}</span>
                   </div>
-                  <div>
+                  <div className="hidden sm:block">
                     <p className="text-muted-foreground mb-1 font-medium">Favourites</p>
                     <div className="flex flex-wrap gap-1">
                       {p.favourites.map(f => (
