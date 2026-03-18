@@ -18,6 +18,15 @@ export default function TownPlanner() {
   const [activeTown, setActiveTown] = useState(selectedTownId || null);
   const [selectedHouseId, setSelectedHouseId] = useState(null);
 
+  // Auto-select house if only one exists
+  React.useEffect(() => {
+    if (townPlan?.houses?.length === 1) {
+      setSelectedHouseId(townPlan.houses[0].id);
+    } else if (townPlan?.houses?.length === 0) {
+      setSelectedHouseId(null);
+    }
+  }, [townPlan?.houses?.length]);
+
   const activeTownData = TOWNS.find(t => t.id === activeTown);
   const townPlan = activeTown ? (plans[activeTown] || { houses: [] }) : null;
 
@@ -249,7 +258,6 @@ export default function TownPlanner() {
                   onClick={() => {
                     if (selectedHouseId) {
                       addToHouse(selectedHouseId, p.id);
-                      setSelectedHouseId(null);
                     }
                   }}
                   disabled={!selectedHouseId}
