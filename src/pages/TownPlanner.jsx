@@ -121,11 +121,15 @@ export default function TownPlanner() {
     if (!selectedHouseId) return null;
     const house = townPlan?.houses.find(h => h.id === selectedHouseId);
     if (!house || !house.memberIds?.length) return null;
-    const scores = house.memberIds.map(memberId => calculatePairScore(pokemonId, memberId)).filter(Boolean).filter(s => s && s.percentage !== undefined);
+    const pokemon = getPokemonById(pokemonId);
+    if (!pokemon) return null;
+    const scores = house.memberIds.map(memberId => {
+      const member = getPokemonById(memberId);
+      return member ? calculatePairScore(pokemon, member) : null;
+    }).filter(s => s && s.percentage !== undefined);
     if (!scores.length) return null;
-    const avgPercentage = Math.round(scores.reduce((sum, s) => sum + (s.percentage || 0), 0) / scores.length);
-    const avgLabel = scores[0]?.label || 'Unknown';
-    return { percentage: avgPercentage, label: avgLabel };
+    const avgPercentage = Math.round(scores.reduce((sum, s) => sum + s.percentage, 0) / scores.length);
+    return { percentage: avgPercentage, label: scores[0].label };
   };
 
   // Town overview
