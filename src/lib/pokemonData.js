@@ -1,6 +1,24 @@
 // Pokémon Pokopia dataset — sourced from PokopiaPokemon.xlsx
 // Fields: id (sequential), number (spreadsheet #), name, type, specialty[], location, idealHabitat, favourites[], flavor, imageUrl
 
+const SILHOUETTE_IMAGES = {
+  "abra": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/4d64bd54c_Abra.png",
+  "aerodactyl": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/338714171_Aerodactyl.png",
+  "aipom": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/04eb4b3a0_Aipom.png",
+  "alakazam": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/e66fbcad7_Alakazam.png",
+  "ambipom": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/d8c90d735_Ambipom.png",
+  "ampharos": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/c1b4be9ad_Ampharos.png",
+  "arcanine": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/3bfbd8da1_Arcanine.png",
+  "ariados": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/fc7f59f9f_Ariados.png",
+  "articuno": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/b9489e189_Articuno.png",
+  "azumarill": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/870765993_Azumarill.png",
+  "bayleef": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/5162f6cde_Bayleef.png",
+  "bellsprout": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/7d7326bcb_Bellsprout.png",
+  "blastoise": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/d9acb2e34_Blastoise.png",
+  "blissey": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/6a23a4f4e_Blissey.png",
+  "bulbasaur": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/48db680e3_Bulbasaur.png",
+};
+
 const CUSTOM_IMAGES = {
   "pikachu (peakychu)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/8799afdb8_peakychu.png",
   "toxtricity (amped form)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/92ed96b4d_toxtricityampedform.png",
@@ -11,7 +29,13 @@ const CUSTOM_IMAGES = {
 
 function getImageUrl(name) {
   const key = name.toLowerCase().trim();
+  
+  // Check silhouettes first
+  if (SILHOUETTE_IMAGES[key]) return SILHOUETTE_IMAGES[key];
+  
+  // Then custom images
   if (CUSTOM_IMAGES[key]) return CUSTOM_IMAGES[key];
+  
   const slug = name
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, '')
