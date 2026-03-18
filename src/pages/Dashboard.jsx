@@ -73,7 +73,7 @@ export default function Dashboard() {
       </div>
 
       {/* Towns overview */}
-      <div className="mb-10">
+      <div className="mb-5 md:mb-10">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold">Towns</h2>
           <Link to="/TownPlanner" className="text-xs text-primary font-medium flex items-center gap-1 hover:underline">
