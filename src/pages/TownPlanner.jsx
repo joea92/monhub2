@@ -274,7 +274,7 @@ export default function TownPlanner() {
 
               <TabsContent value="native">
                 <div className="space-y-1 max-h-96 overflow-y-auto">
-                  {filteredNative.slice(0, 30).map(p => (
+                  {filteredNative.map(p => (
                     <button
                       key={p.id}
                       onClick={() => {
@@ -292,11 +292,6 @@ export default function TownPlanner() {
                       <Badge variant="secondary" className="text-[10px]">{p.idealHabitat}</Badge>
                     </button>
                   ))}
-                  {filteredNative.length > 30 && (
-                    <p className="text-xs text-muted-foreground text-center pt-2">
-                      +{filteredNative.length - 30} more
-                    </p>
-                  )}
                   {filteredNative.length === 0 && (
                     <p className="text-xs text-muted-foreground text-center py-4">{unassignedSearch ? 'No matches' : 'All Pokémon assigned!'}</p>
                   )}
@@ -305,7 +300,7 @@ export default function TownPlanner() {
 
               <TabsContent value="all">
                 <div className="space-y-1 max-h-96 overflow-y-auto">
-                  {filteredAll.slice(0, 30).map(p => (
+                  {filteredAll.map(p => (
                     <button
                       key={p.id}
                       onClick={() => {
@@ -325,11 +320,6 @@ export default function TownPlanner() {
                       </div>
                     </button>
                   ))}
-                  {filteredAll.length > 30 && (
-                    <p className="text-xs text-muted-foreground text-center pt-2">
-                      +{filteredAll.length - 30} more
-                    </p>
-                  )}
                   {filteredAll.length === 0 && (
                     <p className="text-xs text-muted-foreground text-center py-4">{unassignedSearch ? 'No matches' : 'All Pokémon assigned!'}</p>
                   )}
