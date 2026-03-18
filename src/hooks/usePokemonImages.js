@@ -49,9 +49,24 @@ export function usePokemonImages() {
   useEffect(() => {
     if (_cache) {
       setImageMap(_cache);
-      return;
+    } else {
+      loadImageMap().then(map => setImageMap({ ...map }));
     }
-    loadImageMap().then(map => setImageMap({ ...map }));
+
+    // Subscribe to PokemonImage updates to refresh cache when silhouettes are ready
+    const unsubscribe = base44.entities.PokemonImage.subscribe((event) => {
+      if (event.data?.silhouette_status === 'ready' && event.data?.silhouette_image_url) {
+        // Invalidate cache and reload
+        _cache = null;
+        _promise = null;
+        loadImageMap().then(map => {
+          _cache = map;
+          setImageMap({ ...map });
+        });
+      }
+    });
+
+    return unsubscribe;
   }, []);
 
   function getImageUrl(name, fallback) {
