@@ -23,11 +23,15 @@ const slideVariants = {
 
 export default function Layout() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [showSettings, setShowSettings] = React.useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+
+  const isRootTab = NAV_ITEMS.some(item => item.path === location.pathname);
+  const showBackButton = !isRootTab;
 
   const isActive = (item) =>
     location.pathname === item.path ||
