@@ -65,12 +65,12 @@ export default function PokemonDetail() {
               <div>
                 <p className="text-xs text-muted-foreground mb-1">Specialty</p>
                 <div className="flex flex-wrap gap-1">
-                  {pokemon.specialty.map(s => <Badge key={s} variant="outline" className="text-xs">{s}</Badge>)}
+                  {pokemon.specialty.map(s => <Badge key={s} className="bg-violet-100 text-violet-800 border border-violet-200 text-xs">{s}</Badge>)}
                 </div>
               </div>
               <div>
                 <p className="text-xs text-muted-foreground mb-1">Ideal Habitat</p>
-                <Badge variant="secondary" className="text-xs">{pokemon.idealHabitat}</Badge>
+                <Badge className="bg-green-100 text-green-800 border border-green-200 text-xs">{pokemon.idealHabitat}</Badge>
               </div>
               <div>
                 <p className="text-xs text-muted-foreground mb-1">Location</p>
@@ -81,7 +81,7 @@ export default function PokemonDetail() {
               <p className="text-xs text-muted-foreground mb-1.5">Favourite Categories</p>
               <div className="flex flex-wrap gap-1.5">
                 {pokemon.favourites.map(f => (
-                  <Badge key={f} className="bg-primary/10 text-primary border-primary/20 border text-xs">{f}</Badge>
+                  <Badge key={f} className="bg-violet-100 text-violet-800 border border-violet-200 text-xs">{f}</Badge>
                 ))}
               </div>
             </div>
@@ -96,9 +96,9 @@ export default function PokemonDetail() {
 
       {/* Best house of 4 */}
       {bestHouse.length > 0 && (
-        <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl border border-primary/10 p-5 mb-6">
+        <div className="bg-card rounded-2xl border border-border/40 shadow-sm p-5 mb-6">
           <h2 className="font-bold text-sm mb-3 flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-primary" /> Best Possible House of 4
+            <Sparkles className="w-4 h-4 text-pokopia-green" /> Best Possible House of 4
           </h2>
           {bestHouse.map((house, idx) => (
             <div key={idx} className={`${idx > 0 ? 'mt-4 pt-4 border-t border-border/50' : ''}`}>
@@ -114,7 +114,7 @@ export default function PokemonDetail() {
                  ))}
               </div>
               <div className="flex flex-wrap gap-3 text-xs">
-                <Badge className="bg-emerald-50 text-emerald-700 border border-emerald-200">
+                <Badge className="bg-green-100 text-green-800 border border-green-200">
                   Avg: {house.houseScore.avgPercentage}%
                 </Badge>
                 <span className="text-muted-foreground">{house.houseScore.label}</span>

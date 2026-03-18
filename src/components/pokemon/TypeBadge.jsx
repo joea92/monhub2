@@ -1,25 +1,26 @@
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
 
+// All types use Pokopia Cyan — consistent with the Pokédex feature colour
 const TYPE_COLORS = {
-  "Grass": "bg-green-100 text-green-800 border-green-200",
-  "Fire": "bg-orange-100 text-orange-800 border-orange-200",
-  "Water": "bg-blue-100 text-blue-800 border-blue-200",
-  "Normal": "bg-gray-100 text-gray-700 border-gray-200",
-  "Bug": "bg-lime-100 text-lime-800 border-lime-200",
-  "Poison": "bg-purple-100 text-purple-800 border-purple-200",
-  "Electric": "bg-yellow-100 text-yellow-800 border-yellow-200",
-  "Ground": "bg-amber-100 text-amber-800 border-amber-200",
-  "Fighting": "bg-red-100 text-red-800 border-red-200",
-  "Psychic": "bg-pink-100 text-pink-800 border-pink-200",
-  "Rock": "bg-stone-100 text-stone-700 border-stone-200",
-  "Ghost": "bg-violet-100 text-violet-800 border-violet-200",
-  "Ice": "bg-cyan-100 text-cyan-800 border-cyan-200",
-  "Dragon": "bg-indigo-100 text-indigo-800 border-indigo-200",
-  "Dark": "bg-zinc-200 text-zinc-800 border-zinc-300",
-  "Steel": "bg-slate-100 text-slate-700 border-slate-200",
-  "Fairy": "bg-pink-100 text-pink-700 border-pink-200",
-  "Flying": "bg-sky-100 text-sky-800 border-sky-200",
+  "Grass":    "bg-cyan-100 text-cyan-800 border-cyan-200",
+  "Fire":     "bg-cyan-100 text-cyan-800 border-cyan-200",
+  "Water":    "bg-cyan-100 text-cyan-800 border-cyan-200",
+  "Normal":   "bg-cyan-100 text-cyan-800 border-cyan-200",
+  "Bug":      "bg-cyan-100 text-cyan-800 border-cyan-200",
+  "Poison":   "bg-cyan-100 text-cyan-800 border-cyan-200",
+  "Electric": "bg-cyan-100 text-cyan-800 border-cyan-200",
+  "Ground":   "bg-cyan-100 text-cyan-800 border-cyan-200",
+  "Fighting": "bg-cyan-100 text-cyan-800 border-cyan-200",
+  "Psychic":  "bg-cyan-100 text-cyan-800 border-cyan-200",
+  "Rock":     "bg-cyan-100 text-cyan-800 border-cyan-200",
+  "Ghost":    "bg-cyan-100 text-cyan-800 border-cyan-200",
+  "Ice":      "bg-cyan-100 text-cyan-800 border-cyan-200",
+  "Dragon":   "bg-cyan-100 text-cyan-800 border-cyan-200",
+  "Dark":     "bg-cyan-100 text-cyan-800 border-cyan-200",
+  "Steel":    "bg-cyan-100 text-cyan-800 border-cyan-200",
+  "Fairy":    "bg-cyan-100 text-cyan-800 border-cyan-200",
+  "Flying":   "bg-cyan-100 text-cyan-800 border-cyan-200",
 };
 
 function getTypeColor(type) {
