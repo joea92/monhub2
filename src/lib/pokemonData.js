@@ -214,6 +214,7 @@ const SILHOUETTE_IMAGES = {
   "dachsbun": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/e13f85680_Dachsbun.png",
   "farigiraf": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/e7e94035d_Farigiraf.png",
   "gastrodon (west)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/f5b0c7025_Gastrodon-West.png",
+  "gastrodon (east)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/78e69eba4_Gastrodon-East.png",
   "fidough": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/9c60533df_Fidough.png",
   "floragato": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/86e67b531_Floragato.png",
   "gholdengo": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/2b6f3c68c_Gholdengo.png",
