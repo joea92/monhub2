@@ -34,14 +34,14 @@ async function fetchWithRetry(url, options = {}, retries = 3) {
 async function scrapePokopiaPokedex() {
   // Fallback: use direct image URLs from pokemondb
   const samplePokemon = [
-    { name: 'Bulbasaur', number: '001', imageUrl: 'https://img.pokemondb.net/sprites/home/normal/2x/bulbasaur.jpg' },
-    { name: 'Charmander', number: '004', imageUrl: 'https://img.pokemondb.net/sprites/home/normal/2x/charmander.jpg' },
-    { name: 'Squirtle', number: '007', imageUrl: 'https://img.pokemondb.net/sprites/home/normal/2x/squirtle.jpg' },
-    { name: 'Pikachu', number: '025', imageUrl: 'https://img.pokemondb.net/sprites/home/normal/2x/pikachu.jpg' },
-    { name: 'Charizard', number: '006', imageUrl: 'https://img.pokemondb.net/sprites/home/normal/2x/charizard.jpg' },
-    { name: 'Venusaur', number: '003', imageUrl: 'https://img.pokemondb.net/sprites/home/normal/2x/venusaur.jpg' },
-    { name: 'Blastoise', number: '009', imageUrl: 'https://img.pokemondb.net/sprites/home/normal/2x/blastoise.jpg' },
-    { name: 'Raichu', number: '026', imageUrl: 'https://img.pokemondb.net/sprites/home/normal/2x/raichu.jpg' },
+    { name: 'Bulbasaur', number: '001', type: 'grass', imageUrl: 'https://img.pokemondb.net/sprites/home/normal/2x/bulbasaur.jpg' },
+    { name: 'Charmander', number: '004', type: 'fire', imageUrl: 'https://img.pokemondb.net/sprites/home/normal/2x/charmander.jpg' },
+    { name: 'Squirtle', number: '007', type: 'water', imageUrl: 'https://img.pokemondb.net/sprites/home/normal/2x/squirtle.jpg' },
+    { name: 'Pikachu', number: '025', type: 'electric', imageUrl: 'https://img.pokemondb.net/sprites/home/normal/2x/pikachu.jpg' },
+    { name: 'Charizard', number: '006', type: 'fire', imageUrl: 'https://img.pokemondb.net/sprites/home/normal/2x/charizard.jpg' },
+    { name: 'Venusaur', number: '003', type: 'grass', imageUrl: 'https://img.pokemondb.net/sprites/home/normal/2x/venusaur.jpg' },
+    { name: 'Blastoise', number: '009', type: 'water', imageUrl: 'https://img.pokemondb.net/sprites/home/normal/2x/blastoise.jpg' },
+    { name: 'Raichu', number: '026', type: 'electric', imageUrl: 'https://img.pokemondb.net/sprites/home/normal/2x/raichu.jpg' },
   ];
 
   return samplePokemon;
