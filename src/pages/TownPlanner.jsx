@@ -149,7 +149,7 @@ export default function TownPlanner() {
                 onClick={() => setActiveTown(town.id)}
                 className="bg-card rounded-2xl border border-border/50 p-6 text-left hover:shadow-lg hover:border-primary/20 transition-all"
               >
-                <span className="text-3xl mb-3 block">{town.icon}</span>
+                <img src={town.icon} alt={town.name} className="w-16 h-16 mb-3 object-contain" />
                 <h2 className="font-bold text-lg mb-1">{town.name}</h2>
                 <div className="space-y-1 text-xs text-muted-foreground">
                   <p>{nativePokemon} native Pokémon</p>
