@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Home, Search, Wrench, MapPin, GitCompare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
