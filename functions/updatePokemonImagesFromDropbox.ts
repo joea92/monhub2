@@ -60,7 +60,7 @@ Deno.serve(async (req) => {
     let failed = 0;
 
     // Process each file in Dropbox with rate limiting
-    for (const entry of listData.entries) {
+    for (const entry of allEntries) {
       if (entry['.tag'] !== 'file') continue;
 
       try {
