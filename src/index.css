@@ -18,7 +18,7 @@
     /* Olive:       rgb(135,135,72)  */
     /* Light Grey:  rgb(254,254,253) */
 
-    --background: 104 28% 75%;        /* Light Green rgb(178,206,159) */
+    --background: transparent;        /* removed – grass tile used instead */
     --foreground: 220 15% 20%;        /* Dark grey, not pure black */
 
     --card: 60 33% 99%;               /* Light Grey rgb(254,254,253) */
