@@ -230,21 +230,21 @@ export default function Compare() {
               {houseScore.pairs && houseScore.pairs.length > 0 ? (
                 houseScore.pairs.map((pair, i) => (
                   <div key={i} className="bg-card rounded-xl border border-border/50 p-4">
-                    <div className="flex items-center gap-3 mb-2">
+                    <div className="flex flex-col md:flex-row md:items-center gap-3 mb-2">
                       <div className="flex items-center gap-2">
                          <div className="w-8 h-8 flex-shrink-0 bg-muted/30 rounded">
                             <PokemonSilhouette src={pair.pokemon1.imageUrl} alt="" primaryType={pair.pokemon1.type?.split('/')[0]} className="w-8 h-8" />
                           </div>
                         <span className="text-sm font-medium">{pair.pokemon1.name}</span>
                       </div>
-                      <span className="text-muted-foreground text-xs">↔</span>
+                      <span className="text-muted-foreground text-xs hidden md:inline">↔</span>
                       <div className="flex items-center gap-2">
                          <div className="w-8 h-8 flex-shrink-0 bg-muted/30 rounded">
                             <PokemonSilhouette src={pair.pokemon2.imageUrl} alt="" primaryType={pair.pokemon2.type?.split('/')[0]} className="w-8 h-8" />
                           </div>
                         <span className="text-sm font-medium">{pair.pokemon2.name}</span>
                       </div>
-                      <div className="ml-auto">
+                      <div className="md:ml-auto">
                         <CompatibilityBadge result={pair} />
                       </div>
                     </div>
