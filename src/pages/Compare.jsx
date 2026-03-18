@@ -155,7 +155,7 @@ export default function Compare() {
           </div>
 
           <div className="space-y-3">
-            {houseScore.pairs?.map((pair, i) => (
+            {houseScore.pairs && houseScore.pairs.length > 0 ? houseScore.pairs.map((pair, i) => (
               <div key={i} className="bg-card rounded-xl border border-border/50 p-4">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="flex items-center gap-2">
