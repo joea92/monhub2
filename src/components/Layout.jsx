@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Home, Search, Wrench, MapPin, GitCompare, Settings, Menu, X, Sparkles } from 'lucide-react';
+import { Home, Search, Wrench, MapPin, GitCompare, Settings, Menu, X, Sparkles, House } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const NAV_ITEMS = [
-  { path: '/Dashboard', label: 'Home', icon: Home },
-  { path: '/Pokedex', label: 'Pokédex', icon: Search },
-  { path: '/HousePlanner', label: 'House Planner', icon: Wrench },
-  { path: '/TownPlanner', label: 'Towns', icon: MapPin },
-  { path: '/Compare', label: 'Compare', icon: GitCompare },
-  { path: '/Admin', label: 'Admin', icon: Settings },
+  { path: '/Dashboard', label: 'Home', icon: Home, color: '' },
+  { path: '/Pokedex', label: 'Pokédex', icon: Search, color: 'text-cyan-600' },
+  { path: '/HousePlanner', label: 'House Planner', icon: Wrench, color: 'text-green-600' },
+  { path: '/TownPlanner', label: 'Towns', icon: MapPin, color: 'text-amber-700' },
+  { path: '/Compare', label: 'Compare', icon: GitCompare, color: 'text-violet-600' },
+  { path: '/Admin', label: 'Admin', icon: Settings, color: '' },
 ];
 
 export default function Layout() {

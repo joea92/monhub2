@@ -28,7 +28,7 @@ export default function MatchCard({ pokemon, target, compatibility }) {
           {compatibility.breakdown.sharedFavourites.length > 0 && (
             <div className="flex flex-wrap gap-1 mt-1.5">
               {compatibility.breakdown.sharedFavourites.map(f => (
-                <Badge key={f} variant="secondary" className="text-[10px] px-1.5 py-0">{f}</Badge>
+                <Badge key={f} className="bg-violet-100 text-violet-800 border border-violet-200 text-[10px] px-1.5 py-0">{f}</Badge>
               ))}
             </div>
           )}
