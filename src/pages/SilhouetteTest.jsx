@@ -190,6 +190,12 @@ export default function SilhouetteTest() {
             : <><Sparkles className="w-4 h-4" /> Generate Test Silhouettes</>
           }
         </Button>
+        <Button variant="outline" onClick={async () => {
+          await base44.functions.invoke('resetSilhouettes', {});
+          await fetchRecords();
+        }} disabled={loading} className="gap-2">
+          Reset All
+        </Button>
         <Button variant="ghost" onClick={fetchRecords} disabled={loading} className="gap-2">
           <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           Refresh
