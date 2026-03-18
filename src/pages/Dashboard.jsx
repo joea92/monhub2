@@ -106,7 +106,7 @@ export default function Dashboard() {
             See all <ArrowRight className="w-3 h-3" />
           </Link>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 md:gap-3">
           {featured.map(p => (
             <PokemonCard key={p.id} pokemon={p} />
           ))}
