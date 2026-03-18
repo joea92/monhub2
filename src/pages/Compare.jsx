@@ -8,6 +8,7 @@ import { calculatePairScore, calculateHouseScore, getCompatLabelColor, getHouseL
 import TypeBadge from '@/components/pokemon/TypeBadge';
 import CompatibilityBadge from '@/components/pokemon/CompatibilityBadge';
 import HouseOccupancy from '@/components/pokemon/HouseOccupancy';
+import PokemonSilhouette from '@/components/pokemon/PokemonSilhouette';
 
 export default function Compare() {
   const [selectedIds, setSelectedIds] = useState([]);
@@ -59,7 +60,9 @@ export default function Compare() {
                   onClick={() => addPokemon(p.id)}
                   className="flex items-center gap-2 w-full p-2 rounded-lg hover:bg-muted/50 transition-colors text-left"
                 >
-                  <img src={p.imageUrl} alt={p.name} className="w-8 h-8 object-contain" />
+                  <div className="w-8 h-8 flex-shrink-0 bg-muted/30 rounded">
+                    <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-8 h-8" />
+                  </div>
                   <span className="text-sm font-medium">{p.name}</span>
                   <Plus className="w-4 h-4 text-muted-foreground ml-auto" />
                 </button>
@@ -88,7 +91,9 @@ export default function Compare() {
                   <X className="w-4 h-4 text-muted-foreground" />
                 </button>
                 <div className="text-center mb-4">
-                  <img src={p.imageUrl} alt={p.name} className="w-20 h-20 mx-auto object-contain" />
+                   <div className="w-20 h-20 mx-auto bg-muted/30 rounded-lg flex items-center justify-center">
+                     <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-20 h-20" />
+                   </div>
                   <h3 className="font-bold text-sm mt-2">{p.name}</h3>
                   <p className="text-xs text-muted-foreground">#{p.number}</p>
                 </div>
@@ -150,12 +155,16 @@ export default function Compare() {
               <div key={i} className="bg-card rounded-xl border border-border/50 p-4">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="flex items-center gap-2">
-                    <img src={pair.pokemon1.imageUrl} alt="" className="w-8 h-8 object-contain" />
+                     <div className="w-8 h-8 flex-shrink-0 bg-muted/30 rounded">
+                       <PokemonSilhouette src={pair.pokemon1.imageUrl} alt="" primaryType={pair.pokemon1.type?.split('/')[0]} className="w-8 h-8" />
+                     </div>
                     <span className="text-sm font-medium">{pair.pokemon1.name}</span>
                   </div>
                   <span className="text-muted-foreground text-xs">↔</span>
                   <div className="flex items-center gap-2">
-                    <img src={pair.pokemon2.imageUrl} alt="" className="w-8 h-8 object-contain" />
+                     <div className="w-8 h-8 flex-shrink-0 bg-muted/30 rounded">
+                       <PokemonSilhouette src={pair.pokemon2.imageUrl} alt="" primaryType={pair.pokemon2.type?.split('/')[0]} className="w-8 h-8" />
+                     </div>
                     <span className="text-sm font-medium">{pair.pokemon2.name}</span>
                   </div>
                   <div className="ml-auto">
