@@ -790,7 +790,7 @@ export const ALL_LOCATIONS = [...new Set(POKEMON_DATA.map(p => p.location))].sor
 export const ALL_FLAVORS = [...new Set(POKEMON_DATA.map(p => p.flavor))].sort();
 
 export const TOWNS = [
-  { id: "withered-wasteland", name: "Withered Wasteland", color: "bg-amber-100 text-amber-800", icon: "🏜️" },
+  { id: "withered-wasteland", name: "Withered Wasteland", color: "bg-amber-100 text-amber-800", icon: "🌱" },
   { id: "bleak-beach", name: "Bleak Beach", color: "bg-cyan-100 text-cyan-800", icon: "🏖️" },
   { id: "rocky-ridges", name: "Rocky Ridges", color: "bg-stone-100 text-stone-800", icon: "⛰️" },
   { id: "sparkling-skylands", name: "Sparkling Skylands", color: "bg-violet-100 text-violet-800", icon: "✨" },
