@@ -1,7 +1,16 @@
 // Pokémon Pokopia dataset — sourced from PokopiaPokemon.xlsx
 // Fields: id (sequential), number (spreadsheet #), name, type, specialty[], location, idealHabitat, favourites[], flavor, imageUrl
 
+const CUSTOM_IMAGES = {
+  "pikachu (peakychu)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/8799afdb8_peakychu.png",
+  "toxtricity (amped form)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/92ed96b4d_toxtricityampedform.png",
+  "toxtricity (low key form)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/9a954560e_toxtricitylowkeyform.png",
+  "snorlax (mosslax)": "https://media.base44.com/images/public/69b976fdec8fc338dd963cb9/0beca5076_snorlaxmosslax.png",
+};
+
 function getImageUrl(name) {
+  const key = name.toLowerCase().trim();
+  if (CUSTOM_IMAGES[key]) return CUSTOM_IMAGES[key];
   const slug = name
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, '')
