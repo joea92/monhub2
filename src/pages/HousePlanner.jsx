@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { Plus, X, Sparkles, AlertTriangle, Search, Save, Trash2, Layers, GripVertical } from 'lucide-react';
 import { Button } from '@/components/ui/button';
