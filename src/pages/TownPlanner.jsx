@@ -248,8 +248,10 @@ export default function TownPlanner() {
     if (!activeTown) return;
     const newPlans = { ...plans };
     if (!newPlans[activeTown]) newPlans[activeTown] = { houses: [] };
-    newPlans[activeTown].houses.push({ id: Date.now().toString(), name: `House ${newPlans[activeTown].houses.length + 1}`, memberIds: [] });
+    const newId = Date.now().toString();
+    newPlans[activeTown].houses.push({ id: newId, name: `House ${newPlans[activeTown].houses.length + 1}`, memberIds: [] });
     updatePlans(newPlans);
+    setSelectedHouseId(newId);
   };
 
   const removeHouse = (houseId) => {
