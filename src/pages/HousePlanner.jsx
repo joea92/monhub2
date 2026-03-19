@@ -106,8 +106,8 @@ function FloorSection({ label, floorIds, onRemove, overflowWarning }) {
 export default function HousePlanner() {
   // In split mode, store floors separately so each can hold >2
   const [houseMembers, setHouseMembers] = useState([]); // non-split mode
-  const [floor1, setFloor1] = useState([null, null]); // split mode floor 1
-  const [floor2, setFloor2] = useState([null, null]); // split mode floor 2
+  const [floor1, setFloor1] = useState([]); // split mode floor 1
+  const [floor2, setFloor2] = useState([]); // split mode floor 2
   const [splitMode, setSplitMode] = useState(false);
   const [search, setSearch] = useState('');
   const [savedHouses, setSavedHouses] = useState(getSavedHouses());
