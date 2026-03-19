@@ -11,6 +11,7 @@ import HouseOccupancy from '@/components/pokemon/HouseOccupancy';
 import TypeBadge from '@/components/pokemon/TypeBadge';
 import CompatibilityBadge from '@/components/pokemon/CompatibilityBadge';
 import PokemonSilhouette from '@/components/pokemon/PokemonSilhouette';
+import PokemonFilterBar, { applyPokemonFilters } from '@/components/pokemon/PokemonFilterBar';
 
 // Draggable pokemon row in a floor
 function PokemonSlot({ id, index, onRemove, isWeakest, showWeakest }) {
