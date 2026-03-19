@@ -176,8 +176,14 @@ export default function HousePlanner() {
 
   const removeMember = (id) => {
     if (splitMode) {
-      const slots = houseMembers.map(m => m === id ? null : m);
-      setHouseMembers(slots);
+      // Remove the entry and compact back to 4 slots
+      const removed = houseMembers.map(m => m === id ? null : m);
+      const filled = removed.filter(Boolean);
+      // Rebuild 4-slot array preserving floor split as best as possible
+      // Just filter and re-pad to 4
+      const compacted = [...filled];
+      while (compacted.length < 4) compacted.push(null);
+      setHouseMembers(compacted);
     } else {
       setHouseMembers(houseMembers.filter(m => m !== id));
     }
