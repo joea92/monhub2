@@ -76,11 +76,10 @@ export default function HousePlanner() {
 
   const handleSplit = () => {
     if (houseMembers.length !== 4) return;
-    const floor1 = { id: Date.now().toString(), name: `House ${savedHouses.length + 1} (Floor 1)`, memberIds: houseMembers.slice(0, 2), createdAt: new Date().toISOString() };
-    const floor2 = { id: (Date.now() + 1).toString(), name: `House ${savedHouses.length + 2} (Floor 2)`, memberIds: houseMembers.slice(2, 4), createdAt: new Date().toISOString() };
-    const updated = saveHouse(floor1);
-    const updated2 = saveHouse(floor2, updated);
-    setSavedHouses(updated2 || getSavedHouses());
+    const base = savedHouses.length;
+    saveHouse({ id: Date.now().toString(), name: `House ${base + 1} (Floor 1)`, memberIds: houseMembers.slice(0, 2), createdAt: new Date().toISOString() });
+    const updated = saveHouse({ id: (Date.now() + 1).toString(), name: `House ${base + 2} (Floor 2)`, memberIds: houseMembers.slice(2, 4), createdAt: new Date().toISOString() });
+    setSavedHouses(updated);
     setHouseMembers([]);
   };
 
