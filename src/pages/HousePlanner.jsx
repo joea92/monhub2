@@ -310,8 +310,10 @@ export default function HousePlanner() {
                   />
                   <div className="relative flex items-center gap-2 py-1">
                     <div className="flex-1 border-t-2 border-dashed border-border/60" />
-                    {floorFullMsg ? (
-                      <span className="text-[10px] text-red-500 font-medium px-2 bg-card whitespace-nowrap">Please remove one Pokémon first</span>
+                    {overflowFloor ? (
+                      <span className="text-[10px] text-red-500 font-medium px-2 bg-card whitespace-nowrap">
+                        Please remove one Pokémon from {overflowFloor}
+                      </span>
                     ) : (
                       <span className="text-[10px] text-muted-foreground font-medium px-2 bg-card">drag to rearrange floors</span>
                     )}
