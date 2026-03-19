@@ -100,6 +100,19 @@ export default function TownPlanner() {
     updatePlans(newPlans);
   };
 
+  const splitHouse = (houseId) => {
+    const newPlans = { ...plans };
+    const houses = newPlans[activeTown].houses;
+    const idx = houses.findIndex(h => h.id === houseId);
+    if (idx === -1) return;
+    const house = houses[idx];
+    if ((house.memberIds || []).length !== 4) return;
+    const floor1 = { id: Date.now().toString(), name: `${house.name} (Floor 1)`, memberIds: house.memberIds.slice(0, 2) };
+    const floor2 = { id: (Date.now() + 1).toString(), name: `${house.name} (Floor 2)`, memberIds: house.memberIds.slice(2, 4) };
+    houses.splice(idx, 1, floor1, floor2);
+    updatePlans(newPlans);
+  };
+
   const autoFillTown = () => {
     if (!activeTown) return;
     const unassignedIds = unassigned.map(p => p.id);
