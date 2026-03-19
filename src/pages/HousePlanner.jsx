@@ -290,7 +290,6 @@ export default function HousePlanner() {
                   <FloorSection
                     label="Floor 2"
                     floorIds={floor2}
-                    splitMode={splitMode}
                     onRemove={removeMember}
                     overflowWarning={floor2Overflow}
                   />
