@@ -81,18 +81,20 @@ export default function PokemonSilhouette({ src, alt, primaryType, className = '
     img.src = resolvedSrc;
   }, [resolvedSrc, primaryType]);
 
-  // Display silhouette if available, otherwise show original image
-  const displaySrc = silhouetteSrc || resolvedSrc;
-
-  if (!displaySrc) {
-    return <div className={`flex items-center justify-center bg-muted/30 ${className}`} />;
+  if (!silhouetteSrc) {
+    return (
+      <>
+        <canvas ref={canvasRef} style={{ display: 'none' }} />
+        <div className={`flex items-center justify-center bg-muted/30 ${className}`} />
+      </>
+    );
   }
 
   return (
     <>
       <canvas ref={canvasRef} style={{ display: 'none' }} />
       <img
-        src={displaySrc}
+        src={silhouetteSrc}
         alt={alt}
         loading="lazy"
         className={`object-contain ${className}`}
