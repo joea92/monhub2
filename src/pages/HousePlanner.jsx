@@ -17,7 +17,7 @@ function PokemonSlot({ id, index, onRemove, isWeakest, showWeakest }) {
   const p = id ? getPokemonById(id) : null;
 
   return (
-    <Draggable draggableId={id || `empty-${index}`} index={index} isDragDisabled={!id}>
+    <Draggable draggableId={id ? String(id) : `empty-${index}`} index={index} isDragDisabled={!id}>
       {(provided, snapshot) => (
         <div
           ref={provided.innerRef}

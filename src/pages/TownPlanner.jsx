@@ -17,7 +17,7 @@ function HouseMemberRow({ id, index, onRemove, houseId }) {
   const p = getPokemonById(id);
   if (!p) return null;
   return (
-    <Draggable draggableId={`${houseId}-${id}`} index={index}>
+    <Draggable draggableId={`${houseId}-${String(id)}`} index={index}>
       {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
