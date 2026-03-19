@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Plus, X, Search, Save, Sparkles, ArrowLeft, ChevronRight } from 'lucide-react';
+import { Plus, X, Search, Save, Sparkles, ArrowLeft, ChevronRight, Layers } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

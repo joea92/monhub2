@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Plus, X, Sparkles, AlertTriangle, Search, Save, Trash2 } from 'lucide-react';
+import { Plus, X, Sparkles, AlertTriangle, Search, Save, Trash2, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
