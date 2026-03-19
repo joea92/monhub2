@@ -201,6 +201,7 @@ export default function TownPlanner() {
   const [plans, setPlans] = useState(getTownPlans());
   const [activeTown, setActiveTown] = useState(selectedTownId || null);
   const [selectedHouseId, setSelectedHouseId] = useState(null);
+  // { houseId, floor: 'floor1'|'floor2' } when a floor has >2 pokemon
   const [floorFullHouseId, setFloorFullHouseId] = useState(null);
   const [unassignedTab, setUnassignedTab] = useState('native');
   const [unassignedSearch, setUnassignedSearch] = useState('');
