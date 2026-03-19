@@ -191,24 +191,51 @@ export default function HousePlanner() {
     const dstFloor = floorMap[destination.droppableId];
     if (!srcFloor || !dstFloor) return;
 
-    // If moving to a different floor, check if destination is full
-    if (source.droppableId !== destination.droppableId) {
-      const dstFilledCount = dstFloor.filter(idx => houseMembers[idx]).length;
-      if (dstFilledCount >= 2) {
-        setFloorFullMsg(destination.droppableId);
-        setTimeout(() => setFloorFullMsg(null), 2500);
-        return;
-      }
+    // Same floor reorder: swap within floor slots
+    if (source.droppableId === destination.droppableId) {
+      const srcSlotIdx = srcFloor[source.index];
+      const dstSlotIdx = dstFloor[destination.index];
+      if (srcSlotIdx === dstSlotIdx) return;
+      const newSlots = [...houseMembers];
+      [newSlots[srcSlotIdx], newSlots[dstSlotIdx]] = [newSlots[dstSlotIdx], newSlots[srcSlotIdx]];
+      setHouseMembers(newSlots);
+      return;
     }
 
+    // Cross-floor move: always allow, but if destination ends up with >2, show persistent warning
     const srcSlotIdx = srcFloor[source.index];
-    const dstSlotIdx = dstFloor[destination.index];
-    if (srcSlotIdx === dstSlotIdx) return;
-
     const newSlots = [...houseMembers];
-    [newSlots[srcSlotIdx], newSlots[dstSlotIdx]] = [newSlots[dstSlotIdx], newSlots[srcSlotIdx]];
-    setHouseMembers(newSlots);
+    const movedId = newSlots[srcSlotIdx];
+    if (!movedId) return;
+
+    // Find first empty slot in destination floor, or append before the other floor's start
+    const dstSlots = dstFloor;
+    const emptyDstSlot = dstSlots.find(idx => !newSlots[idx]);
+    if (emptyDstSlot !== undefined) {
+      // Normal move into empty slot
+      newSlots[emptyDstSlot] = movedId;
+      newSlots[srcSlotIdx] = null;
+      setHouseMembers(newSlots);
+      setOverflowFloor(null);
+    } else {
+      // Destination floor is full — add anyway by expanding the array
+      // Remove from source slot, insert into destination floor
+      newSlots[srcSlotIdx] = null;
+      // Insert movedId after the last slot of dstFloor
+      const insertAfter = Math.max(...dstSlots);
+      const expanded = [...newSlots.slice(0, insertAfter + 1), movedId, ...newSlots.slice(insertAfter + 1)];
+      setHouseMembers(expanded);
+      setOverflowFloor(destination.droppableId);
+    }
   };
+
+  // Clear overflow warning when floor drops back to ≤2
+  const floor1OverflowCount = floor1Ids.filter(Boolean).length;
+  const floor2OverflowCount = floor2Ids.filter(Boolean).length;
+  React.useEffect(() => {
+    if (overflowFloor === 'Floor 1' && floor1OverflowCount <= 2) setOverflowFloor(null);
+    if (overflowFloor === 'Floor 2' && floor2OverflowCount <= 2) setOverflowFloor(null);
+  }, [floor1OverflowCount, floor2OverflowCount, overflowFloor]);
 
   const handleSave = () => {
     const house = {
