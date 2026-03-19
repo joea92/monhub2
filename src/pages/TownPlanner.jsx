@@ -340,6 +340,13 @@ export default function TownPlanner() {
     updatePlans(newPlans);
   };
 
+  const autoArrangeTown = () => {
+    if (!activeTown || !townPlan?.houses?.length) return;
+    const arranged = autoArrangeHouses(townPlan.houses);
+    const newPlans = { ...plans, [activeTown]: { ...townPlan, houses: arranged } };
+    updatePlans(newPlans);
+  };
+
   const getCompatibilityWithHouse = (pokemonId) => {
     if (!selectedHouseId) return null;
     const house = townPlan?.houses.find(h => h.id === selectedHouseId);
