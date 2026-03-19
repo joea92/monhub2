@@ -148,14 +148,12 @@ export default function HousePlanner() {
   const toggleSplitMode = () => {
     if (!splitMode) {
       // Entering split mode: distribute current members across floors
-      const current = houseMembers.filter(Boolean);
-      const f1 = [current[0] || null, current[1] || null];
-      const f2 = [current[2] || null, current[3] || null];
-      setFloor1(f1);
-      setFloor2(f2);
+      const current = houseMembers;
+      setFloor1(current.slice(0, 2));
+      setFloor2(current.slice(2));
     } else {
       // Leaving split mode: merge floors back
-      setHouseMembers([...floor1Filled, ...floor2Filled]);
+      setHouseMembers([...floor1, ...floor2]);
     }
     setSplitMode(s => !s);
   };
