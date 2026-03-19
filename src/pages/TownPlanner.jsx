@@ -41,12 +41,22 @@ function HouseMemberRow({ id, index, onRemove, houseId }) {
 }
 
 // A single house card with optional split-floor view
-function HouseCard({ house, isSelected, onSelect, onRemove, onRemoveMember, onAddMember, assignedIds, onToggleSplit, onDragEnd, isFloorFull }) {
+function HouseCard({ house, isSelected, onSelect, onRemove, onRemoveMember, onAddMember, assignedIds, onToggleSplit, onDragEnd, overflowInfo, onOverflowClear }) {
   const memberIds = house.memberIds || [];
   const splitMode = !!house.splitMode;
 
-  const floor1Ids = splitMode ? memberIds.slice(0, 2) : [];
-  const floor2Ids = splitMode ? memberIds.slice(2, 4) : [];
+  const midpoint = Math.ceil(memberIds.length / 2);
+  const floor1Ids = splitMode ? memberIds.slice(0, midpoint) : [];
+  const floor2Ids = splitMode ? memberIds.slice(midpoint) : [];
+
+  const floor1Overflow = overflowInfo?.floor === 'floor1';
+  const floor2Overflow = overflowInfo?.floor === 'floor2';
+
+  // Auto-clear overflow when floor drops back to ≤2
+  useEffect(() => {
+    if (floor1Overflow && floor1Ids.length <= 2) onOverflowClear?.();
+    if (floor2Overflow && floor2Ids.length <= 2) onOverflowClear?.();
+  }, [memberIds.length]);
   const floor1Score = floor1Ids.filter(Boolean).length >= 2 ? calculateHouseScore(floor1Ids.filter(Boolean)) : null;
   const floor2Score = floor2Ids.filter(Boolean).length >= 2 ? calculateHouseScore(floor2Ids.filter(Boolean)) : null;
   const wholeScore = !splitMode && memberIds.length >= 2 ? calculateHouseScore(memberIds) : null;
