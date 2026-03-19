@@ -445,6 +445,7 @@ export default function HousePlanner() {
           {(!splitMode ? totalCount < 4 : true) && (
             <div className="bg-card rounded-2xl border border-border/50 p-4">
               <h3 className="font-semibold text-sm mb-3">Add Pokémon</h3>
+              <PokemonFilterBar filters={sidebarFilters} onChange={setSidebarFilters} />
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
@@ -456,7 +457,7 @@ export default function HousePlanner() {
               </div>
               {searchResults.length > 0 && (
                 <div className="mt-2 space-y-1">
-                  {searchResults.map(p => (
+                  {applyPokemonFilters(searchResults, sidebarFilters).map(p => (
                     <button key={p.id} onClick={() => addMember(p.id)}
                       className="flex items-center gap-2 w-full p-2 rounded-lg hover:bg-muted/50 transition-colors text-left">
                       <div className="w-8 h-8 flex-shrink-0 bg-muted/30 rounded">
