@@ -418,11 +418,15 @@ export default function TownPlanner() {
             <Sparkles className="w-3 h-3" /> Auto-Fill ({unassigned.length} unassigned)
           </Button>
         )}
-        {(townPlan?.houses || []).some(h => (h.memberIds || []).length > 0) && (
-          <Button size="sm" variant="outline" className="text-xs gap-1" onClick={autoArrangeTown}>
-            <Sparkles className="w-3 h-3" /> Auto Arrange
-          </Button>
-        )}
+        <Button
+          size="sm"
+          variant="outline"
+          className="text-xs gap-1"
+          onClick={autoArrangeTown}
+          disabled={!(townPlan?.houses || []).some(h => (h.memberIds || []).length > 0)}
+        >
+          <Sparkles className="w-3 h-3" /> Auto Arrange
+        </Button>
       </div>
 
       <div className="grid md:grid-cols-3 gap-6">
