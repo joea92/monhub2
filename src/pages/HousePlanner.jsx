@@ -14,46 +14,39 @@ import PokemonSilhouette from '@/components/pokemon/PokemonSilhouette';
 
 // Draggable pokemon row in a floor
 function PokemonSlot({ id, index, onRemove, isWeakest, showWeakest }) {
-  const p = id ? getPokemonById(id) : null;
+  const p = getPokemonById(id);
+  if (!p) return null;
 
   return (
-    <Draggable draggableId={id ? String(id) : `empty-${index}`} index={index} isDragDisabled={!id}>
+    <Draggable draggableId={String(id)} index={index}>
       {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
           className={`flex items-center gap-3 p-3 rounded-xl border transition-all ${
-            p
-              ? snapshot.isDragging
-                ? 'bg-primary/10 border-primary shadow-lg'
-                : 'bg-muted/30 border-border/30'
-              : 'bg-muted/10 border-dashed border-border/40'
+            snapshot.isDragging
+              ? 'bg-primary/10 border-primary shadow-lg'
+              : 'bg-muted/30 border-border/30'
           }`}
         >
-          {p ? (
-            <>
-              <div {...provided.dragHandleProps} className="cursor-grab active:cursor-grabbing text-muted-foreground">
-                <GripVertical className="w-4 h-4" />
-              </div>
-              <div className="w-10 h-10 flex-shrink-0 bg-muted/30 rounded">
-                <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-10 h-10" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-semibold text-sm">{p.name}</p>
-                <TypeBadge type={p.type} />
-              </div>
-              {showWeakest && isWeakest && (
-                <Badge className="bg-amber-50 text-amber-700 border border-amber-200 text-[10px] flex-shrink-0">
-                  <AlertTriangle className="w-3 h-3 mr-1" /> Weakest
-                </Badge>
-              )}
-              <Button variant="ghost" size="icon" className="flex-shrink-0 h-7 w-7" onClick={() => onRemove(id)}>
-                <X className="w-3 h-3" />
-              </Button>
-            </>
-          ) : (
-            <div className="flex-1 text-center py-1 text-xs text-muted-foreground">Empty slot</div>
+          <div {...provided.dragHandleProps} className="cursor-grab active:cursor-grabbing text-muted-foreground">
+            <GripVertical className="w-4 h-4" />
+          </div>
+          <div className="w-10 h-10 flex-shrink-0 bg-muted/30 rounded">
+            <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-10 h-10" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="font-semibold text-sm">{p.name}</p>
+            <TypeBadge type={p.type} />
+          </div>
+          {showWeakest && isWeakest && (
+            <Badge className="bg-amber-50 text-amber-700 border border-amber-200 text-[10px] flex-shrink-0">
+              <AlertTriangle className="w-3 h-3 mr-1" /> Weakest
+            </Badge>
           )}
+          <Button variant="ghost" size="icon" className="flex-shrink-0 h-7 w-7" onClick={() => onRemove(id)}>
+            <X className="w-3 h-3" />
+          </Button>
         </div>
       )}
     </Draggable>
