@@ -5,14 +5,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { POKEMON_DATA, getPokemonById } from '@/lib/pokemonData';
-import { calculateHouseScore, suggestNextMember, optimizeBestHouse, getHouseLabelColor, calculatePairScore } from '@/lib/compatibility';
+import { calculateHouseScore, suggestNextMember, optimizeBestHouse, getHouseLabelColor } from '@/lib/compatibility';
 import { saveHouse, getSavedHouses, deleteHouse } from '@/lib/storage';
 import HouseOccupancy from '@/components/pokemon/HouseOccupancy';
 import TypeBadge from '@/components/pokemon/TypeBadge';
 import CompatibilityBadge from '@/components/pokemon/CompatibilityBadge';
 import PokemonSilhouette from '@/components/pokemon/PokemonSilhouette';
 
-// Slot component for empty or filled pokemon spots
+// Draggable pokemon row in a floor
 function PokemonSlot({ id, index, onRemove, isWeakest, showWeakest }) {
   const p = id ? getPokemonById(id) : null;
 
@@ -61,7 +61,7 @@ function PokemonSlot({ id, index, onRemove, isWeakest, showWeakest }) {
 }
 
 // Floor section with droppable area
-function FloorSection({ label, floorIds, allIds, splitMode, onRemove, houseScore }) {
+function FloorSection({ label, floorIds, splitMode, onRemove, overflowWarning }) {
   const filledIds = floorIds.filter(Boolean);
   const floorScore = filledIds.length >= 2 ? calculateHouseScore(filledIds) : null;
   const weakestId = floorScore?.weakestMember?.pokemon?.id;
@@ -75,6 +75,11 @@ function FloorSection({ label, floorIds, allIds, splitMode, onRemove, houseScore
             <Badge className={`${getHouseLabelColor(floorScore.label)} border text-[10px]`}>
               {floorScore.avgPercentage}%
             </Badge>
+          )}
+          {overflowWarning && (
+            <span className="text-[10px] text-red-500 font-medium">
+              ⚠ Please remove one Pokémon from {label}
+            </span>
           )}
         </div>
       )}
@@ -104,25 +109,21 @@ function FloorSection({ label, floorIds, allIds, splitMode, onRemove, houseScore
 }
 
 export default function HousePlanner() {
-  // houseMembers: array of 4 slots (null = empty), always 4 when splitMode
-  const [houseMembers, setHouseMembers] = useState([]);
+  // In split mode, store floors separately so each can hold >2
+  const [houseMembers, setHouseMembers] = useState([]); // non-split mode
+  const [floor1, setFloor1] = useState([null, null]); // split mode floor 1
+  const [floor2, setFloor2] = useState([null, null]); // split mode floor 2
   const [splitMode, setSplitMode] = useState(false);
-  // overflowFloor: which floor label has >2 pokemon (persistent warning)
-  const [overflowFloor, setOverflowFloor] = useState(null);
   const [search, setSearch] = useState('');
   const [savedHouses, setSavedHouses] = useState(getSavedHouses());
   const [showAutoOptimize, setShowAutoOptimize] = useState(false);
 
-  // Normalize: filled ids only
-  const filledIds = houseMembers.filter(Boolean);
+  const floor1Filled = floor1.filter(Boolean);
+  const floor2Filled = floor2.filter(Boolean);
+  const filledIds = splitMode ? [...floor1Filled, ...floor2Filled] : houseMembers.filter(Boolean);
 
-  // Split: floor1 = first half, floor2 = second half (supports >2 per floor when overflow)
-  const midpoint = Math.ceil(houseMembers.length / 2);
-  const floor1Ids = splitMode ? houseMembers.slice(0, midpoint) : [];
-  const floor2Ids = splitMode ? houseMembers.slice(midpoint) : [];
-
-  const floor1Filled = floor1Ids.filter(Boolean);
-  const floor2Filled = floor2Ids.filter(Boolean);
+  const floor1Overflow = floor1Filled.length > 2;
+  const floor2Overflow = floor2Filled.length > 2;
 
   const floor1Score = useMemo(() => floor1Filled.length >= 2 ? calculateHouseScore(floor1Filled) : null, [floor1Filled.join(',')]);
   const floor2Score = useMemo(() => floor2Filled.length >= 2 ? calculateHouseScore(floor2Filled) : null, [floor2Filled.join(',')]);
@@ -151,96 +152,71 @@ export default function HousePlanner() {
 
   const toggleSplitMode = () => {
     if (!splitMode) {
-      // Entering split mode: pad to 4 slots
-      const padded = [...houseMembers];
-      while (padded.length < 4) padded.push(null);
-      setHouseMembers(padded.slice(0, 4));
+      // Entering split mode: distribute current members across floors
+      const current = houseMembers.filter(Boolean);
+      const f1 = [current[0] || null, current[1] || null];
+      const f2 = [current[2] || null, current[3] || null];
+      setFloor1(f1);
+      setFloor2(f2);
+    } else {
+      // Leaving split mode: merge floors back
+      setHouseMembers([...floor1Filled, ...floor2Filled]);
     }
     setSplitMode(s => !s);
   };
 
   const addMember = (id) => {
-    if (filledIds.length >= 4 || filledIds.includes(id)) return;
+    if (filledIds.includes(id)) return;
     if (splitMode) {
-      // Fill first empty slot
-      const slots = [...houseMembers];
-      while (slots.length < 4) slots.push(null);
-      const emptyIdx = slots.indexOf(null);
-      if (emptyIdx !== -1) slots[emptyIdx] = id;
-      setHouseMembers(slots);
+      // Add to floor with fewer pokemon, or floor1 if equal
+      if (floor1Filled.length <= floor2Filled.length) {
+        setFloor1(prev => [...prev, id]);
+      } else {
+        setFloor2(prev => [...prev, id]);
+      }
     } else {
-      setHouseMembers([...houseMembers, id]);
+      if (filledIds.length >= 4) return;
+      setHouseMembers(prev => [...prev, id]);
     }
     setSearch('');
   };
 
   const removeMember = (id) => {
     if (splitMode) {
-      // Remove the entry and compact back to 4 slots
-      const removed = houseMembers.map(m => m === id ? null : m);
-      const filled = removed.filter(Boolean);
-      // Rebuild 4-slot array preserving floor split as best as possible
-      // Just filter and re-pad to 4
-      const compacted = [...filled];
-      while (compacted.length < 4) compacted.push(null);
-      setHouseMembers(compacted);
+      setFloor1(prev => prev.filter(m => m !== id));
+      setFloor2(prev => prev.filter(m => m !== id));
     } else {
-      setHouseMembers(houseMembers.filter(m => m !== id));
+      setHouseMembers(prev => prev.filter(m => m !== id));
     }
   };
 
   const onDragEnd = (result) => {
     if (!result.destination) return;
     const { source, destination } = result;
+    const srcFloorId = source.droppableId;
+    const dstFloorId = destination.droppableId;
+    if (!['Floor 1', 'Floor 2'].includes(srcFloorId)) return;
+    if (!['Floor 1', 'Floor 2'].includes(dstFloorId)) return;
 
-    const floorMap = { 'Floor 1': [0, 1], 'Floor 2': [2, 3] };
-    const srcFloor = floorMap[source.droppableId];
-    const dstFloor = floorMap[destination.droppableId];
-    if (!srcFloor || !dstFloor) return;
-
-    // Same floor reorder: swap within floor slots
-    if (source.droppableId === destination.droppableId) {
-      const srcSlotIdx = srcFloor[source.index];
-      const dstSlotIdx = dstFloor[destination.index];
-      if (srcSlotIdx === dstSlotIdx) return;
-      const newSlots = [...houseMembers];
-      [newSlots[srcSlotIdx], newSlots[dstSlotIdx]] = [newSlots[dstSlotIdx], newSlots[srcSlotIdx]];
-      setHouseMembers(newSlots);
-      return;
-    }
-
-    // Cross-floor move: always allow, but if destination ends up with >2, show persistent warning
-    const srcSlotIdx = srcFloor[source.index];
-    const newSlots = [...houseMembers];
-    const movedId = newSlots[srcSlotIdx];
+    const srcList = srcFloorId === 'Floor 1' ? [...floor1] : [...floor2];
+    const movedId = srcList[source.index];
     if (!movedId) return;
 
-    // Find first empty slot in destination floor, or append before the other floor's start
-    const dstSlots = dstFloor;
-    const emptyDstSlot = dstSlots.find(idx => !newSlots[idx]);
-    if (emptyDstSlot !== undefined) {
-      // Normal move into empty slot
-      newSlots[emptyDstSlot] = movedId;
-      newSlots[srcSlotIdx] = null;
-      setHouseMembers(newSlots);
-      setOverflowFloor(null);
+    if (srcFloorId === dstFloorId) {
+      // Reorder within same floor
+      srcList.splice(source.index, 1);
+      srcList.splice(destination.index, 0, movedId);
+      if (srcFloorId === 'Floor 1') setFloor1(srcList);
+      else setFloor2(srcList);
     } else {
-      // Destination floor is full — add anyway by expanding the array
-      // Remove from source slot, insert into destination floor
-      newSlots[srcSlotIdx] = null;
-      // Insert movedId after the last slot of dstFloor
-      const insertAfter = Math.max(...dstSlots);
-      const expanded = [...newSlots.slice(0, insertAfter + 1), movedId, ...newSlots.slice(insertAfter + 1)];
-      setHouseMembers(expanded);
-      setOverflowFloor(destination.droppableId);
+      // Cross-floor: remove from source, insert into destination (always allowed)
+      const dstList = dstFloorId === 'Floor 1' ? [...floor1] : [...floor2];
+      srcList.splice(source.index, 1);
+      dstList.splice(destination.index, 0, movedId);
+      if (srcFloorId === 'Floor 1') { setFloor1(srcList); setFloor2(dstList); }
+      else { setFloor2(srcList); setFloor1(dstList); }
     }
   };
-
-  // Clear overflow warning when floor drops back to ≤2
-  useEffect(() => {
-    if (overflowFloor === 'Floor 1' && floor1Ids.filter(Boolean).length <= 2) setOverflowFloor(null);
-    if (overflowFloor === 'Floor 2' && floor2Ids.filter(Boolean).length <= 2) setOverflowFloor(null);
-  }, [houseMembers, overflowFloor]);
 
   const handleSave = () => {
     const house = {
@@ -248,7 +224,8 @@ export default function HousePlanner() {
       name: `House ${savedHouses.length + 1}`,
       memberIds: filledIds,
       splitMode,
-      slots: splitMode ? houseMembers : undefined,
+      floor1: splitMode ? floor1Filled : undefined,
+      floor2: splitMode ? floor2Filled : undefined,
       createdAt: new Date().toISOString(),
     };
     const updated = saveHouse(house);
@@ -260,8 +237,9 @@ export default function HousePlanner() {
   };
 
   const loadHouse = (house) => {
-    if (house.splitMode && house.slots) {
-      setHouseMembers(house.slots);
+    if (house.splitMode) {
+      setFloor1(house.floor1 || (house.slots ? house.slots.slice(0, 2).filter(Boolean) : []));
+      setFloor2(house.floor2 || (house.slots ? house.slots.slice(2).filter(Boolean) : []));
       setSplitMode(true);
     } else {
       setHouseMembers(house.memberIds || []);
@@ -270,7 +248,8 @@ export default function HousePlanner() {
   };
 
   const handleClear = () => {
-    setHouseMembers(splitMode ? [null, null, null, null] : []);
+    if (splitMode) { setFloor1([null, null]); setFloor2([null, null]); }
+    else setHouseMembers([]);
   };
 
   const totalCount = filledIds.length;
@@ -306,30 +285,22 @@ export default function HousePlanner() {
                 <div className="space-y-3">
                   <FloorSection
                     label="Floor 1"
-                    floorIds={floor1Ids}
-                    allIds={houseMembers}
+                    floorIds={floor1}
                     splitMode={splitMode}
                     onRemove={removeMember}
-                    houseScore={floor1Score}
+                    overflowWarning={floor1Overflow}
                   />
                   <div className="relative flex items-center gap-2 py-1">
                     <div className="flex-1 border-t-2 border-dashed border-border/60" />
-                    {overflowFloor ? (
-                      <span className="text-[10px] text-red-500 font-medium px-2 bg-card whitespace-nowrap">
-                        Please remove one Pokémon from {overflowFloor}
-                      </span>
-                    ) : (
-                      <span className="text-[10px] text-muted-foreground font-medium px-2 bg-card">drag to rearrange floors</span>
-                    )}
+                    <span className="text-[10px] text-muted-foreground font-medium px-2 bg-card">drag to rearrange floors</span>
                     <div className="flex-1 border-t-2 border-dashed border-border/60" />
                   </div>
                   <FloorSection
                     label="Floor 2"
-                    floorIds={floor2Ids}
-                    allIds={houseMembers}
+                    floorIds={floor2}
                     splitMode={splitMode}
                     onRemove={removeMember}
-                    houseScore={floor2Score}
+                    overflowWarning={floor2Overflow}
                   />
                 </div>
               </DragDropContext>
@@ -372,7 +343,7 @@ export default function HousePlanner() {
             {/* Compatibility stats */}
             {splitMode ? (
               <div className="mt-5 pt-4 border-t border-border/50 space-y-4">
-                {[{ label: 'Floor 1', score: floor1Score, ids: floor1Filled }, { label: 'Floor 2', score: floor2Score, ids: floor2Filled }].map(({ label, score, ids }) => (
+                {[{ label: 'Floor 1', score: floor1Score, ids: floor1Filled }, { label: 'Floor 2', score: floor2Score, ids: floor2Filled }].map(({ label, score }) => (
                   score && (
                     <div key={label}>
                       <p className="text-xs font-semibold mb-2">{label} Compatibility</p>
@@ -478,7 +449,7 @@ export default function HousePlanner() {
 
         {/* Right: Add Pokémon & suggestions */}
         <div className="space-y-4">
-          {totalCount < 4 && (
+          {(!splitMode ? totalCount < 4 : true) && (
             <div className="bg-card rounded-2xl border border-border/50 p-4">
               <h3 className="font-semibold text-sm mb-3">Add Pokémon</h3>
               <div className="relative">
