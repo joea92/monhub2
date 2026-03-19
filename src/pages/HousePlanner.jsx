@@ -113,6 +113,7 @@ export default function HousePlanner() {
   const [search, setSearch] = useState('');
   const [savedHouses, setSavedHouses] = useState(getSavedHouses());
   const [showAutoOptimize, setShowAutoOptimize] = useState(false);
+  const [sidebarFilters, setSidebarFilters] = useState({ type: [], specialty: [], habitat: [] });
 
   const floor1Filled = floor1;
   const floor2Filled = floor2;
