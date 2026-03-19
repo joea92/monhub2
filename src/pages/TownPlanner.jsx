@@ -41,7 +41,7 @@ function HouseMemberRow({ id, index, onRemove, houseId }) {
 }
 
 // A single house card with optional split-floor view
-function HouseCard({ house, isSelected, onSelect, onRemove, onRemoveMember, onAddMember, assignedIds, onToggleSplit, onDragEnd }) {
+function HouseCard({ house, isSelected, onSelect, onRemove, onRemoveMember, onAddMember, assignedIds, onToggleSplit, onDragEnd, isFloorFull }) {
   const memberIds = house.memberIds || [];
   const splitMode = !!house.splitMode;
 
@@ -108,7 +108,11 @@ function HouseCard({ house, isSelected, onSelect, onRemove, onRemoveMember, onAd
               {/* Divider */}
               <div className="relative flex items-center gap-2 py-1">
                 <div className="flex-1 border-t-2 border-dashed border-border/60" />
-                <span className="text-[10px] text-muted-foreground px-1">drag between floors</span>
+                {isFloorFull ? (
+                  <span className="text-[10px] text-red-500 font-medium px-1 whitespace-nowrap">Please remove one Pokémon first</span>
+                ) : (
+                  <span className="text-[10px] text-muted-foreground px-1">drag between floors</span>
+                )}
                 <div className="flex-1 border-t-2 border-dashed border-border/60" />
               </div>
 
@@ -401,6 +405,7 @@ export default function TownPlanner() {
               assignedIds={assignedIds}
               onToggleSplit={toggleSplit}
               onDragEnd={handleHouseDragEnd}
+              isFloorFull={floorFullHouseId === house.id}
             />
           ))}
           {(townPlan?.houses || []).length === 0 && (
