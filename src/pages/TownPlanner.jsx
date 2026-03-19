@@ -121,11 +121,7 @@ function HouseCard({ house, isSelected, onSelect, onRemove, onRemoveMember, onAd
               {/* Divider */}
               <div className="relative flex items-center gap-2 py-1">
                 <div className="flex-1 border-t-2 border-dashed border-border/60" />
-                {isFloorFull ? (
-                  <span className="text-[10px] text-red-500 font-medium px-1 whitespace-nowrap">Please remove one Pokémon first</span>
-                ) : (
-                  <span className="text-[10px] text-muted-foreground px-1">drag between floors</span>
-                )}
+                <span className="text-[10px] text-muted-foreground px-1">drag between floors</span>
                 <div className="flex-1 border-t-2 border-dashed border-border/60" />
               </div>
 
