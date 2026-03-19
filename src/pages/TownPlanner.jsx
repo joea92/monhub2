@@ -135,6 +135,9 @@ function HouseCard({ house, isSelected, onSelect, onRemove, onRemoveMember, onAd
                 {floor2Score && (
                   <Badge className={`${getHouseLabelColor(floor2Score.label)} border text-[10px]`}>{floor2Score.avgPercentage}%</Badge>
                 )}
+                {floor2Overflow && (
+                  <span className="text-[10px] text-red-500 font-medium">⚠ Please remove one Pokémon from Floor 2</span>
+                )}
               </div>
               <Droppable droppableId={`${house.id}-floor2`}>
                 {(provided, snapshot) => (
