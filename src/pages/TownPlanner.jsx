@@ -218,6 +218,7 @@ export default function TownPlanner() {
   const [floorFullHouseId, setFloorFullHouseId] = useState(null);
   const [unassignedTab, setUnassignedTab] = useState('native');
   const [unassignedSearch, setUnassignedSearch] = useState('');
+  const [unassignedFilters, setUnassignedFilters] = useState({ type: [], specialty: [], habitat: [] });
 
   const activeTownData = TOWNS.find(t => t.id === activeTown);
   const townPlan = activeTown ? (plans[activeTown] || { houses: [] }) : null;
