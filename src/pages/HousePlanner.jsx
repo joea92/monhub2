@@ -116,9 +116,10 @@ export default function HousePlanner() {
   // Normalize: filled ids only
   const filledIds = houseMembers.filter(Boolean);
 
-  // Split into floor1 = slots 0-1, floor2 = slots 2-3
-  const floor1Ids = splitMode ? [houseMembers[0] || null, houseMembers[1] || null] : [];
-  const floor2Ids = splitMode ? [houseMembers[2] || null, houseMembers[3] || null] : [];
+  // Split: floor1 = first half, floor2 = second half (supports >2 per floor when overflow)
+  const midpoint = Math.ceil(houseMembers.length / 2);
+  const floor1Ids = splitMode ? houseMembers.slice(0, midpoint) : [];
+  const floor2Ids = splitMode ? houseMembers.slice(midpoint) : [];
 
   const floor1Filled = floor1Ids.filter(Boolean);
   const floor2Filled = floor2Ids.filter(Boolean);
