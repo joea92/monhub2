@@ -251,20 +251,20 @@ export default function HousePlanner() {
         {/* Left: Current house */}
         <div className="md:col-span-2 space-y-4">
           <div className="bg-card rounded-2xl border border-border/50 p-5">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <h2 className="font-bold">Current House</h2>
+            <div className="flex items-center justify-between mb-4 gap-2">
+              <h2 className="font-bold shrink-0">Current House</h2>
+              <div className="flex items-center gap-2 ml-auto">
                 <Button
                   size="sm"
                   variant={splitMode ? 'default' : 'outline'}
-                  className="text-xs gap-1 h-7"
+                  className="text-xs gap-1 h-7 shrink-0"
                   onClick={toggleSplitMode}
                 >
                   <Layers className="w-3 h-3" />
                   {splitMode ? 'Two Floors' : 'Split Floors'}
                 </Button>
+                <HouseOccupancy count={totalCount} />
               </div>
-              <HouseOccupancy count={totalCount} />
             </div>
 
             {/* House content */}
