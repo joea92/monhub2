@@ -231,12 +231,10 @@ export default function HousePlanner() {
   };
 
   // Clear overflow warning when floor drops back to ≤2
-  const floor1OverflowCount = floor1Ids.filter(Boolean).length;
-  const floor2OverflowCount = floor2Ids.filter(Boolean).length;
-  React.useEffect(() => {
-    if (overflowFloor === 'Floor 1' && floor1OverflowCount <= 2) setOverflowFloor(null);
-    if (overflowFloor === 'Floor 2' && floor2OverflowCount <= 2) setOverflowFloor(null);
-  }, [floor1OverflowCount, floor2OverflowCount, overflowFloor]);
+  useEffect(() => {
+    if (overflowFloor === 'Floor 1' && floor1Ids.filter(Boolean).length <= 2) setOverflowFloor(null);
+    if (overflowFloor === 'Floor 2' && floor2Ids.filter(Boolean).length <= 2) setOverflowFloor(null);
+  }, [houseMembers, overflowFloor]);
 
   const handleSave = () => {
     const house = {
