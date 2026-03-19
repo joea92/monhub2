@@ -107,6 +107,7 @@ export default function HousePlanner() {
   // houseMembers: array of 4 slots (null = empty), always 4 when splitMode
   const [houseMembers, setHouseMembers] = useState([]);
   const [splitMode, setSplitMode] = useState(false);
+  const [floorFullMsg, setFloorFullMsg] = useState(null);
   const [search, setSearch] = useState('');
   const [savedHouses, setSavedHouses] = useState(getSavedHouses());
   const [showAutoOptimize, setShowAutoOptimize] = useState(false);
@@ -189,12 +190,21 @@ export default function HousePlanner() {
     const dstFloor = floorMap[destination.droppableId];
     if (!srcFloor || !dstFloor) return;
 
+    // If moving to a different floor, check if destination is full
+    if (source.droppableId !== destination.droppableId) {
+      const dstFilledCount = dstFloor.filter(idx => houseMembers[idx]).length;
+      if (dstFilledCount >= 2) {
+        setFloorFullMsg(destination.droppableId);
+        setTimeout(() => setFloorFullMsg(null), 2500);
+        return;
+      }
+    }
+
     const srcSlotIdx = srcFloor[source.index];
     const dstSlotIdx = dstFloor[destination.index];
     if (srcSlotIdx === dstSlotIdx) return;
 
     const newSlots = [...houseMembers];
-    // Swap the two slots
     [newSlots[srcSlotIdx], newSlots[dstSlotIdx]] = [newSlots[dstSlotIdx], newSlots[srcSlotIdx]];
     setHouseMembers(newSlots);
   };
