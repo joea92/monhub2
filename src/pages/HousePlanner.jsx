@@ -113,9 +113,9 @@ export default function HousePlanner() {
   const [savedHouses, setSavedHouses] = useState(getSavedHouses());
   const [showAutoOptimize, setShowAutoOptimize] = useState(false);
 
-  const floor1Filled = floor1.filter(Boolean);
-  const floor2Filled = floor2.filter(Boolean);
-  const filledIds = splitMode ? [...floor1Filled, ...floor2Filled] : houseMembers.filter(Boolean);
+  const floor1Filled = floor1;
+  const floor2Filled = floor2;
+  const filledIds = splitMode ? [...floor1, ...floor2] : houseMembers;
 
   const floor1Overflow = floor1Filled.length > 2;
   const floor2Overflow = floor2Filled.length > 2;
