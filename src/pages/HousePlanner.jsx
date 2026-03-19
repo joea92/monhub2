@@ -241,7 +241,7 @@ export default function HousePlanner() {
   };
 
   const handleClear = () => {
-    if (splitMode) { setFloor1([null, null]); setFloor2([null, null]); }
+    if (splitMode) { setFloor1([]); setFloor2([]); }
     else setHouseMembers([]);
   };
 
