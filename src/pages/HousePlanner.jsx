@@ -480,20 +480,21 @@ export default function HousePlanner() {
               <h3 className="font-semibold text-sm mb-3">{filledIds.length === 0 ? 'Random Suggestions' : 'Best Next Additions'}</h3>
               <div className="space-y-1">
                 {applyPokemonFilters(suggestions.map(s => s.pokemon), sidebarFilters).map(p => {
-                  const s = suggestions.find(s => s.pokemon.id === p.id);
+                  const s = suggestions.find(su => su.pokemon.id === p.id);
+                  if (!s) return null;
                   return (
-                  <button key={s.pokemon.id} onClick={() => addMember(s.pokemon.id)}
-                    style={{ userSelect: 'none' }}
-                    className="flex items-center gap-2 w-full p-2 rounded-lg hover:bg-muted/50 transition-colors text-left">
-                    <div className="w-8 h-8 flex-shrink-0 bg-muted/30 rounded">
-                      <PokemonSilhouette src={s.pokemon.imageUrl} alt={s.pokemon.name} primaryType={s.pokemon.type?.split('/')[0]} className="w-8 h-8" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium truncate">{s.pokemon.name}</p>
-                      <p className="text-[10px] text-muted-foreground">House avg: {s.addedValue}%</p>
-                    </div>
-                    <Plus className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                  </button>
+                    <button key={s.pokemon.id} onClick={() => addMember(s.pokemon.id)}
+                      style={{ userSelect: 'none' }}
+                      className="flex items-center gap-2 w-full p-2 rounded-lg hover:bg-muted/50 transition-colors text-left">
+                      <div className="w-8 h-8 flex-shrink-0 bg-muted/30 rounded">
+                        <PokemonSilhouette src={s.pokemon.imageUrl} alt={s.pokemon.name} primaryType={s.pokemon.type?.split('/')[0]} className="w-8 h-8" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium truncate">{s.pokemon.name}</p>
+                        <p className="text-[10px] text-muted-foreground">House avg: {s.addedValue}%</p>
+                      </div>
+                      <Plus className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                    </button>
                   );
                 })}
               </div>
