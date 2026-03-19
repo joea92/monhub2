@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { POKEMON_DATA, TOWNS, getPokemonById } from '@/lib/pokemonData';
-import { calculateHouseScore, getHouseLabelColor, autoDistributeHouses, calculatePairScore } from '@/lib/compatibility';
+import { calculateHouseScore, getHouseLabelColor, autoDistributeHouses, autoArrangeHouses, calculatePairScore } from '@/lib/compatibility';
 import { getTownPlans, saveTownPlans } from '@/lib/storage';
 import HouseOccupancy from '@/components/pokemon/HouseOccupancy';
 import PokemonSilhouette from '@/components/pokemon/PokemonSilhouette';
