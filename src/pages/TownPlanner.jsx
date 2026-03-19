@@ -245,6 +245,16 @@ export default function TownPlanner() {
                         {score.avgPercentage}% — {score.label}
                       </Badge>
                     )}
+                    {(house.memberIds || []).length === 4 && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="text-xs gap-1 mt-2"
+                        onClick={e => { e.stopPropagation(); splitHouse(house.id); }}
+                      >
+                        <Layers className="w-3 h-3" /> Split Between Two Floors
+                      </Button>
+                    )}
                   </div>
                 ) : (
                   <p className="text-xs text-muted-foreground text-center py-4">Empty house</p>
