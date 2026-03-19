@@ -276,32 +276,41 @@ export default function TownPlanner() {
     const house = newPlans[activeTown].houses.find(h => h.id === houseId);
     if (!house) return;
 
-    const members = [...house.memberIds];
     const srcDropId = result.source.droppableId;
     const dstDropId = result.destination.droppableId;
-
     const isFloor1Src = srcDropId.endsWith('-floor1');
     const isFloor1Dst = dstDropId.endsWith('-floor1');
 
-    // If moving to a different floor, check if destination is full
-    if (srcDropId !== dstDropId) {
-      const dstOffset = isFloor1Dst ? 0 : 2;
-      const dstFilledCount = [members[dstOffset], members[dstOffset + 1]].filter(Boolean).length;
-      if (dstFilledCount >= 2) {
-        setFloorFullHouseId(houseId);
-        setTimeout(() => setFloorFullHouseId(null), 2500);
-        return;
+    // Work with per-floor arrays (floors stored as first/second half of memberIds)
+    const members = [...house.memberIds];
+    const midpoint = Math.ceil(members.length / 2);
+    let f1 = members.slice(0, midpoint);
+    let f2 = members.slice(midpoint);
+
+    const movedId = (isFloor1Src ? f1 : f2)[result.source.index];
+    if (!movedId) return;
+
+    if (srcDropId === dstDropId) {
+      // Reorder within same floor
+      const floorArr = [...(isFloor1Src ? f1 : f2)];
+      floorArr.splice(result.source.index, 1);
+      floorArr.splice(result.destination.index, 0, movedId);
+      if (isFloor1Src) f1 = floorArr; else f2 = floorArr;
+    } else {
+      // Cross-floor: always allow, may result in >2 on destination
+      const srcArr = [...(isFloor1Src ? f1 : f2)];
+      const dstArr = [...(isFloor1Dst ? f1 : f2)];
+      srcArr.splice(result.source.index, 1);
+      dstArr.splice(result.destination.index, 0, movedId);
+      if (isFloor1Src) { f1 = srcArr; f2 = dstArr; } else { f2 = srcArr; f1 = dstArr; }
+
+      // Show overflow warning if destination now has >2
+      if (dstArr.length > 2) {
+        setFloorFullHouseId({ houseId, floor: isFloor1Dst ? 'floor1' : 'floor2' });
       }
     }
 
-    const srcSlotOffset = isFloor1Src ? 0 : 2;
-    const dstSlotOffset = isFloor1Dst ? 0 : 2;
-    const srcSlot = srcSlotOffset + result.source.index;
-    const dstSlot = dstSlotOffset + result.destination.index;
-
-    if (srcSlot === dstSlot) return;
-    [members[srcSlot], members[dstSlot]] = [members[dstSlot], members[srcSlot]];
-    house.memberIds = members;
+    house.memberIds = [...f1, ...f2];
     updatePlans(newPlans);
   };
 
