@@ -479,7 +479,9 @@ export default function HousePlanner() {
             <div className="bg-card rounded-2xl border border-border/50 p-4">
               <h3 className="font-semibold text-sm mb-3">{filledIds.length === 0 ? 'Random Suggestions' : 'Best Next Additions'}</h3>
               <div className="space-y-1">
-                {suggestions.slice(0, 6).map(s => (
+                {applyPokemonFilters(suggestions.map(s => s.pokemon), sidebarFilters).map(p => {
+                  const s = suggestions.find(s => s.pokemon.id === p.id);
+                  return (
                   <button key={s.pokemon.id} onClick={() => addMember(s.pokemon.id)}
                     style={{ userSelect: 'none' }}
                     className="flex items-center gap-2 w-full p-2 rounded-lg hover:bg-muted/50 transition-colors text-left">
