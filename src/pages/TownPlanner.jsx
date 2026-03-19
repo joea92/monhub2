@@ -182,6 +182,11 @@ function HouseCard({ house, isSelected, onSelect, onRemove, onRemoveMember, onAd
         <p className="text-xs text-muted-foreground text-center py-4">Empty house</p>
       )}
 
+      {/* Compatibility graph */}
+      {memberIds.length >= 2 && (
+        <HouseCompatibilityGraph memberIds={memberIds} />
+      )}
+
       {/* Quick add */}
       {memberIds.length < 4 && (
         <div className="mt-3">
