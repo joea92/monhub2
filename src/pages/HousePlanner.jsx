@@ -493,12 +493,12 @@ export default function HousePlanner() {
                       <p className="text-[10px] text-muted-foreground">House avg: {s.addedValue}%</p>
                     </div>
                     <Plus className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                    </button>
-                    );
-                    })}
-                    </div>
-                    </div>
-                    )}
+                  </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           {savedHouses.length > 0 && (
             <div className="bg-card rounded-2xl border border-border/50 p-4">
