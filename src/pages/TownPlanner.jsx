@@ -273,20 +273,29 @@ export default function TownPlanner() {
     if (!house) return;
 
     const members = [...house.memberIds];
-    const srcDropId = result.source.droppableId; // e.g. "houseId-floor1"
+    const srcDropId = result.source.droppableId;
     const dstDropId = result.destination.droppableId;
 
     const isFloor1Src = srcDropId.endsWith('-floor1');
     const isFloor1Dst = dstDropId.endsWith('-floor1');
 
-    // Slot indices: floor1 = 0,1 | floor2 = 2,3
+    // If moving to a different floor, check if destination is full
+    if (srcDropId !== dstDropId) {
+      const dstOffset = isFloor1Dst ? 0 : 2;
+      const dstFilledCount = [members[dstOffset], members[dstOffset + 1]].filter(Boolean).length;
+      if (dstFilledCount >= 2) {
+        setFloorFullHouseId(houseId);
+        setTimeout(() => setFloorFullHouseId(null), 2500);
+        return;
+      }
+    }
+
     const srcSlotOffset = isFloor1Src ? 0 : 2;
     const dstSlotOffset = isFloor1Dst ? 0 : 2;
     const srcSlot = srcSlotOffset + result.source.index;
     const dstSlot = dstSlotOffset + result.destination.index;
 
     if (srcSlot === dstSlot) return;
-    // Swap
     [members[srcSlot], members[dstSlot]] = [members[dstSlot], members[srcSlot]];
     house.memberIds = members;
     updatePlans(newPlans);
