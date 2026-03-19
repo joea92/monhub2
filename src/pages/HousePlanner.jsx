@@ -1,87 +1,236 @@
 import React, { useState, useMemo } from 'react';
-import { Plus, X, Sparkles, AlertTriangle, Search, Save, Trash2, Layers } from 'lucide-react';
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import { Plus, X, Sparkles, AlertTriangle, Search, Save, Trash2, Layers, GripVertical } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { POKEMON_DATA, getPokemonById } from '@/lib/pokemonData';
-import { calculateHouseScore, suggestNextMember, optimizeBestHouse, getHouseLabelColor, calculatePairScore, generateExplanation } from '@/lib/compatibility';
+import { calculateHouseScore, suggestNextMember, optimizeBestHouse, getHouseLabelColor, calculatePairScore } from '@/lib/compatibility';
 import { saveHouse, getSavedHouses, deleteHouse } from '@/lib/storage';
 import HouseOccupancy from '@/components/pokemon/HouseOccupancy';
 import TypeBadge from '@/components/pokemon/TypeBadge';
 import CompatibilityBadge from '@/components/pokemon/CompatibilityBadge';
 import PokemonSilhouette from '@/components/pokemon/PokemonSilhouette';
 
+// Slot component for empty or filled pokemon spots
+function PokemonSlot({ id, index, onRemove, isWeakest, showWeakest }) {
+  const p = id ? getPokemonById(id) : null;
+
+  return (
+    <Draggable draggableId={id || `empty-${index}`} index={index} isDragDisabled={!id}>
+      {(provided, snapshot) => (
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          className={`flex items-center gap-3 p-3 rounded-xl border transition-all ${
+            p
+              ? snapshot.isDragging
+                ? 'bg-primary/10 border-primary shadow-lg'
+                : 'bg-muted/30 border-border/30'
+              : 'bg-muted/10 border-dashed border-border/40'
+          }`}
+        >
+          {p ? (
+            <>
+              <div {...provided.dragHandleProps} className="cursor-grab active:cursor-grabbing text-muted-foreground">
+                <GripVertical className="w-4 h-4" />
+              </div>
+              <div className="w-10 h-10 flex-shrink-0 bg-muted/30 rounded">
+                <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-10 h-10" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-sm">{p.name}</p>
+                <TypeBadge type={p.type} />
+              </div>
+              {showWeakest && isWeakest && (
+                <Badge className="bg-amber-50 text-amber-700 border border-amber-200 text-[10px] flex-shrink-0">
+                  <AlertTriangle className="w-3 h-3 mr-1" /> Weakest
+                </Badge>
+              )}
+              <Button variant="ghost" size="icon" className="flex-shrink-0 h-7 w-7" onClick={() => onRemove(id)}>
+                <X className="w-3 h-3" />
+              </Button>
+            </>
+          ) : (
+            <div className="flex-1 text-center py-1 text-xs text-muted-foreground">Empty slot</div>
+          )}
+        </div>
+      )}
+    </Draggable>
+  );
+}
+
+// Floor section with droppable area
+function FloorSection({ label, floorIds, allIds, splitMode, onRemove, houseScore }) {
+  const filledIds = floorIds.filter(Boolean);
+  const floorScore = filledIds.length >= 2 ? calculateHouseScore(filledIds) : null;
+  const weakestId = floorScore?.weakestMember?.pokemon?.id;
+
+  return (
+    <div className="space-y-2">
+      {splitMode && (
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{label}</span>
+          {floorScore && (
+            <Badge className={`${getHouseLabelColor(floorScore.label)} border text-[10px]`}>
+              {floorScore.avgPercentage}%
+            </Badge>
+          )}
+        </div>
+      )}
+      <Droppable droppableId={label}>
+        {(provided, snapshot) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            className={`space-y-2 min-h-[60px] rounded-xl transition-colors ${snapshot.isDraggingOver ? 'bg-primary/5' : ''}`}
+          >
+            {floorIds.map((id, index) => (
+              <PokemonSlot
+                key={id || `empty-${label}-${index}`}
+                id={id}
+                index={index}
+                onRemove={onRemove}
+                isWeakest={id === weakestId}
+                showWeakest={splitMode && filledIds.length >= 2}
+              />
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </div>
+  );
+}
+
 export default function HousePlanner() {
+  // houseMembers: array of 4 slots (null = empty), always 4 when splitMode
   const [houseMembers, setHouseMembers] = useState([]);
+  const [splitMode, setSplitMode] = useState(false);
   const [search, setSearch] = useState('');
   const [savedHouses, setSavedHouses] = useState(getSavedHouses());
   const [showAutoOptimize, setShowAutoOptimize] = useState(false);
 
-  const houseScore = useMemo(() => calculateHouseScore(houseMembers), [houseMembers]);
+  // Normalize: filled ids only
+  const filledIds = houseMembers.filter(Boolean);
+
+  // Split into floor1 = slots 0-1, floor2 = slots 2-3
+  const floor1Ids = splitMode ? [houseMembers[0] || null, houseMembers[1] || null] : [];
+  const floor2Ids = splitMode ? [houseMembers[2] || null, houseMembers[3] || null] : [];
+
+  const floor1Filled = floor1Ids.filter(Boolean);
+  const floor2Filled = floor2Ids.filter(Boolean);
+
+  const floor1Score = useMemo(() => floor1Filled.length >= 2 ? calculateHouseScore(floor1Filled) : null, [floor1Filled.join(',')]);
+  const floor2Score = useMemo(() => floor2Filled.length >= 2 ? calculateHouseScore(floor2Filled) : null, [floor2Filled.join(',')]);
+  const wholeHouseScore = useMemo(() => filledIds.length >= 2 ? calculateHouseScore(filledIds) : null, [filledIds.join(',')]);
+
   const suggestions = useMemo(() => {
-    if (houseMembers.length >= 4) return [];
-    if (houseMembers.length === 0) {
-      // Show random 6 pokemon when house is empty
+    if (filledIds.length >= 4) return [];
+    if (filledIds.length === 0) {
       const shuffled = [...POKEMON_DATA].sort(() => Math.random() - 0.5);
       return shuffled.slice(0, 6).map(p => ({ pokemon: p, addedValue: '—' }));
     }
-    return suggestNextMember(houseMembers);
-  }, [houseMembers]);
+    return suggestNextMember(filledIds);
+  }, [filledIds.join(',')]);
 
   const autoResults = useMemo(() => {
-    if (!showAutoOptimize || houseMembers.length === 0) return [];
-    return optimizeBestHouse(houseMembers, 5);
-  }, [showAutoOptimize, houseMembers]);
+    if (!showAutoOptimize || filledIds.length === 0) return [];
+    return optimizeBestHouse(filledIds, 5);
+  }, [showAutoOptimize, filledIds.join(',')]);
 
   const searchResults = useMemo(() => {
     if (!search) return [];
     return POKEMON_DATA
-      .filter(p => p.name.toLowerCase().includes(search.toLowerCase()) && !houseMembers.includes(p.id))
+      .filter(p => p.name.toLowerCase().includes(search.toLowerCase()) && !filledIds.includes(p.id))
       .slice(0, 8);
-  }, [search, houseMembers]);
+  }, [search, filledIds.join(',')]);
+
+  const toggleSplitMode = () => {
+    if (!splitMode) {
+      // Entering split mode: pad to 4 slots
+      const padded = [...houseMembers];
+      while (padded.length < 4) padded.push(null);
+      setHouseMembers(padded.slice(0, 4));
+    }
+    setSplitMode(s => !s);
+  };
 
   const addMember = (id) => {
-    if (houseMembers.length >= 4 || houseMembers.includes(id)) return;
-    setHouseMembers([...houseMembers, id]);
+    if (filledIds.length >= 4 || filledIds.includes(id)) return;
+    if (splitMode) {
+      // Fill first empty slot
+      const slots = [...houseMembers];
+      while (slots.length < 4) slots.push(null);
+      const emptyIdx = slots.indexOf(null);
+      if (emptyIdx !== -1) slots[emptyIdx] = id;
+      setHouseMembers(slots);
+    } else {
+      setHouseMembers([...houseMembers, id]);
+    }
     setSearch('');
   };
 
   const removeMember = (id) => {
-    setHouseMembers(houseMembers.filter(m => m !== id));
+    if (splitMode) {
+      const slots = houseMembers.map(m => m === id ? null : m);
+      setHouseMembers(slots);
+    } else {
+      setHouseMembers(houseMembers.filter(m => m !== id));
+    }
+  };
+
+  const onDragEnd = (result) => {
+    if (!result.destination) return;
+    const { source, destination } = result;
+
+    const floorMap = { 'Floor 1': [0, 1], 'Floor 2': [2, 3] };
+    const srcFloor = floorMap[source.droppableId];
+    const dstFloor = floorMap[destination.droppableId];
+    if (!srcFloor || !dstFloor) return;
+
+    const srcSlotIdx = srcFloor[source.index];
+    const dstSlotIdx = dstFloor[destination.index];
+    if (srcSlotIdx === dstSlotIdx) return;
+
+    const newSlots = [...houseMembers];
+    // Swap the two slots
+    [newSlots[srcSlotIdx], newSlots[dstSlotIdx]] = [newSlots[dstSlotIdx], newSlots[srcSlotIdx]];
+    setHouseMembers(newSlots);
   };
 
   const handleSave = () => {
     const house = {
       id: Date.now().toString(),
       name: `House ${savedHouses.length + 1}`,
-      memberIds: houseMembers,
+      memberIds: filledIds,
+      splitMode,
+      slots: splitMode ? houseMembers : undefined,
       createdAt: new Date().toISOString(),
     };
-    // Optimistic update
-    const newHouse = { ...house, id: Date.now().toString() };
-    setSavedHouses([...savedHouses, newHouse]);
-    // Persist
     const updated = saveHouse(house);
     setSavedHouses(updated);
   };
 
   const handleDelete = (houseId) => {
-    const updated = deleteHouse(houseId);
-    setSavedHouses(updated);
+    setSavedHouses(deleteHouse(houseId));
   };
 
   const loadHouse = (house) => {
-    setHouseMembers(house.memberIds || []);
+    if (house.splitMode && house.slots) {
+      setHouseMembers(house.slots);
+      setSplitMode(true);
+    } else {
+      setHouseMembers(house.memberIds || []);
+      setSplitMode(false);
+    }
   };
 
-  const handleSplit = () => {
-    if (houseMembers.length !== 4) return;
-    const base = savedHouses.length;
-    saveHouse({ id: Date.now().toString(), name: `House ${base + 1} (Floor 1)`, memberIds: houseMembers.slice(0, 2), createdAt: new Date().toISOString() });
-    const updated = saveHouse({ id: (Date.now() + 1).toString(), name: `House ${base + 2} (Floor 2)`, memberIds: houseMembers.slice(2, 4), createdAt: new Date().toISOString() });
-    setSavedHouses(updated);
-    setHouseMembers([]);
+  const handleClear = () => {
+    setHouseMembers(splitMode ? [null, null, null, null] : []);
   };
+
+  const totalCount = filledIds.length;
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-6">
@@ -91,101 +240,155 @@ export default function HousePlanner() {
       <div className="grid md:grid-cols-3 gap-6">
         {/* Left: Current house */}
         <div className="md:col-span-2 space-y-4">
-          {/* House card */}
           <div className="bg-card rounded-2xl border border-border/50 p-5">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="font-bold">Current House</h2>
-              <HouseOccupancy count={houseMembers.length} />
+              <div className="flex items-center gap-3">
+                <h2 className="font-bold">Current House</h2>
+                <Button
+                  size="sm"
+                  variant={splitMode ? 'default' : 'outline'}
+                  className="text-xs gap-1 h-7"
+                  onClick={toggleSplitMode}
+                >
+                  <Layers className="w-3 h-3" />
+                  {splitMode ? 'Two Floors' : 'Split Floors'}
+                </Button>
+              </div>
+              <HouseOccupancy count={totalCount} />
             </div>
 
-            {houseMembers.length === 0 ? (
-              <div className="text-center py-10 text-muted-foreground">
-                <p className="text-sm">Add Pokémon to start building a house</p>
+            {/* House content */}
+            {splitMode ? (
+              <DragDropContext onDragEnd={onDragEnd}>
+                <div className="space-y-3">
+                  <FloorSection
+                    label="Floor 1"
+                    floorIds={floor1Ids}
+                    allIds={houseMembers}
+                    splitMode={splitMode}
+                    onRemove={removeMember}
+                    houseScore={floor1Score}
+                  />
+                  <div className="relative flex items-center gap-2 py-1">
+                    <div className="flex-1 border-t-2 border-dashed border-border/60" />
+                    <span className="text-[10px] text-muted-foreground font-medium px-2 bg-card">drag to rearrange floors</span>
+                    <div className="flex-1 border-t-2 border-dashed border-border/60" />
+                  </div>
+                  <FloorSection
+                    label="Floor 2"
+                    floorIds={floor2Ids}
+                    allIds={houseMembers}
+                    splitMode={splitMode}
+                    onRemove={removeMember}
+                    houseScore={floor2Score}
+                  />
+                </div>
+              </DragDropContext>
+            ) : (
+              <>
+                {houseMembers.length === 0 ? (
+                  <div className="text-center py-10 text-muted-foreground">
+                    <p className="text-sm">Add Pokémon to start building a house</p>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {houseMembers.map(id => {
+                      const p = getPokemonById(id);
+                      if (!p) return null;
+                      return (
+                        <div key={id} className="flex items-center gap-3 p-3 rounded-xl bg-muted/30 border border-border/30">
+                          <div className="w-10 h-10 flex-shrink-0 bg-muted/30 rounded">
+                            <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-10 h-10" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-semibold text-sm">{p.name}</p>
+                            <TypeBadge type={p.type} />
+                          </div>
+                          {wholeHouseScore?.weakestMember?.pokemon?.id === id && houseMembers.length >= 3 && (
+                            <Badge className="bg-amber-50 text-amber-700 border border-amber-200 text-[10px] flex-shrink-0">
+                              <AlertTriangle className="w-3 h-3 mr-1" /> Weakest fit
+                            </Badge>
+                          )}
+                          <Button variant="ghost" size="icon" className="flex-shrink-0 h-8 w-8" onClick={() => removeMember(id)}>
+                            <X className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* Compatibility stats */}
+            {splitMode ? (
+              <div className="mt-5 pt-4 border-t border-border/50 space-y-4">
+                {[{ label: 'Floor 1', score: floor1Score, ids: floor1Filled }, { label: 'Floor 2', score: floor2Score, ids: floor2Filled }].map(({ label, score, ids }) => (
+                  score && (
+                    <div key={label}>
+                      <p className="text-xs font-semibold mb-2">{label} Compatibility</p>
+                      <div className="space-y-1">
+                        {score.pairs.map((pair, i) => (
+                          <div key={i} className="flex items-center gap-2 text-xs">
+                            <span className="font-medium truncate">{pair.pokemon1.name}</span>
+                            <span className="text-muted-foreground">↔</span>
+                            <span className="font-medium truncate">{pair.pokemon2.name}</span>
+                            <CompatibilityBadge result={pair} />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )
+                ))}
+                {!floor1Score && !floor2Score && (
+                  <p className="text-xs text-muted-foreground">Add Pokémon to see floor compatibility</p>
+                )}
               </div>
             ) : (
-              <div className="space-y-3">
-                {houseMembers.map(id => {
-                  const p = getPokemonById(id);
-                  if (!p) return null;
-                  return (
-                    <div key={id} className="flex items-center gap-3 p-3 rounded-xl bg-muted/30 border border-border/30">
-                      <div className="w-12 h-12 flex-shrink-0 bg-muted/30 rounded">
-                        <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-12 h-12" />
+              wholeHouseScore && filledIds.length >= 2 && (
+                <div className="mt-5 pt-4 border-t border-border/50">
+                  <div className="flex flex-wrap gap-3 mb-3">
+                    <Badge className={`${getHouseLabelColor(wholeHouseScore.label)} border text-xs`}>
+                      {wholeHouseScore.label}
+                    </Badge>
+                    <span className="text-xs text-muted-foreground">Avg: {wholeHouseScore.avgPercentage}%</span>
+                  </div>
+                  <div className="space-y-2">
+                    <p className="text-xs font-medium text-muted-foreground">Pair Compatibility</p>
+                    {wholeHouseScore.pairs.map((pair, i) => (
+                      <div key={i} className="flex items-center gap-2 text-xs">
+                        <span className="font-medium min-w-0 truncate">{pair.pokemon1.name}</span>
+                        <span className="text-muted-foreground">↔</span>
+                        <span className="font-medium min-w-0 truncate">{pair.pokemon2.name}</span>
+                        <CompatibilityBadge result={pair} />
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-sm">{p.name}</p>
-                        <TypeBadge type={p.type} />
-                      </div>
-                      {houseScore.weakestMember?.pokemon?.id === id && houseMembers.length >= 3 && (
-                        <Badge className="bg-amber-50 text-amber-700 border border-amber-200 text-[10px] flex-shrink-0">
-                          <AlertTriangle className="w-3 h-3 mr-1" /> Weakest fit
-                        </Badge>
-                      )}
-                      <Button variant="ghost" size="icon" className="flex-shrink-0 h-8 w-8" onClick={() => removeMember(id)}>
-                        <X className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  );
-                })}
-              </div>
+                    ))}
+                  </div>
+                  {wholeHouseScore.strongestPair && (
+                    <p className="text-xs text-green-700 mt-3">✦ Strongest: {wholeHouseScore.strongestPair.pokemon1.name} & {wholeHouseScore.strongestPair.pokemon2.name}</p>
+                  )}
+                  {wholeHouseScore.weakestPair && (
+                    <p className="text-xs text-orange-600">✦ Weakest: {wholeHouseScore.weakestPair.pokemon1.name} & {wholeHouseScore.weakestPair.pokemon2.name}</p>
+                  )}
+                </div>
+              )
             )}
 
-            {/* House stats */}
-            {houseMembers.length >= 2 && (
-              <div className="mt-5 pt-4 border-t border-border/50">
-                <div className="flex flex-wrap gap-3 mb-3">
-                  <Badge className={`${getHouseLabelColor(houseScore.label)} border text-xs`}>
-                    {houseScore.label}
-                  </Badge>
-                  <span className="text-xs text-muted-foreground">Avg: {houseScore.avgPercentage}%</span>
-                </div>
-
-                {/* Pair breakdown */}
-                <div className="space-y-2">
-                  <p className="text-xs font-medium text-muted-foreground">Pair Compatibility</p>
-                  {houseScore.pairs.map((pair, i) => (
-                    <div key={i} className="flex items-center gap-2 text-xs">
-                      <span className="font-medium min-w-0 truncate">{pair.pokemon1.name}</span>
-                      <span className="text-muted-foreground">↔</span>
-                      <span className="font-medium min-w-0 truncate">{pair.pokemon2.name}</span>
-                      <CompatibilityBadge result={pair} />
-                    </div>
-                  ))}
-                </div>
-
-                {houseScore.strongestPair && (
-                  <p className="text-xs text-green-700 mt-3">
-                    ✦ Strongest: {houseScore.strongestPair.pokemon1.name} & {houseScore.strongestPair.pokemon2.name}
-                  </p>
-                )}
-                {houseScore.weakestPair && (
-                  <p className="text-xs text-orange-600">
-                    ✦ Weakest: {houseScore.weakestPair.pokemon1.name} & {houseScore.weakestPair.pokemon2.name}
-                  </p>
-                )}
-              </div>
-            )}
-
-            <div className="flex gap-2 mt-4">
-              {houseMembers.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-4">
+              {totalCount > 0 && (
                 <>
                   <Button size="sm" variant="outline" className="text-xs gap-1" onClick={handleSave}>
                     <Save className="w-3 h-3" /> Save House
                   </Button>
-                  <Button size="sm" variant="outline" className="text-xs gap-1" onClick={() => setHouseMembers([])}>
+                  <Button size="sm" variant="outline" className="text-xs gap-1" onClick={handleClear}>
                     <Trash2 className="w-3 h-3" /> Clear
                   </Button>
-                  {houseMembers.length === 4 && (
-                    <Button size="sm" variant="outline" className="text-xs gap-1" onClick={handleSplit}>
-                      <Layers className="w-3 h-3" /> Split Between Two Floors
-                    </Button>
-                  )}
-                  {houseMembers.length <= 3 && (
-                    <Button size="sm" className="text-xs gap-1" onClick={() => setShowAutoOptimize(!showAutoOptimize)}>
-                      <Sparkles className="w-3 h-3" /> Auto-Optimize
-                    </Button>
-                  )}
                 </>
+              )}
+              {!splitMode && totalCount <= 3 && totalCount > 0 && (
+                <Button size="sm" className="text-xs gap-1" onClick={() => setShowAutoOptimize(!showAutoOptimize)}>
+                  <Sparkles className="w-3 h-3" /> Auto-Optimize
+                </Button>
               )}
             </div>
           </div>
@@ -206,11 +409,8 @@ export default function HousePlanner() {
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {house.pokemon.map(p => (
-                      <button
-                        key={p.id}
-                        onClick={() => setHouseMembers(house.ids)}
-                        className="flex items-center gap-2 bg-card rounded-lg border border-border/50 px-3 py-1.5 hover:border-primary/20 transition-colors text-left"
-                      >
+                      <button key={p.id} onClick={() => { setHouseMembers(house.ids); setSplitMode(false); }}
+                        className="flex items-center gap-2 bg-card rounded-lg border border-border/50 px-3 py-1.5 hover:border-primary/20 transition-colors text-left">
                         <div className="w-7 h-7 flex-shrink-0 bg-muted/30 rounded">
                           <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-7 h-7" />
                         </div>
@@ -218,7 +418,7 @@ export default function HousePlanner() {
                       </button>
                     ))}
                   </div>
-                  <Button size="sm" variant="ghost" className="text-xs mt-1 text-primary" onClick={() => setHouseMembers(house.ids)}>
+                  <Button size="sm" variant="ghost" className="text-xs mt-1 text-primary" onClick={() => { setHouseMembers(house.ids); setSplitMode(false); }}>
                     Use this house
                   </Button>
                 </div>
@@ -229,7 +429,7 @@ export default function HousePlanner() {
 
         {/* Right: Add Pokémon & suggestions */}
         <div className="space-y-4">
-          {houseMembers.length < 4 && (
+          {totalCount < 4 && (
             <div className="bg-card rounded-2xl border border-border/50 p-4">
               <h3 className="font-semibold text-sm mb-3">Add Pokémon</h3>
               <div className="relative">
@@ -244,11 +444,8 @@ export default function HousePlanner() {
               {searchResults.length > 0 && (
                 <div className="mt-2 space-y-1">
                   {searchResults.map(p => (
-                    <button
-                      key={p.id}
-                      onClick={() => addMember(p.id)}
-                      className="flex items-center gap-2 w-full p-2 rounded-lg hover:bg-muted/50 transition-colors text-left"
-                    >
+                    <button key={p.id} onClick={() => addMember(p.id)}
+                      className="flex items-center gap-2 w-full p-2 rounded-lg hover:bg-muted/50 transition-colors text-left">
                       <div className="w-8 h-8 flex-shrink-0 bg-muted/30 rounded">
                         <PokemonSilhouette src={p.imageUrl} alt={p.name} primaryType={p.type?.split('/')[0]} className="w-8 h-8" />
                       </div>
@@ -264,18 +461,14 @@ export default function HousePlanner() {
             </div>
           )}
 
-          {/* Suggestions */}
           {suggestions.length > 0 && (
             <div className="bg-card rounded-2xl border border-border/50 p-4">
-              <h3 className="font-semibold text-sm mb-3">{houseMembers.length === 0 ? 'Random Suggestions' : 'Best Next Additions'}</h3>
+              <h3 className="font-semibold text-sm mb-3">{filledIds.length === 0 ? 'Random Suggestions' : 'Best Next Additions'}</h3>
               <div className="space-y-1">
                 {suggestions.slice(0, 6).map(s => (
-                  <button
-                    key={s.pokemon.id}
-                    onClick={() => addMember(s.pokemon.id)}
+                  <button key={s.pokemon.id} onClick={() => addMember(s.pokemon.id)}
                     style={{ userSelect: 'none' }}
-                    className="flex items-center gap-2 w-full p-2 rounded-lg hover:bg-muted/50 transition-colors text-left"
-                  >
+                    className="flex items-center gap-2 w-full p-2 rounded-lg hover:bg-muted/50 transition-colors text-left">
                     <div className="w-8 h-8 flex-shrink-0 bg-muted/30 rounded">
                       <PokemonSilhouette src={s.pokemon.imageUrl} alt={s.pokemon.name} primaryType={s.pokemon.type?.split('/')[0]} className="w-8 h-8" />
                     </div>
@@ -290,7 +483,6 @@ export default function HousePlanner() {
             </div>
           )}
 
-          {/* Saved houses */}
           {savedHouses.length > 0 && (
             <div className="bg-card rounded-2xl border border-border/50 p-4">
               <h3 className="font-semibold text-sm mb-3">Saved Houses</h3>
@@ -309,7 +501,9 @@ export default function HousePlanner() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-medium truncate">{h.name}</p>
-                      <p className="text-[10px] text-muted-foreground">{(h.memberIds || []).length}/4</p>
+                      <p className="text-[10px] text-muted-foreground">
+                        {(h.memberIds || []).length}/4 {h.splitMode && '· 2 floors'}
+                      </p>
                     </div>
                     <Button size="sm" variant="ghost" className="text-[10px] h-6 px-2" onClick={() => loadHouse(h)}>Load</Button>
                     <Button size="sm" variant="ghost" className="text-[10px] h-6 px-1" onClick={() => handleDelete(h.id)}>
