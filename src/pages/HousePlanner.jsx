@@ -54,45 +54,47 @@ function PokemonSlot({ id, index, onRemove, isWeakest, showWeakest }) {
 }
 
 // Floor section with droppable area
-function FloorSection({ label, floorIds, splitMode, onRemove, overflowWarning }) {
-  const filledIds = floorIds.filter(Boolean);
-  const floorScore = filledIds.length >= 2 ? calculateHouseScore(filledIds) : null;
+function FloorSection({ label, floorIds, onRemove, overflowWarning }) {
+  const floorScore = floorIds.length >= 2 ? calculateHouseScore(floorIds) : null;
   const weakestId = floorScore?.weakestMember?.pokemon?.id;
 
   return (
     <div className="space-y-2">
-      {splitMode && (
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{label}</span>
-          {floorScore && (
-            <Badge className={`${getHouseLabelColor(floorScore.label)} border text-[10px]`}>
-              {floorScore.avgPercentage}%
-            </Badge>
-          )}
-          {overflowWarning && (
-            <span className="text-[10px] text-red-500 font-medium">
-              ⚠ Please remove one Pokémon from {label}
-            </span>
-          )}
-        </div>
-      )}
+      <div className="flex items-center gap-2">
+        <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{label}</span>
+        {floorScore && (
+          <Badge className={`${getHouseLabelColor(floorScore.label)} border text-[10px]`}>
+            {floorScore.avgPercentage}%
+          </Badge>
+        )}
+        {overflowWarning && (
+          <span className="text-[10px] text-red-500 font-medium">
+            ⚠ Please remove one Pokémon from {label}
+          </span>
+        )}
+      </div>
       <Droppable droppableId={label}>
         {(provided, snapshot) => (
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className={`space-y-2 min-h-[60px] rounded-xl transition-colors ${snapshot.isDraggingOver ? 'bg-primary/5' : ''}`}
+            className={`space-y-2 min-h-[60px] rounded-xl transition-colors ${snapshot.isDraggingOver ? 'bg-primary/5 ring-1 ring-primary/20' : ''}`}
           >
             {floorIds.map((id, index) => (
               <PokemonSlot
-                key={id || `empty-${label}-${index}`}
+                key={id}
                 id={id}
                 index={index}
                 onRemove={onRemove}
                 isWeakest={id === weakestId}
-                showWeakest={splitMode && filledIds.length >= 2}
+                showWeakest={floorIds.length >= 2}
               />
             ))}
+            {floorIds.length === 0 && !snapshot.isDraggingOver && (
+              <div className="text-xs text-muted-foreground text-center py-3 border border-dashed border-border/40 rounded-xl">
+                Empty — drag a Pokémon here
+              </div>
+            )}
             {provided.placeholder}
           </div>
         )}
