@@ -175,6 +175,11 @@ export default function HousePlanner() {
                   <Button size="sm" variant="outline" className="text-xs gap-1" onClick={() => setHouseMembers([])}>
                     <Trash2 className="w-3 h-3" /> Clear
                   </Button>
+                  {houseMembers.length === 4 && (
+                    <Button size="sm" variant="outline" className="text-xs gap-1" onClick={handleSplit}>
+                      <Layers className="w-3 h-3" /> Split Between Two Floors
+                    </Button>
+                  )}
                   {houseMembers.length <= 3 && (
                     <Button size="sm" className="text-xs gap-1" onClick={() => setShowAutoOptimize(!showAutoOptimize)}>
                       <Sparkles className="w-3 h-3" /> Auto-Optimize
