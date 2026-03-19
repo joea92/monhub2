@@ -427,7 +427,8 @@ export default function TownPlanner() {
               assignedIds={assignedIds}
               onToggleSplit={toggleSplit}
               onDragEnd={handleHouseDragEnd}
-              isFloorFull={floorFullHouseId === house.id}
+              overflowInfo={floorFullHouseId?.houseId === house.id ? floorFullHouseId : null}
+              onOverflowClear={() => setFloorFullHouseId(null)}
             />
           ))}
           {(townPlan?.houses || []).length === 0 && (
