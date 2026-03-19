@@ -471,12 +471,15 @@ export default function TownPlanner() {
                 <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3 h-3 text-muted-foreground" />
                 <Input placeholder="Search..." value={unassignedSearch} onChange={e => setUnassignedSearch(e.target.value)} className="h-8 text-xs pl-7" />
               </div>
+              <PokemonFilterBar filters={unassignedFilters} onChange={setUnassignedFilters} />
               {['native', 'all'].map(tab => (
                 <TabsContent key={tab} value={tab}>
                   <div className="space-y-1 max-h-96 overflow-y-auto">
-                    {(tab === 'native' ? POKEMON_DATA.filter(p => p.location === activeTownData?.name) : POKEMON_DATA)
-                      .filter(p => p.name.toLowerCase().includes(unassignedSearch.toLowerCase()))
-                      .map(p => {
+                    {applyPokemonFilters(
+                      (tab === 'native' ? POKEMON_DATA.filter(p => p.location === activeTownData?.name) : POKEMON_DATA)
+                        .filter(p => p.name.toLowerCase().includes(unassignedSearch.toLowerCase())),
+                      unassignedFilters
+                    ).map(p => {
                         const isAssigned = assignedIds.has(p.id);
                         const compat = getCompatibilityWithHouse(p.id);
                         return (
