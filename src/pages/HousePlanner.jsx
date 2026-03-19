@@ -107,7 +107,8 @@ export default function HousePlanner() {
   // houseMembers: array of 4 slots (null = empty), always 4 when splitMode
   const [houseMembers, setHouseMembers] = useState([]);
   const [splitMode, setSplitMode] = useState(false);
-  const [floorFullMsg, setFloorFullMsg] = useState(null);
+  // overflowFloor: which floor label has >2 pokemon (persistent warning)
+  const [overflowFloor, setOverflowFloor] = useState(null);
   const [search, setSearch] = useState('');
   const [savedHouses, setSavedHouses] = useState(getSavedHouses());
   const [showAutoOptimize, setShowAutoOptimize] = useState(false);
