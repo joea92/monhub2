@@ -251,6 +251,51 @@ function generateCombinations(arr, size) {
   return result;
 }
 
+// Re-arrange already-assigned pokémon across existing houses for best compatibility
+// Keeps the same number of houses and same house sizes (as close as possible)
+export function autoArrangeHouses(houses) {
+  // Collect all currently assigned pokémon IDs (preserving count per house)
+  const houseSizes = houses.map(h => (h.memberIds || []).length);
+  const allIds = houses.flatMap(h => h.memberIds || []);
+
+  if (allIds.length < 2) return houses;
+
+  // Greedy assignment: fill each house slot by slot, picking best-fitting next member
+  const remaining = [...allIds];
+  const newAssignments = houseSizes.map(() => []);
+
+  for (let hi = 0; hi < houseSizes.length; hi++) {
+    const size = houseSizes[hi];
+    if (remaining.length === 0) break;
+
+    if (newAssignments[hi].length === 0) {
+      // Seed with first remaining
+      newAssignments[hi].push(remaining.shift());
+    }
+
+    while (newAssignments[hi].length < size && remaining.length > 0) {
+      // Pick remaining pokémon that best improves this house's avg score
+      let bestId = null;
+      let bestScore = -1;
+      for (const candidateId of remaining) {
+        const testIds = [...newAssignments[hi], candidateId];
+        const s = testIds.length >= 2 ? calculateHouseScore(testIds).avgPercentage : 0;
+        if (s > bestScore) { bestScore = s; bestId = candidateId; }
+      }
+      if (bestId == null) bestId = remaining[0];
+      newAssignments[hi].push(bestId);
+      remaining.splice(remaining.indexOf(bestId), 1);
+    }
+  }
+
+  // Any leftover pokemon (edge case) go to last house
+  if (remaining.length > 0) {
+    newAssignments[newAssignments.length - 1].push(...remaining);
+  }
+
+  return houses.map((h, i) => ({ ...h, memberIds: newAssignments[i] || [] }));
+}
+
 // Multi-house auto-planner: distribute pokémon into houses of max 4
 export function autoDistributeHouses(pokemonIds) {
   if (pokemonIds.length === 0) return [];
