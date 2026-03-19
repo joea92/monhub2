@@ -193,7 +193,7 @@ export default function HousePlanner() {
 
     const srcList = srcFloorId === 'Floor 1' ? [...floor1] : [...floor2];
     const movedId = srcList[source.index];
-    if (!movedId) return;
+    if (movedId == null) return;
 
     if (srcFloorId === dstFloorId) {
       // Reorder within same floor
