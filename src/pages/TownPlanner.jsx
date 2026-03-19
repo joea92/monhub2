@@ -11,6 +11,7 @@ import { getTownPlans, saveTownPlans } from '@/lib/storage';
 import HouseOccupancy from '@/components/pokemon/HouseOccupancy';
 import PokemonSilhouette from '@/components/pokemon/PokemonSilhouette';
 import CompatibilityBadge from '@/components/pokemon/CompatibilityBadge';
+import HouseCompatibilityGraph from '@/components/pokemon/HouseCompatibilityGraph';
 
 // Draggable pokemon row inside a house floor
 function HouseMemberRow({ id, index, onRemove, houseId }) {
