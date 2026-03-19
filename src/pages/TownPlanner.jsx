@@ -197,6 +197,7 @@ export default function TownPlanner() {
   const [plans, setPlans] = useState(getTownPlans());
   const [activeTown, setActiveTown] = useState(selectedTownId || null);
   const [selectedHouseId, setSelectedHouseId] = useState(null);
+  const [floorFullHouseId, setFloorFullHouseId] = useState(null);
   const [unassignedTab, setUnassignedTab] = useState('native');
   const [unassignedSearch, setUnassignedSearch] = useState('');
 
