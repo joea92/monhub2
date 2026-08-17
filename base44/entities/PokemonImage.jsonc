@@ -1,0 +1,69 @@
+{
+  "name": "PokemonImage",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Pokemon name"
+    },
+    "slug": {
+      "type": "string",
+      "description": "Normalized slug (lowercase, hyphenated)"
+    },
+    "pokedex_number": {
+      "type": "string",
+      "description": "Pokedex number if available"
+    },
+    "type": {
+      "type": "string",
+      "description": "Primary pokemon type (grass, fire, water, etc)"
+    },
+    "source_image_url": {
+      "type": "string",
+      "description": "Original image URL from pokopia.dev"
+    },
+    "hosted_image_url": {
+      "type": "string",
+      "description": "Hosted image URL in app storage"
+    },
+    "import_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "success",
+        "failed"
+      ],
+      "default": "pending",
+      "description": "Status of the image import"
+    },
+    "failed_reason": {
+      "type": "string",
+      "description": "Error message if import failed"
+    },
+    "silhouette_image_url": {
+      "type": "string",
+      "description": "Generated stylised silhouette image URL"
+    },
+    "silhouette_status": {
+      "type": "string",
+      "enum": [
+        "none",
+        "generating",
+        "ready",
+        "failed"
+      ],
+      "default": "none",
+      "description": "Status of silhouette generation"
+    },
+    "use_silhouette": {
+      "type": "boolean",
+      "default": false,
+      "description": "If true, show silhouette instead of original image in the UI"
+    }
+  },
+  "required": [
+    "name",
+    "slug",
+    "import_status"
+  ]
+}
